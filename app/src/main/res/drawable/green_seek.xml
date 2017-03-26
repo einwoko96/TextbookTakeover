@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/green_seek_disabled_holo" android:state_enabled="false"/>
+    <item android:drawable="@drawable/green_seek_pressed_holo" android:state_pressed="true"/>
+    <item android:drawable="@drawable/green_seek_focused_holo" android:state_selected="true"/>
+    <item android:drawable="@drawable/green_seek_normal_holo"/>
+</selector>

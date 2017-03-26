@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/mainLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/singleImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:adjustViewBounds="true"
+            android:background="@color/grey"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:id="@+id/lin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-5dp"
+            android:layout_marginRight="10dp">
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_regular.ttf"
+                android:id="@+id/productType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/urgentbg"
+                android:paddingTop="13dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="11sp"
+                android:text="Urgent"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

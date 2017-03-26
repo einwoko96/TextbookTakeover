@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "600632316387",
+    "project_id": "tidal-heading-791"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600632316387:android:f7343b77a60ba4c5",
+        "android_client_info": {
+          "package_name": "com.hitasoft.app.joysale"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600632316387-c647po6pl4nk7l8arf0jef5p61vs3tc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hitasoft.app.joysale",
+            "certificate_hash": "6CD8960B6438566D3F2A0DABCDF2808681578030"
+          }
+        },
+        {
+          "client_id": "600632316387-31u84iba1io8hbp9magekset0f7s2c4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hitasoft.app.joysale",
+            "certificate_hash": "AF5FE4E05853B9E79476E734BC0465710061F2B4"
+          }
+        },
+        {
+          "client_id": "600632316387-v91qssmrvp8murjn6sfbguh229opab0s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hitasoft.app.joysale",
+            "certificate_hash": "99A6147EE4A6BEE12EA31A005945B1171C75EE53"
+          }
+        },
+        {
+          "client_id": "600632316387-ho0ocg85umtrmuk16auhhu7ihi93uvcc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4nsFHJvKjE48VOGygV54bRe_SW-zIbsk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

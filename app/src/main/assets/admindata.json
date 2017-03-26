@@ -1,0 +1,29 @@
+{
+  "status": "true",
+  "result": {
+    "categories": [
+      {
+        "category_id": "1",
+        "category_name": "Electronics",
+        "category_image": "http://fantacyscript.com/beta/media/items/original/1446122355_.jpg"
+      }
+    ],
+    "addresses": {
+      "addressline_1": "32, Karthik Apartments",
+      "addressline_2": "100 ft road",
+      "city": "Coimbatore",
+      "state": "TamilNadu",
+      "country": "India",
+      "zipcode": "643793"
+    },
+    "countries": [
+      {
+        "id": "83",
+        "country_code": "GR",
+        "country_name": "Greece"
+      }
+    ],
+    "enquiry_phone": "7069689797",
+    "enquiry_email": "support@qpon.be"
+  }
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="7dp"
+    android:background="@drawable/white_oval_corner">
+
+    <com.hitasoft.app.external.CustomTextView
+        app:font="font_regular.ttf"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:textColor="@color/primaryText"
+        android:text="Set your location"/>
+
+    <ImageView
+        android:id="@+id/cross_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="7dp"
+        android:src="@drawable/cross_icon"/>
+
+</LinearLayout>

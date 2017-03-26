@@ -1,0 +1,137 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionbar"
+        android:layout_above="@+id/bottomLay">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/marker"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
+                android:background="@null"
+                android:src="@drawable/map" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbar"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="5dp"
+        android:background="@drawable/white_roundcorner">
+
+        <AutoCompleteTextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/cross_icon"
+            android:padding="6dp"
+            android:digits="@string/chatfilter"
+            android:hint="@string/search"
+            android:singleLine="true"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/search_left"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:maxLines="1" />
+
+        <ImageView
+            android:id="@+id/cross_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/cross_icon"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+    
+    <ImageView
+        android:id="@+id/my_location"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/my_location"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/bottomLay"
+        android:layout_margin="20dp"/>
+
+    <RelativeLayout
+        android:id="@+id/bottomLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <com.hitasoft.app.external.CustomTextView
+                android:id="@+id/reset"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:padding="15dp"
+                android:singleLine="true"
+                android:text="@string/remove_location"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                app:font="font_bold.ttf" />
+            <com.hitasoft.app.external.CustomTextView
+                android:layout_weight="1"
+                android:id="@+id/apply"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="15dp"
+                android:singleLine="true"
+                android:text="@string/set_location"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                app:font="font_bold.ttf" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

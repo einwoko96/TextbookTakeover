@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="15dp"
+    android:id="@+id/headerLay"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/topProgress"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        app:indicator="BallPulse"
+        app:indicator_color="@color/progressColor" />
+
+    <com.hitasoft.app.external.CustomTextView
+        app:font="font_regular.ttf"
+        android:id="@+id/nulltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/noData"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="@color/primaryText"
+        android:visibility="gone" />
+
+</LinearLayout>

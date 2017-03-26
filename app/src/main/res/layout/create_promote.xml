@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:layout_width="match_parent"
+    android:clipToPadding="false"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/actionbar"
+        android:layout_above="@+id/bottbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:paddingTop="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/urgentText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.hitasoft.app.external.CustomTextView
+                android:id="@+id/title"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/prdctimg"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="15dp"
+                android:text="@string/ads_instant_viewable"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/primaryText"
+                android:visibility="visible"
+                app:font="font_regular.ttf" />
+
+            <com.hitasoft.app.external.CustomTextView
+                android:paddingTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/prdctimg"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="15dp"
+                android:text="@string/urgent_ads_highlighted"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/primaryText"
+                android:visibility="visible"
+                app:font="font_regular.ttf" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <com.hitasoft.app.external.CustomTextView
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/prdctimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="15dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="at_top_just"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="@color/primaryText"
+                    android:visibility="visible"
+                    app:font="font_regular.ttf" />
+
+                <com.hitasoft.app.external.CustomTextView
+                    android:id="@+id/urgentPrice"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/prdctimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="15dp"
+                    android:text="$5.00"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="visible"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/adText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/prdctimg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="@string/ads_des"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            android:visibility="gone"
+            app:font="font_regular.ttf" />
+
+<RelativeLayout
+    android:id="@+id/promotead"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp">
+
+    <com.hitasoft.app.external.ExpandableHeightListView
+        android:id="@+id/promoteList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"/>
+
+    <ImageView
+        android:visibility="visible"
+        android:id="@+id/img1"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-12dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:tint="@color/bg"
+        android:src="@drawable/promote_arrow"/>
+</RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/promote_ad"
+            android:paddingLeft="30dp"
+            android:paddingTop="30dp"
+            android:paddingRight="30dp"
+            android:scaleType="centerCrop" />
+
+    </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/bottbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        >
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/promote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:text="@string/pay_and_promote"
+            android:visibility="gone"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            app:font="font_bold.ttf" />
+    </RelativeLayout>
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        app:indicator="BallPulse"
+        app:indicator_color="@color/progressColor" />
+</RelativeLayout>

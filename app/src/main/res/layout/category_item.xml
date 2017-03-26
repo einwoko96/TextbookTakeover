@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/topLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/lay1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/appicon"
+                android:layout_gravity="center"/>
+
+            <com.hitasoft.app.external.CustomTextView
+                android:id="@+id/txt1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:padding="20dp"
+                android:text="ForSale"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primaryText"
+                app:font="font_regular.ttf" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/lay2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/appicon"
+                android:layout_gravity="center" />
+
+            <com.hitasoft.app.external.CustomTextView
+                android:id="@+id/txt2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:padding="20dp"
+                android:text="ForSale"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primaryText"
+                app:font="font_regular.ttf" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/divider" />-->
+
+    <LinearLayout
+        android:id="@+id/lay3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img21"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/appicon"
+            android:layout_gravity="center" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/txt21"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:padding="20dp"
+            android:text="ForSale"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/locationLay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingLeft="10dp">
+
+    <com.hitasoft.app.external.CustomTextView
+        android:id="@+id/itemtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vie"
+        android:layout_toLeftOf="@+id/lnext"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="Solid Wood, Engineered wood"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="@color/primaryText"
+        android:textStyle="bold"
+        app:font="font_regular.ttf" />
+
+    <com.hitasoft.app.external.CustomTextView
+        android:id="@+id/valid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemtitle"
+        android:paddingLeft="10dp"
+        android:textSize="12sp"
+        android:text="VALID UPTO"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textColor="@color/secondaryText"
+        android:visibility="visible"
+        app:font="font_regular.ttf" />
+
+
+    <com.hitasoft.app.external.CustomTextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/valid"
+        android:layout_toLeftOf="@+id/lnext"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="June 10 2016"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:font="font_regular.ttf" />
+
+    <ImageView
+        android:id="@+id/lnext"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/vie"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@null"
+        android:padding="10dp"
+        android:src="@drawable/f_arrow" />
+</RelativeLayout>

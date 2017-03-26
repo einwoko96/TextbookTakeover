@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/actionbar"
+        android:background="@color/divider" />
+
+    <ListView
+        android:id="@+id/comments_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view2"
+        android:layout_below="@+id/view1"
+        android:cacheColorHint="#00000000" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/bottom"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <com.hitasoft.app.external.CustomEditText
+            app:font="font_regular.ttf"
+            android:id="@+id/commentEditText"
+            android:layout_width="0dip"
+            android:layout_height="45dp"
+            android:layout_margin="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.8"
+            android:background="@color/white"
+            android:gravity="top"
+            android:hint="@string/addcomment"
+            android:focusableInTouchMode="true"
+            android:inputType="textNoSuggestions|textCapSentences|textMultiLine"
+            android:isScrollContainer="true"
+            android:maxLength="120"
+            android:maxLines="4"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/sendtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="15dp"
+            android:text="@string/send"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorPrimary"
+            app:font="font_bold.ttf" />
+
+    </LinearLayout>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:indicator="BallPulse"
+        app:indicator_color="@color/progressColor" />
+
+    <LinearLayout
+        android:id="@+id/nullLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/no_item" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/sorry"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:text="@string/nocomments"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+    </LinearLayout>
+
+</RelativeLayout>

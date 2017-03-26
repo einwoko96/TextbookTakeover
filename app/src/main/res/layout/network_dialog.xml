@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <com.hitasoft.app.external.CustomTextView
+            app:font="font_bold.ttf"
+            android:id="@+id/alert_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/network_error"
+            android:gravity="center"
+            android:textColor="@color/primaryText"
+            android:padding="10dp"
+            android:textAppearance="@android:style/TextAppearance.Large"/>
+
+        <com.hitasoft.app.external.CustomTextView
+            app:font="font_regular.ttf"
+            android:id="@+id/alert_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/network_error_des"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/primaryText"
+            android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_regular.ttf"
+                android:id="@+id/alert_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/go_settings"
+                android:textColor="@color/colorPrimary"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_regular.ttf"
+                android:id="@+id/alert_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:layout_gravity="right"
+                android:textColor="@color/primaryText"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

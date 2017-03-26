@@ -1,0 +1,21 @@
+{
+  "status": "true",
+  "result": [
+    {
+      "page_name": "About Us",
+      "page_content": "loreum ipsum loreum ipsum"
+    },
+    {
+      "page_name": "Contact",
+      "page_content": "loreum ipsum loreum ipsum"
+    },
+    {
+      "page_name": "Privacy policy",
+      "page_content": "loreum ipsum loreum ipsum"
+    },
+    {
+      "page_name": "Terms and conditions",
+      "page_content": "loreum ipsum loreum ipsum"
+    }
+  ]
+}

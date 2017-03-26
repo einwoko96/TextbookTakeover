@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:background="@color/bg">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:id="@+id/detailLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbar"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/statusLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_bold.ttf"
+                android:id="@+id/success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:singleLine="true"
+                android:padding="15dp"
+                android:text="Success"
+                android:textColor="@color/white"/>
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_bold.ttf"
+                android:id="@+id/failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/red"
+                android:gravity="center"
+                android:padding="15dp"
+                android:singleLine="true"
+                android:text="Failed"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/userdetailLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/statusLay"
+            android:layout_marginLeft="15dp">
+
+            <com.hitasoft.app.external.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/userImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:border_color="@color/white"
+                app:border_width="0dp"
+                app:corner_radius="100dip"
+                app:round_background="true" />
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_regular.ttf"
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/userImage"
+                android:text="Username"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/primaryText" />
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_regular.ttf"
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userName"
+                android:layout_marginTop="3dp"
+                android:layout_toRightOf="@+id/userImage"
+                android:text="1 day ago"
+                android:textColor="@color/secondaryText" />
+
+            <com.hitasoft.app.external.CustomTextView
+                app:font="font_regular.ttf"
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:text="Status"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/exchangedelLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:layout_below="@+id/userdetailLay"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/exchangeitemLay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical">
+
+                <com.hitasoft.app.external.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/exitemImage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorPrimary"
+                    android:scaleType="centerCrop"
+                    app:border_color="@color/white"
+                    app:border_width="0dp"
+                    app:corner_radius="100dip"
+                    app:round_background="true" />
+
+                <com.hitasoft.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:id="@+id/exitemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Demo"
+                    android:textColor="@color/primaryText"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@+id/exchangeitemLay"
+                android:layout_toRightOf="@+id/useritemLay"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/myexchngImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/exchngarrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/myexchangeitemLay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical">
+
+                <com.hitasoft.app.external.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/myitemImage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorPrimary"
+                    android:scaleType="centerCrop"
+                    app:border_color="@color/white"
+                    app:border_width="0dp"
+                    app:corner_radius="100dip"
+                    app:round_background="true" />
+
+                <com.hitasoft.app.external.CustomTextView
+                    android:id="@+id/myitemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Jean"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom"
+        android:layout_below="@+id/detailLay"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/bg"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:scrollbarStyle="outsideInset" />
+
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:indicator="BallPulse"
+        app:indicator_color="@color/progressColor" />
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <!-- <EditText -->
+
+        <com.hitasoft.app.external.CustomEditText
+            android:id="@+id/editText"
+            android:layout_width="0dip"
+            android:layout_height="45dp"
+            android:layout_margin="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.9"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/writemessage"
+            android:inputType="textNoSuggestions|textCapSentences|textMultiLine"
+            android:isScrollContainer="true"
+            android:maxLength="500"
+            android:maxLines="4"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textCursorDrawable="@drawable/cursor"
+            app:font="font_regular.ttf" />
+
+        <com.hitasoft.app.external.CustomTextView
+            app:font="font_bold.ttf"
+            android:id="@+id/sendtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/filterbtn"
+            android:singleLine="true"
+            android:text="@string/send"
+            android:layout_marginRight="10dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/colorPrimary"
+            android:visibility="visible"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

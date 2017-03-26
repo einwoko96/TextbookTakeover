@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view"
+        android:layout_below="@+id/actionbar"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="10dp" />
+
+    <com.hitasoft.app.external.CustomTextView
+        android:id="@+id/dateTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/actionbar"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="Jan 1st 2015"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:background="@drawable/primary_oval_corner"
+        app:font="font_regular.ttf" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:indicator="BallPulse"
+        app:indicator_color="@color/progressColor" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/bottom"
+        android:background="@color/divider"/>
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <com.hitasoft.app.external.CustomEditText
+            app:font="font_regular.ttf"
+            android:id="@+id/editText"
+            android:layout_width="0dip"
+            android:layout_height="45dp"
+            android:layout_margin="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.8"
+            android:background="@color/white"
+            android:gravity="top"
+            android:hint="@string/writemessage"
+            android:inputType="textNoSuggestions|textCapSentences|textMultiLine|textShortMessage"
+            android:isScrollContainer="true"
+            android:maxLength="500"
+            android:maxLines="4"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="15dp"
+            android:text="@string/send"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorPrimary"
+            app:font="font_bold.ttf" />
+
+    </LinearLayout>
+
+</RelativeLayout>

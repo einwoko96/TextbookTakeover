@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/emptyLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/detailLay"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/detailLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    <View
+        android:id="@+id/topLay"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="35dp"
+        android:background="@color/bg" />
+
+    <RelativeLayout
+        android:id="@+id/rlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.hitasoft.app.external.RoundedImageView
+            android:id="@+id/contactImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            app:border_color="@color/white"
+            app:border_width="1dp"
+            app:corner_radius="100dip"
+            app:round_background="true" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/contactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contactImg"
+            android:layout_centerHorizontal="true"
+            android:text="Demo"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/black"
+            app:font="font_regular.ttf" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/offerLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlay"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.hitasoft.app.external.CustomEditText
+            android:id="@+id/makeOffer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:digits="1234567890"
+            android:gravity="center_vertical"
+            android:hint="@string/type_your_offer"
+            android:maxLength="9"
+            android:inputType="number"
+            android:singleLine="true"
+            android:padding="10dp"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider"/>
+    </LinearLayout>
+
+    <com.hitasoft.app.external.CustomEditText
+        android:id="@+id/contactMsg"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/offerLay"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="@string/type_your_message"
+        android:inputType="textNoSuggestions|textCapSentences|textMultiLine"
+        android:maxLength="180"
+        android:maxLines="4"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textColor="@color/primaryText"
+        app:font="font_regular.ttf" />
+
+    <com.hitasoft.app.external.CustomTextView
+        android:id="@+id/send"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/contactMsg"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="@string/send"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textColor="@color/colorPrimary"
+        app:font="font_bold.ttf" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

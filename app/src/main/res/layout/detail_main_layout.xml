@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/backbtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:src="@drawable/back"
+            android:tint="@color/primaryText"
+            android:visibility="visible" />
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/backbtn"
+            android:layout_toLeftOf="@+id/optionsLay"
+            android:layout_centerVertical="true"
+            android:maxLines="1"
+            android:text="12 h"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+        <LinearLayout
+            android:id="@+id/optionsLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            >
+            <ImageView
+                android:id="@+id/likereditBtn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/shareBtn"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/unlike_icon"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/shareBtn"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/edit"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/shareBtn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/settingBtn"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:src="@drawable/share_icon"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/settingBtn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:src="@drawable/option_icon"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.nirhart.parallaxscroll.views.ParallaxScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/saveLay"
+        android:layout_below="@+id/actionbar"
+        android:scrollbars="none"
+        app:parallax_factor="1.9">
+
+        <RelativeLayout
+            android:id="@+id/parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/imglay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:visibility="visible">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="visible"/>
+
+                <com.viewpagerindicator.CirclePageIndicator
+                     android:id="@+id/pagerIndicator"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentBottom="true"
+                     android:padding="10dp"
+                     android:visibility="visible"
+                     app:fillColor="@color/colorPrimary"
+                     app:pageColor="@color/white"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/timeLay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/detailLay"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp">
+
+                <com.hitasoft.app.external.CustomTextView
+                    android:id="@+id/postedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="12 hours ago"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/white"
+                    app:font="font_regular.ttf" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/detailLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/imglay"
+                android:background="@color/white"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toLeftOf="@+id/itemStatus"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:text="Product Title"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/primaryText"
+                        android:visibility="visible"
+                        app:font="font_bold.ttf" />
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/itemPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="$ 0"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/colorPrimary"
+                        app:font="font_bold.ttf" />
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/itemStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/urgentbg"
+                        android:gravity="bottom"
+                        android:layout_marginTop="-5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="7dp"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="7dp"
+                        android:paddingTop="18dp"
+                        android:singleLine="true"
+                        android:text="Urgent"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:visibility="visible"
+                        app:font="font_regular.ttf" />
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/itemCond"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/itemPrice"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:background="@drawable/secondary_curve_corner"
+                        android:singleLine="true"
+                        android:text="Used"
+                        android:textSize="11sp"
+                        android:visibility="visible"
+                        android:textColor="@color/white"
+                        app:font="font_regular.ttf" />
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/itemCond"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="descriptions"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:textColor="@color/primaryText"
+                        app:font="font_regular.ttf" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_below="@+id/description"
+                        android:background="@color/divider" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/iconLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/viewsLay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/viewImg"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/view_icon" />
+
+                        <com.hitasoft.app.external.CustomTextView
+                            android:id="@+id/viewCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:text="50 Views"
+                            android:textSize="12sp"
+                            android:textColor="@color/primaryText"
+                            app:font="font_regular.ttf" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider"/>
+
+                    <LinearLayout
+                        android:id="@+id/likesLay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/likesImg"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/likecount" />
+
+                        <com.hitasoft.app.external.CustomTextView
+                            android:id="@+id/likesCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="55 Likes"
+                            android:singleLine="true"
+                            android:textSize="12sp"
+                            android:textColor="@color/primaryText"
+                            app:font="font_regular.ttf" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider"
+                        android:layout_marginRight="5dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/commentLay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/commentImg"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/commentcount" />
+
+                        <com.hitasoft.app.external.CustomTextView
+                            android:id="@+id/commentCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="15"
+                            android:singleLine="true"
+                            android:textSize="12sp"
+                            android:textColor="@color/primaryText"
+                            app:font="font_regular.ttf" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/bg" />
+
+                <RelativeLayout
+                    android:id="@+id/userdetailLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <RelativeLayout
+                        android:id="@+id/Lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/locationImg"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/location_icon" />
+
+                        <com.hitasoft.app.external.CustomTextView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/locationImg"
+                            android:paddingLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:singleLine="true"
+                            android:text="Madurai, Tamil Nadu, India"
+                            android:textAppearance="@android:style/TextAppearance.Small"
+                            android:textColor="@color/primaryText"
+                            android:visibility="visible"
+                            app:font="font_regular.ttf" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:visibility="visible"
+                        android:layout_marginTop="10dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:layout_below="@+id/Lay" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_alignBottom="@+id/banner"
+                        android:background="@color/white" />
+
+                    <com.hitasoft.app.external.RoundedImageView
+                        android:id="@+id/userImage"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignBottom="@+id/view"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:adjustViewBounds="true"
+                        android:gravity="center_horizontal"
+                        android:scaleType="centerCrop"
+                        app:corner_radius="100dip"
+                        app:round_background="true" />
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/view"
+                        android:layout_toRightOf="@+id/userImage"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:singleLine="true"
+                        android:text="demo"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/primaryText"
+                        app:font="font_regular.ttf" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/userName"
+                        android:layout_toRightOf="@+id/userImage"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/mblverify"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/mob_unveri"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/fbverify"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/fb_unveri"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/mailverify"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/mail_unveri"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="240dp"
+                        android:layout_marginRight="10dp"
+                        android:maxLines="1"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/call"
+                        android:background="@drawable/primary_curve_corner"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:font="font_regular.ttf" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/moreitemsLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg"
+                    android:padding="10dp"
+                    android:clipToPadding="false"
+                    android:orientation="vertical">
+
+                    <com.hitasoft.app.external.CustomTextView
+                        android:id="@+id/moretext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="more items"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/primaryText"
+                        app:font="font_bold.ttf" />
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/progress"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        app:indicator="BallPulse"
+                        app:indicator_color="@color/progressColor" />
+
+                    <com.hitasoft.app.external.HorizontalListView
+                        android:id="@+id/listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </com.nirhart.parallaxscroll.views.ParallaxScrollView>
+
+    <LinearLayout
+        android:id="@+id/saveLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:text="@string/chat"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            app:font="font_bold.ttf" />
+
+        <com.hitasoft.app.external.CustomTextView
+            android:id="@+id/offer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:singleLine="true"
+            android:padding="15dp"
+            android:text="Make an offer"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            app:font="font_bold.ttf" />
+    </LinearLayout>
+
+</RelativeLayout>

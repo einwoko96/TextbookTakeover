@@ -1,0 +1,5 @@
+- Barcode book scanner that reads barcode and pulls up associated book
+
+- Location API but it groups people by school
+	* UI colors are customized to the school
+

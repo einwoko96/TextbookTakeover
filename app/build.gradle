@@ -60,5 +60,6 @@ dependencies {
     compile project(':parallaxScroll')
     compile project(':pagerIndicator')
     compile 'com.itextpdf:itextg:5.5.9'
+    compile 'com.google.apis:google-api-services-books:v1-rev91-1.22.0'
 }
 apply plugin: 'com.google.gms.google-services'

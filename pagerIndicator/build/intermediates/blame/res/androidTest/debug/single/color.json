@@ -1,42 +1,10 @@
 [
     {
-        "merged": "C:\\home\\hitasoft\\Joysale2.2\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__light_theme.xml",
-        "source": "C:\\home\\hitasoft\\Joysale2.2\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "C:\\home\\hitasoft\\Joysale2.2WOB\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__dark_theme.xml",
-        "source": "C:\\home\\hitasoft\\Joysale2.2WOB\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__dark_theme.xml"
-    },
-    {
-        "merged": "C:\\home\\hitasoft\\Joysale2.1.1\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__light_theme.xml",
-        "source": "C:\\home\\hitasoft\\Joysale2.1.1\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "C:\\home\\hitasoft\\Joysale2.1.1\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__dark_theme.xml",
-        "source": "C:\\home\\hitasoft\\Joysale2.1.1\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__dark_theme.xml"
-    },
-    {
-        "merged": "C:\\home\\hitasoft\\Joysale2.2\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__dark_theme.xml",
-        "source": "C:\\home\\hitasoft\\Joysale2.2\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__dark_theme.xml"
-    },
-    {
         "merged": "C:\\Users\\einwo\\Documents\\TextbookTakeover\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__dark_theme.xml",
         "source": "C:\\Users\\einwo\\Documents\\TextbookTakeover\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__dark_theme.xml"
     },
     {
         "merged": "C:\\Users\\einwo\\Documents\\TextbookTakeover\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__light_theme.xml",
         "source": "C:\\Users\\einwo\\Documents\\TextbookTakeover\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "C:\\home\\hitasoft\\Joysale2.2WOB\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__light_theme.xml",
-        "source": "C:\\home\\hitasoft\\Joysale2.2WOB\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "C:\\Users\\einwo\\Documents\\MiscTasks\\CODES\\Android\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__light_theme.xml",
-        "source": "C:\\Users\\einwo\\Documents\\MiscTasks\\CODES\\Android\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__light_theme.xml"
-    },
-    {
-        "merged": "C:\\Users\\einwo\\Documents\\MiscTasks\\CODES\\Android\\pagerIndicator\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\vpi__dark_theme.xml",
-        "source": "C:\\Users\\einwo\\Documents\\MiscTasks\\CODES\\Android\\pagerIndicator\\build\\intermediates\\bundles\\debug\\res\\color\\vpi__dark_theme.xml"
     }
 ]

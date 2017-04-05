@@ -46,6 +46,7 @@ dependencies {
     }
     compile project(':parallaxScroll')
     compile project(':pagerIndicator')
+    compile project(path: ':endpoints', configuration: 'android-endpoints')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
@@ -62,7 +63,9 @@ dependencies {
     compile 'com.itextpdf:itextg:5.5.9'
     compile 'com.google.apis:google-api-services-books:v1-rev91-1.22.0'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
-    compile project(path: ':endpoints', configuration: 'android-endpoints')
+    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
+    compile 'com.google.zxing:core:3.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 apply plugin: 'com.google.gms.google-services'
 

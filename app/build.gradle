@@ -37,6 +37,15 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/WebSocket.jar')
+    compile files('libs/gcm.jar')
+    compile files('libs/ksoap2-android-assembly-2.6.5-jar-with-dependencies.jar')
+    compile files('libs/twitter4j-core-4.0.4.jar')
+    compile('com.etsy.android.grid:library:1.0.5') {
+        exclude module: 'support-v4'
+    }
+    compile project(':parallaxScroll')
+    compile project(':pagerIndicator')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
@@ -48,18 +57,13 @@ dependencies {
     compile 'com.wang.avi:library:1.0.5'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.google.android.gms:play-services:9.0.2'
-    compile files('libs/WebSocket.jar')
-    compile files('libs/gcm.jar')
-    compile files('libs/ksoap2-android-assembly-2.6.5-jar-with-dependencies.jar')
-    compile files('libs/twitter4j-core-4.0.4.jar')
-    compile('com.etsy.android.grid:library:1.0.5') {
-        exclude module: 'support-v4'
-    }
     compile 'com.braintreepayments.api:braintree:2.3.2'
     compile 'com.braintreepayments.api:drop-in:2.3.2'
-    compile project(':parallaxScroll')
-    compile project(':pagerIndicator')
     compile 'com.itextpdf:itextg:5.5.9'
     compile 'com.google.apis:google-api-services-books:v1-rev91-1.22.0'
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile project(path: ':endpoints', configuration: 'android-endpoints')
 }
 apply plugin: 'com.google.gms.google-services'
+
+// API Key: AIzaSyDZtLkx0xKdFWoJ3Jhys0kGUu6z8r-7tBI

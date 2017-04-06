@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Joysale</string>
+    <string name="app_name">TextbookTakeover</string>
     <string name="your_location">Your location is verified</string>
     <string name="please_fill">Please fill the field</string>
     <string name="pleasewait">Please Wait...</string>
@@ -121,6 +121,10 @@
     <string name="login">Login</string>
     <string name="sell_your_stuff">Sell Your Stuff</string>
     <string name="chat">Chat</string>
+    <string name="scan">Scan Barcode</string>
+    <string name="thumb">Book thumbnail</string>
+    <string name="pre">Preview</string>
+    <string name="link">Web</string>
     <string name="myprofile">My profile</string>
     <string name="help">Help</string>
     <string name="remove_location">Remove Location</string>

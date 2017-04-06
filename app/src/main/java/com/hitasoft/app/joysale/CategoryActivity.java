@@ -14,9 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.hitasoft.app.helper.Item;
 import com.hitasoft.app.utils.Constants;
 import com.hitasoft.app.utils.DefensiveClass;
 import com.hitasoft.app.utils.SOAPParsing;
@@ -35,7 +33,7 @@ import java.util.HashMap;
  * Created by hitasoft on 23/6/16.
  */
 
-public class CategoryActivity extends AppCompatActivity implements View.OnClickListener{
+public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView listView;
     ImageView backbtn;

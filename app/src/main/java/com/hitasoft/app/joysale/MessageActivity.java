@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.hitasoft.app.utils.Constants;
 import com.hitasoft.app.utils.DefensiveClass;
 import com.hitasoft.app.utils.GetSet;
-import com.hitasoft.app.utils.ItemsParsing;
 import com.hitasoft.app.utils.SOAPParsing;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -47,9 +46,9 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
     TextView title;
     AVLoadingIndicatorView progress;
     LinearLayout nullLay;
-    boolean loading=true, pulldown=false;
+    boolean loading = true, pulldown = false;
     public static boolean fromChat = false;
-    int visibleThreshold=0, previousTotal=0;
+    int visibleThreshold = 0, previousTotal = 0;
     int currentPage = 0;
     SwipeRefreshLayout swipeLayout;
     public static HomeAdapter homeAdapter;
@@ -102,13 +101,13 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
     private void loadData() {
         try {
 
-            if(Messagepageitems.size()==0){
+            if (Messagepageitems.size() == 0) {
                 if (JoysaleApplication.isNetworkAvailable(MessageActivity.this)) {
                     new GetNotifications().execute(0);
                 }
                 homeAdapter = new HomeAdapter(MessageActivity.this, Messagepageitems);
                 listview.setAdapter(homeAdapter);
-            }else{
+            } else {
                 homeAdapter = new HomeAdapter(MessageActivity.this, Messagepageitems);
                 listview.setAdapter(homeAdapter);
                 currentPage = 0;
@@ -117,7 +116,7 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
                 swipeRefresh();
                 new GetNotifications().execute(0);
             }
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,7 +124,7 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
 
     }
 
-    private void swipeRefresh(){
+    private void swipeRefresh() {
         swipeLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -136,20 +135,22 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.backbtn:
                 finish();
                 break;
         }
     }
 
-    /** get the messages for user recent activties **/
+    /**
+     * get the messages for user recent activties
+     **/
     class GetNotifications extends AsyncTask<Integer, Void, Void> {
 
         @Override
         protected Void doInBackground(Integer... params) {
             try {
-                int offset= (params[0]*20);
+                int offset = (params[0] * 20);
 
                 String SOAP_ACTION = Constants.NAMESPACE + Constants.API_MESSAGE;
 
@@ -162,14 +163,14 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
 
                 SOAPParsing soap = new SOAPParsing();
                 final String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-                if (pulldown){
+                if (pulldown) {
                     Messagepageitems.clear();
                 }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Messagepageitems.addAll(parsing(json));
-                        Log.v("res","res="+Messagepageitems);
+                        Log.v("res", "res=" + Messagepageitems);
                     }
                 });
             } catch (Exception e) {
@@ -199,8 +200,8 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
         @Override
         protected void onPostExecute(Void unused) {
             try {
-                if(pulldown){
-                    pulldown=false;
+                if (pulldown) {
+                    pulldown = false;
                     loading = true;
                     previousTotal = 0;
                 }
@@ -210,7 +211,7 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
                 homeAdapter.notifyDataSetChanged();
                 if (Messagepageitems.size() == 0) {
                     nullLay.setVisibility(View.VISIBLE);
-                } else{
+                } else {
                     nullLay.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
@@ -219,16 +220,16 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
         }
     }
 
-    private ArrayList<HashMap<String,String>> parsing(String url) {
+    private ArrayList<HashMap<String, String>> parsing(String url) {
         ArrayList<HashMap<String, String>> Messagepageitems = new ArrayList<HashMap<String, String>>();
         try {
             JSONObject json = new JSONObject(url);
             String response = DefensiveClass.optString(json, Constants.TAG_STATUS);
-            if(response.equalsIgnoreCase("true")){
+            if (response.equalsIgnoreCase("true")) {
                 JSONArray result = json.optJSONArray(Constants.TAG_RESULT);
-                if(result != null){
+                if (result != null) {
 
-                    for(int i=0 ; i<result.length() ; i++){
+                    for (int i = 0; i < result.length(); i++) {
                         HashMap<String, String> map = new HashMap<String, String>();
                         JSONObject temp = result.getJSONObject(i);
                         String id = DefensiveClass.optInt(temp, Constants.TAG_MESSAGEID);
@@ -253,9 +254,9 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
                     }
 
                 }
-            } else if (response.equalsIgnoreCase("error")){
+            } else if (response.equalsIgnoreCase("error")) {
                 JoysaleApplication.disabledialog(MessageActivity.this, json.optString("message"));
-            } else{
+            } else {
 
             }
         } catch (JSONException e) {
@@ -274,9 +275,9 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
         private Context mContext;
         ViewHolder holder = null;
 
-        public HomeAdapter(Context ctx,ArrayList<HashMap<String, String>> data) {
+        public HomeAdapter(Context ctx, ArrayList<HashMap<String, String>> data) {
             mContext = ctx;
-            Items=data;
+            Items = data;
         }
 
         @Override
@@ -322,17 +323,17 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            try{
+            try {
 
-                final HashMap<String, String> tempMap=Items.get(position);
+                final HashMap<String, String> tempMap = Items.get(position);
 
                 Picasso.with(mContext).load(tempMap.get(Constants.TAG_USERIMAGE)).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(holder.userimg);
                 long timestamp = 0;
                 String time = tempMap.get(Constants.TAG_MESSAGETIME);
-                if(time != null){
+                if (time != null) {
                     timestamp = Long.parseLong(time) * 1000;
                 }
-                if (tempMap.get(Constants.TAG_LAST_REPLIED).equals(tempMap.get(Constants.TAG_USERID)) || tempMap.get(Constants.TAG_LAST_REPLIED).equals("0")){
+                if (tempMap.get(Constants.TAG_LAST_REPLIED).equals(tempMap.get(Constants.TAG_USERID)) || tempMap.get(Constants.TAG_LAST_REPLIED).equals("0")) {
                     holder.readDot.setVisibility(View.GONE);
                 } else {
                     holder.readDot.setVisibility(View.VISIBLE);
@@ -342,11 +343,11 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
                 holder.comment.setText(tempMap.get(Constants.TAG_MESSAGE));
                 holder.time.setText(JoysaleApplication.getTimeAgo(timestamp, mContext));
 
-            }catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-            } catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -374,7 +375,7 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
 
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
             // I load the next page of thumbnails using a background task,
-            if(currentPage != 0 ){
+            if (currentPage != 0) {
                 new GetNotifications().execute(currentPage);
                 loading = true;
             }
@@ -390,7 +391,7 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         try {
-            if (Messagepageitems.size() > 0 && !pulldown){
+            if (Messagepageitems.size() > 0 && !pulldown) {
                 Intent i = new Intent(MessageActivity.this, ChatActivity.class);
                 i.putExtra("userName", Messagepageitems.get(arg2).get(Constants.TAG_USERNAME));
                 i.putExtra("userId", Messagepageitems.get(arg2).get(Constants.TAG_USERID));
@@ -401,11 +402,11 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
                 i.putExtra("from", "message");
                 startActivity(i);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -420,7 +421,7 @@ public class MessageActivity extends AppCompatActivity implements AbsListView.On
     protected void onResume() {
         super.onResume();
         JoysaleApplication.registerReceiver(MessageActivity.this);
-        if (fromChat){
+        if (fromChat) {
             currentPage = 0;
             pulldown = true;
             fromChat = false;

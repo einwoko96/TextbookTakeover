@@ -2,14 +2,10 @@ package com.hitasoft.app.joysale;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -29,7 +25,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -42,8 +37,6 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -64,18 +57,14 @@ import com.hitasoft.app.utils.GetSet;
 import com.hitasoft.app.utils.ItemsParsing;
 import com.hitasoft.app.utils.SOAPParsing;
 import com.squareup.picasso.Picasso;
-import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.LinePageIndicator;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -943,6 +932,9 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 				Intent i = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
 				startActivity(i);
 			}
+		} else if (from.equals(getString(R.string.scan))) {
+			Intent i = new Intent(FragmentMainActivity.this, ScannerActivity.class);
+			startActivity(i);
 		} else if (from.equals(getString(R.string.categories))) {
 			Intent c = new Intent(FragmentMainActivity.this, CategoryActivity.class);
 			startActivity(c);

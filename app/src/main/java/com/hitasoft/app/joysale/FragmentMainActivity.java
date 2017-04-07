@@ -51,6 +51,7 @@ import com.hitasoft.app.external.GPSTracker;
 import com.hitasoft.app.external.HorizontalListView;
 import com.hitasoft.app.helper.ItemAdapter;
 import com.hitasoft.app.helper.Model;
+import com.hitasoft.app.scanner.ScannerActivity;
 import com.hitasoft.app.utils.Constants;
 import com.hitasoft.app.utils.DefensiveClass;
 import com.hitasoft.app.utils.GetSet;

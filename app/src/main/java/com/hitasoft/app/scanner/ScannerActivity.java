@@ -1,4 +1,4 @@
-package com.hitasoft.app.joysale;
+package com.hitasoft.app.scanner;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.hitasoft.app.joysale.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -81,6 +82,29 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
             starViews[s] = new ImageView(this);
         }
 
+        if (savedInstanceState != null) {
+            authorText.setText(savedInstanceState.getString("author"));
+            titleText.setText(savedInstanceState.getString("title"));
+            descriptionText.setText(savedInstanceState.getString("description"));
+            dateText.setText(savedInstanceState.getString("date"));
+            ratingCountText.setText(savedInstanceState.getString("ratings"));
+            int numStars = savedInstanceState.getInt("stars");//zero if null
+            for (int s = 0; s < numStars; s++) {
+                starViews[s].setImageResource(R.drawable.star);
+                starLayout.addView(starViews[s]);
+            }
+            starLayout.setTag(numStars);
+            thumbImg = (Bitmap) savedInstanceState.getParcelable("thumbPic");
+            thumbView.setImageBitmap(thumbImg);
+            previewBtn.setTag(savedInstanceState.getString("isbn"));
+
+            if (savedInstanceState.getBoolean("isEmbed")) previewBtn.setEnabled(true);
+            else previewBtn.setEnabled(false);
+            if (savedInstanceState.getInt("isLink") == View.VISIBLE)
+                linkBtn.setVisibility(View.VISIBLE);
+            else linkBtn.setVisibility(View.GONE);
+            previewBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onClick(View v) {
@@ -90,15 +114,19 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
             scanIntegrator.initiateScan();
         } else if (v.getId() == R.id.backbtn) {
             finish();
-        }
-        //respond to clicks
-        else if (v.getId() == R.id.link_btn) {
+        } else if (v.getId() == R.id.link_btn) {
             //get the url tag
             String tag = (String) v.getTag();
             //launch the url
             Intent webIntent = new Intent(Intent.ACTION_VIEW);
             webIntent.setData(Uri.parse(tag));
             startActivity(webIntent);
+        } else if (v.getId() == R.id.preview_btn) {
+            String tag = (String) v.getTag();
+            //launch preview
+            Intent intent = new Intent(this, EmbeddedBook.class);
+            intent.putExtra("isbn", tag);
+            startActivity(intent);
         }
     }
 
@@ -113,6 +141,7 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
             contentTxt.setText("CONTENT: " + scanContent);
             if (scanContent != null && scanFormat != null && scanFormat.equalsIgnoreCase("EAN_13")) {
                 //book search
+                previewBtn.setTag(scanContent);
                 String bookSearchString = "https://www.googleapis.com/books/v1/volumes?" +
                         "q=isbn:" + scanContent + "&key=AIzaSyDZtLkx0xKdFWoJ3Jhys0kGUu6z8r-7tBI";
                 new GetBookInfo().execute(bookSearchString);
@@ -126,6 +155,21 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    protected void onSaveInstanceState(Bundle savedBundle) {
+        savedBundle.putString("title", "" + titleText.getText());
+        savedBundle.putString("author", "" + authorText.getText());
+        savedBundle.putString("description", "" + descriptionText.getText());
+        savedBundle.putString("date", "" + dateText.getText());
+        savedBundle.putString("ratings", "" + ratingCountText.getText());
+        savedBundle.putParcelable("thumbPic", thumbImg);
+        if (starLayout.getTag() != null)
+            savedBundle.putInt("stars", Integer.parseInt(starLayout.getTag().toString()));
+        savedBundle.putBoolean("isEmbed", previewBtn.isEnabled());
+        savedBundle.putInt("isLink", linkBtn.getVisibility());
+        if (previewBtn.getTag() != null)
+            savedBundle.putString("isbn", previewBtn.getTag().toString());
     }
 
     private class GetBookInfo extends AsyncTask<String, Void, String> {

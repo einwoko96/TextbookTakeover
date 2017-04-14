@@ -139,7 +139,7 @@
         android:orientation="horizontal">
 
         <com.hitasoft.app.external.CustomTextView
-            android:id="@+id/galery"
+            android:id="@+id/gallery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"

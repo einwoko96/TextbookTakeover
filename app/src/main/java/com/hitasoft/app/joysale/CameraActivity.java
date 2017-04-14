@@ -1,17 +1,5 @@
 package com.hitasoft.app.joysale;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.hitasoft.app.external.HorizontalListView;
-import com.hitasoft.app.external.Preview;
-import com.hitasoft.app.utils.Constants;
-import com.squareup.picasso.Picasso;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -44,6 +31,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hitasoft.app.external.HorizontalListView;
+import com.hitasoft.app.external.Preview;
+import com.hitasoft.app.utils.Constants;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -71,7 +70,7 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
         setContentView(R.layout.camera_layout);
 
         cancelBtn = (ImageView) findViewById(R.id.backbtn);
-        gallery = (TextView) findViewById(R.id.galery);
+        gallery = (TextView) findViewById(R.id.gallery);
         next = (TextView) findViewById(R.id.next);
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         snapBtn = (ImageView) findViewById(R.id.snap);
@@ -632,7 +631,7 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                 }
                 break;
 
-            case R.id.galery:
+            case R.id.gallery:
                 Intent in = new Intent(
                         Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

@@ -20,16 +20,12 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -37,16 +33,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import com.hitasoft.app.external.ExpandableHeightListView;
 import com.hitasoft.app.external.GPSTracker;
 import com.hitasoft.app.external.HorizontalListView;
-import com.hitasoft.app.external.PlacesAutoCompleteAdapter;
 import com.hitasoft.app.utils.Constants;
 import com.hitasoft.app.utils.DefensiveClass;
 import com.hitasoft.app.utils.GetSet;
@@ -66,21 +58,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import twitter4j.HttpResponse;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -96,7 +81,10 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
     LinearLayout parentLay, saveLay, categoryLay, locationLay;
     RelativeLayout uploadSuccessLay, imageLoadingLay;
     AVLoadingIndicatorView loadingView, postProgress;
-    String from = "", currencyid="", productUrl="", postPrice="", posteditemId="";
+    String from = "", currencyid = "", productUrl = "", postPrice = "", posteditemId = "";
+    String bookTitle, author, isbn, description, date;
+    Integer stars;
+    Bitmap img;
     public static HashMap<String, String> itemMap = new HashMap<String, String>();
     ArrayList<HashMap<String, String>> categAry = new ArrayList<HashMap<String, String>>();
     ArrayList<ArrayList<HashMap<String, String>>> subcategAry = new ArrayList<ArrayList<HashMap<String, String>>>();
@@ -110,11 +98,11 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
     int count;
     public static LinearLayout bottomLay, conditionLay, instantLay, buynowLay;
     public static RelativeLayout exchangeLay, offerLay;
-    public static String itemCond = "", loc = "", categId = "", subcategId="", mcountryId="";
+    public static String itemCond = "", loc = "", categId = "", subcategId = "", mcountryId = "";
     public static TextView itemCondition, location, category;
     public static ImageView condArrow, locArrow, catArrow;
-    public static double lat,lon;
-    public static ArrayList<HashMap<String, Object>> images= new ArrayList<HashMap<String, Object>>();
+    public static double lat, lon;
+    public static ArrayList<HashMap<String, Object>> images = new ArrayList<HashMap<String, Object>>();
     ArrayList<String> pathsAry = new ArrayList<String>();
     ArrayList<String> removeAry = new ArrayList<String>();
     private ArrayList<String> countryId = new ArrayList<String>();
@@ -160,7 +148,18 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         buynowLay = (LinearLayout) findViewById(R.id.buynowLay);
 
         title.setText(getString(R.string.add_your_stuff));
-        from = getIntent().getExtras().getString("from");
+        Bundle i = getIntent().getExtras();
+        from = i.getString("from");
+//        i.getString("isbn", tag);
+        bookTitle = (String) i.getString("title");
+        author = (String) i.getString("author");
+        description = (String) i.getString("description");
+        date = (String) i.getString("date");
+        stars = (Integer) i.getInt("stars");
+        img = (Bitmap) i.getParcelable("image");
+        if (from != null && from.equals("scanner")) {
+            loadData();
+        }
 
         //Elements visibility
         backBtn.setVisibility(View.VISIBLE);
@@ -178,7 +177,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
 
         new GetCategories().execute();
 
-        if(!from.equals("edit")){
+        if (!from.equals("edit")) {
             setLocationTxt();
             setImageAdapter();
         }
@@ -210,19 +209,48 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         buySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     buynowLay.setVisibility(View.VISIBLE);
                 } else {
                     buynowLay.setVisibility(View.GONE);
                 }
             }
         });
+
+        if (savedInstanceState != null) {
+            loadData();
+        }
     }
 
-    /** Function for set current location from Gps **/
-    private void setLocationTxt(){
+    private void loadData(){
+        String desc = "";
+        if (bookTitle != null) {
+            productName.setText(bookTitle.substring(7));
+        }
+        if (author != null){
+            desc += (author + "\n");
+        }
+//        if(description != null){
+//            desc += (description + "\n");
+//        }
+        if(date != null){
+            desc += (date + "\n");
+        }
+        if(stars != null){
+            desc += (stars + " Stars" + "\n");
+        }
+        if(img != null){
+//            desc += (stars + " Stars" + "\n");
+        }
+        productDes.setText(desc);
+    }
+
+    /**
+     * Function for set current location from Gps
+     **/
+    private void setLocationTxt() {
         GPSTracker gps = new GPSTracker(AddProductDetail.this);
-        if (lat == 0  && lon == 0){
+        if (lat == 0 && lon == 0) {
             if (gps.canGetLocation()) {
                 if (JoysaleApplication.isNetworkAvailable(AddProductDetail.this)) {
                     lat = gps.getLatitude();
@@ -233,6 +261,17 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                 }
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedBundle) {
+        savedBundle.putString("title", "" + bookTitle);
+        savedBundle.putString("author", "" + author);
+        savedBundle.putString("description", "" + description);
+        savedBundle.putString("date", "" + date);
+        savedBundle.putString("stars", "" + stars.toString());
+        savedBundle.putParcelable("thumbPic", img);
+        super.onSaveInstanceState(savedBundle);
     }
 
     class GetCategories extends AsyncTask<Void, Void, Void> {
@@ -250,13 +289,13 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
 
             String stats;
             try {
-                JSONObject json =new JSONObject(jsonString);
+                JSONObject json = new JSONObject(jsonString);
                 stats = json.getString(Constants.TAG_STATUS);
                 if (stats.equalsIgnoreCase("true")) {
                     JSONObject res = json.getJSONObject("result");
 
                     JSONArray category = res.getJSONArray("category");
-                    for(int i = 0 ; i < category.length() ; i++){
+                    for (int i = 0; i < category.length(); i++) {
                         JSONObject jcat = category.getJSONObject(i);
                         String id = DefensiveClass.optString(jcat, "category_id");
                         String name = DefensiveClass.optString(jcat, "category_name");
@@ -278,7 +317,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
 
                         ArrayList<HashMap<String, String>> subTemp = new ArrayList<HashMap<String, String>>();
                         JSONArray subcat = jcat.getJSONArray("subcategory");
-                        for(int x = 0 ; x < subcat.length() ; x++){
+                        for (int x = 0; x < subcat.length(); x++) {
                             JSONObject scat = subcat.getJSONObject(x);
                             String subid = scat.getString("sub_id");
                             String subname = scat.getString("sub_name");
@@ -293,7 +332,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     }
 
                     JSONArray currency = res.getJSONArray("currency");
-                    for(int i = 0 ; i < currency.length() ; i++){
+                    for (int i = 0; i < currency.length(); i++) {
                         JSONObject jcur = currency.getJSONObject(i);
 
                         currencyID.add(jcur.getString("id"));
@@ -301,7 +340,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     }
 
                     JSONArray productCondition = res.getJSONArray("product_condition");
-                    for(int i = 0; i < productCondition.length(); i++){
+                    for (int i = 0; i < productCondition.length(); i++) {
                         JSONObject jcur = productCondition.getJSONObject(i);
 
                         String name = DefensiveClass.optString(jcur, "name");
@@ -311,11 +350,11 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     }
 
                     JSONArray country = res.getJSONArray(Constants.TAG_COUNTRY);
-                    for(int i = 0 ; i < country.length() ; i++){
+                    for (int i = 0; i < country.length(); i++) {
                         JSONObject jobj = country.getJSONObject(i);
 
                         String counId = DefensiveClass.optString(jobj, Constants.TAG_COUNTRYID);
-                        if (!counId.equals("0")){
+                        if (!counId.equals("0")) {
                             countryId.add(counId);
                             countryName.add(DefensiveClass.optString(jobj, Constants.TAG_COUNTRYNAME));
                         }
@@ -324,9 +363,9 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
 
             } catch (JSONException e) {
                 e.printStackTrace();
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -345,7 +384,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            currencyadapter = new ArrayAdapter<String>(AddProductDetail.this,R.layout.spinner_item, currencyspin);
+            currencyadapter = new ArrayAdapter<String>(AddProductDetail.this, R.layout.spinner_item, currencyspin);
             currencyadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             currency.setAdapter(currencyadapter);
 
@@ -357,15 +396,14 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     //   currencyid = currencyID.get(position);
                     ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                    String selectedCurrency=currencyspin.get(position);
-                    if(selectedCurrency.contains("-")){
-                        String cur[]=selectedCurrency.split("-");
-                        currencyid = cur[1]+"-"+cur[0];
-                    }
-                    else{
+                    String selectedCurrency = currencyspin.get(position);
+                    if (selectedCurrency.contains("-")) {
+                        String cur[] = selectedCurrency.split("-");
+                        currencyid = cur[1] + "-" + cur[0];
+                    } else {
                         currencyid = "";
                     }
-                    Log.v("currencyid",""+currencyid);
+                    Log.v("currencyid", "" + currencyid);
                 }
 
                 @Override
@@ -374,18 +412,18 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                 }
             });
 
-            try{
-                Log.v("from","from="+from);
-                if(from.equals("edit")){
+            try {
+                Log.v("from", "from=" + from);
+                if (from.equals("edit")) {
                     setEditProducts();
                     setImageAdapter();
                 }
                 setCategoryConditions();
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-            } catch(IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -395,21 +433,23 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /** Function for set already edited datas  **/
+    /**
+     * Function for set already edited datas
+     **/
     private void setEditProducts() {
         try {
             itemMap.clear();
             itemMap = (HashMap<String, String>) getIntent().getExtras().get("data");
             Log.v("itemMap", "itemMap" + itemMap);
             productName.setText(itemMap.get(Constants.TAG_TITLE));
-        //    productName.setSelection(itemMap.get(Constants.TAG_TITLE).length() - 1);
+            //    productName.setSelection(itemMap.get(Constants.TAG_TITLE).length() - 1);
             productDes.setText(itemMap.get(Constants.TAG_ITEM_DES));
             price.setText(itemMap.get(Constants.TAG_PRICE));
             category.setText(itemMap.get(Constants.TAG_CATEGORYNAME));
             category.setTextColor(getResources().getColor(R.color.primaryText));
             catArrow.setColorFilter(getResources().getColor(R.color.primaryText));
             categId = itemMap.get(Constants.TAG_CATEGORYID);
-            Log.v("categId", "categId="+categId);
+            Log.v("categId", "categId=" + categId);
             subcategId = itemMap.get(Constants.TAG_SUBCATEGORYID);
             location.setText(itemMap.get(Constants.TAG_LOCATION));
             location.setTextColor(getResources().getColor(R.color.primaryText));
@@ -418,7 +458,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
             try {
                 lat = Double.parseDouble(itemMap.get(Constants.TAG_LATITUDE));
                 lon = Double.parseDouble(itemMap.get(Constants.TAG_LONGITUDE));
-            } catch (NullPointerException | NumberFormatException e){
+            } catch (NullPointerException | NumberFormatException e) {
                 e.printStackTrace();
                 lat = 0;
                 lon = 0;
@@ -444,7 +484,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
             }
 
             itemCond = itemMap.get(Constants.TAG_ITEM_CONDITION);
-            if (itemMap.get(Constants.TAG_ITEM_CONDITION).equals("0")){
+            if (itemMap.get(Constants.TAG_ITEM_CONDITION).equals("0")) {
                 itemCond = "";
             }
             itemCondition.setText(itemCond);
@@ -460,16 +500,18 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**  For setting  product condition depends on category**/
-    private void setCategoryConditions(){
+    /**
+     * For setting  product condition depends on category
+     **/
+    private void setCategoryConditions() {
         bottomLay.setVisibility(View.GONE);
         instantLay.setVisibility(View.GONE);
-        Log.v("categoryId", "categoryId="+categId);
-        if (categAry.size() > 0){
-            for (int i = 0; i < categAry.size(); i++){
+        Log.v("categoryId", "categoryId=" + categId);
+        if (categAry.size() > 0) {
+            for (int i = 0; i < categAry.size(); i++) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map = categAry.get(i);
-                if (map.get("id").equals(categId)){
+                if (map.get("id").equals(categId)) {
                     if (map.get("product_condition").equals("disable") && map.get("exchange_buy").equals("disable")
                             && map.get("make_offer").equals("disable")) {
                         bottomLay.setVisibility(View.GONE);
@@ -478,14 +520,14 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                         offerLay.setVisibility(View.GONE);
                     } else {
                         bottomLay.setVisibility(View.VISIBLE);
-                        if (map.get("product_condition").equals("enable")){
+                        if (map.get("product_condition").equals("enable")) {
                             conditionLay.setVisibility(View.VISIBLE);
                         } else {
                             conditionLay.setVisibility(View.GONE);
                         }
 
-                        if (map.get("exchange_buy").equals("enable")){
-                            if (Constants.EXCHANGE){
+                        if (map.get("exchange_buy").equals("enable")) {
+                            if (Constants.EXCHANGE) {
                                 exchangeLay.setVisibility(View.VISIBLE);
                             } else {
                                 exchangeLay.setVisibility(View.GONE);
@@ -494,19 +536,19 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                             exchangeLay.setVisibility(View.GONE);
                         }
 
-                        if (map.get("make_offer").equals("enable")){
+                        if (map.get("make_offer").equals("enable")) {
                             offerLay.setVisibility(View.VISIBLE);
                         } else {
                             offerLay.setVisibility(View.GONE);
                         }
                     }
 
-                    if (map.get("instant_buy").equals("disable")){
+                    if (map.get("instant_buy").equals("disable")) {
                         instantLay.setVisibility(View.GONE);
                     } else {
-                        if (Constants.BUYNOW){
+                        if (Constants.BUYNOW) {
                             instantLay.setVisibility(View.VISIBLE);
-                            if (buySwitch.isChecked()){
+                            if (buySwitch.isChecked()) {
                                 buynowLay.setVisibility(View.VISIBLE);
                             } else {
                                 buynowLay.setVisibility(View.GONE);
@@ -521,15 +563,15 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private int getIndex(Spinner spinner, String myString){
+    private int getIndex(Spinner spinner, String myString) {
 
         int index = 0;
-        if(myString.contains("-")){
-            String cur[]=myString.split("-");
-            myString = cur[1]+"-"+cur[0];
+        if (myString.contains("-")) {
+            String cur[] = myString.split("-");
+            myString = cur[1] + "-" + cur[0];
         }
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).equals(myString)){
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).equals(myString)) {
                 index = i;
             }
         }
@@ -537,151 +579,155 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         return index;
     }
 
-    /** For set images to listview **/
-        private void setImageAdapter() {
-            try {
-                if (from.equals("edit")) {
-                    if (itemMap.get(Constants.TAG_PHOTOS).equals("") || itemMap.get(Constants.TAG_PHOTOS).equals(null)) {
-                        Log.v("photosss", "photos emptyyyy");
-                    } else {
-                        JSONArray photos = new JSONArray(itemMap.get(Constants.TAG_PHOTOS));
-                        for (int i = 0; i < photos.length(); i++) {
-                            JSONObject jph = photos.getJSONObject(i);
-                            String imageurl = DefensiveClass.optString(jph, Constants.TAG_ITEM_URL_350);
-                            HashMap<String, Object> map = new HashMap<String, Object>();
-                            map.put("type", "url");
-                            map.put("image", imageurl);
-                            if (!images.contains(map)){
-                                images.add(map);
-                            }
-                        }
-                        images.addAll(CameraActivity.images);
-                        CameraActivity.images.clear();
-                        HashMap<String, Object> map = new HashMap<String, Object>();
-                        map.put("type", "add");
-                        if (images.contains(map)){
-                            images.remove(map);
-                        }
-                        images.add(map);
-                        imagesAdapter = new ImagesAdapter(AddProductDetail.this, images);
-                        imageList.setAdapter(imagesAdapter);
-                    }
+    /**
+     * For set images to listview
+     **/
+    private void setImageAdapter() {
+        try {
+            if (from.equals("edit")) {
+                if (itemMap.get(Constants.TAG_PHOTOS).equals("") || itemMap.get(Constants.TAG_PHOTOS).equals(null)) {
+                    Log.v("photosss", "photos emptyyyy");
                 } else {
+                    JSONArray photos = new JSONArray(itemMap.get(Constants.TAG_PHOTOS));
+                    for (int i = 0; i < photos.length(); i++) {
+                        JSONObject jph = photos.getJSONObject(i);
+                        String imageurl = DefensiveClass.optString(jph, Constants.TAG_ITEM_URL_350);
+                        HashMap<String, Object> map = new HashMap<String, Object>();
+                        map.put("type", "url");
+                        map.put("image", imageurl);
+                        if (!images.contains(map)) {
+                            images.add(map);
+                        }
+                    }
                     images.addAll(CameraActivity.images);
                     CameraActivity.images.clear();
                     HashMap<String, Object> map = new HashMap<String, Object>();
                     map.put("type", "add");
-                    if (images.contains(map)){
+                    if (images.contains(map)) {
                         images.remove(map);
                     }
                     images.add(map);
                     imagesAdapter = new ImagesAdapter(AddProductDetail.this, images);
                     imageList.setAdapter(imagesAdapter);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                images.addAll(CameraActivity.images);
+                CameraActivity.images.clear();
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("type", "add");
+                if (images.contains(map)) {
+                    images.remove(map);
+                }
+                images.add(map);
+                imagesAdapter = new ImagesAdapter(AddProductDetail.this, images);
+                imageList.setAdapter(imagesAdapter);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public class ImagesAdapter extends BaseAdapter {
+
+        private Context mContext;
+        ArrayList<HashMap<String, Object>> imgAry;
+
+        public ImagesAdapter(Context ctx2, ArrayList<HashMap<String, Object>> data) {
+            mContext = ctx2;
+            imgAry = data;
+        }
+
+        @Override
+        public int getCount() {
+            return imgAry.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View view;
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) mContext
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.addproduct_image, parent, false);//layout
+            } else {
+                view = convertView;
+                view.forceLayout();
+            }
+            Log.v("position", "" + position);
+            try {
+                ImageView singleImage = (ImageView) view.findViewById(R.id.imageView);
+                ImageView delete = (ImageView) view.findViewById(R.id.delete);
+
+                final HashMap<String, Object> tempMap = imgAry.get(position);
+
+                if (tempMap.get("type").equals("add")) {
+                    delete.setVisibility(View.GONE);
+                    singleImage.setImageResource(R.drawable.plus_sign);
+                    singleImage.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            CameraActivity.fromedit = true;
+                            finish();
+                            Intent i = new Intent(AddProductDetail.this, CameraActivity.class);
+                            i.putExtra("from", from);
+                            startActivity(i);
+                        }
+                    });
+                } else if (tempMap.get("type").equals("path")) {
+                    delete.setVisibility(View.VISIBLE);
+                    singleImage.setImageBitmap(JoysaleApplication.getResizedBitmap((Bitmap) tempMap.get("image"), 70));
+                } else {
+                    delete.setVisibility(View.VISIBLE);
+                    Picasso.with(AddProductDetail.this).load(tempMap.get("image").toString()).into(singleImage);
+                }
+
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (images.size() > 0) {
+                            if (tempMap.get("type").equals("url")) {
+                                String imageurl = tempMap.get("image").toString();
+                                imageurl = imageurl.substring(imageurl.lastIndexOf("/") + 1);
+                                removeAry.add(imageurl);
+                            }
+                            images.remove(tempMap);
+                        }
+                        imagesAdapter.notifyDataSetChanged();
+                    }
+                });
+
             } catch (NullPointerException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+            return view;
         }
 
-        public class ImagesAdapter extends BaseAdapter {
+    }
 
-            private Context mContext;
-            ArrayList<HashMap<String,Object>> imgAry;
-
-            public ImagesAdapter(Context ctx2, ArrayList<HashMap<String,Object>> data) {
-                mContext = ctx2;
-                imgAry = data;
-            }
-
-            @Override
-            public int getCount() {
-                return imgAry.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-
-                return position;
-            }
-
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-                View view;
-                if (convertView == null) {
-                    LayoutInflater inflater = (LayoutInflater) mContext
-                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    view = inflater.inflate(R.layout.addproduct_image, parent, false);//layout
-                } else {
-                    view = convertView;
-                    view.forceLayout();
-                }
-                Log.v("position", "" + position);
-                try {
-                    ImageView singleImage = (ImageView) view.findViewById(R.id.imageView);
-                    ImageView delete = (ImageView) view.findViewById(R.id.delete);
-
-                    final HashMap<String, Object> tempMap = imgAry.get(position);
-
-                    if (tempMap.get("type").equals("add")) {
-                        delete.setVisibility(View.GONE);
-                        singleImage.setImageResource(R.drawable.plus_sign);
-                        singleImage.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                CameraActivity.fromedit = true;
-                                finish();
-                                Intent i = new Intent(AddProductDetail.this, CameraActivity.class);
-                                i.putExtra("from", from);
-                                startActivity(i);
-                            }
-                        });
-                    } else if (tempMap.get("type").equals("path")) {
-                        delete.setVisibility(View.VISIBLE);
-                        singleImage.setImageBitmap(JoysaleApplication.getResizedBitmap((Bitmap) tempMap.get("image"), 70));
-                    } else {
-                        delete.setVisibility(View.VISIBLE);
-                        Picasso.with(AddProductDetail.this).load(tempMap.get("image").toString()).into(singleImage);
-                    }
-
-                    delete.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (images.size() > 0) {
-                                if (tempMap.get("type").equals("url")){
-                                    String imageurl = tempMap.get("image").toString();
-                                    imageurl = imageurl.substring(imageurl.lastIndexOf("/") + 1);
-                                    removeAry.add(imageurl);
-                                }
-                                images.remove(tempMap);
-                            }
-                            imagesAdapter.notifyDataSetChanged();
-                        }
-                    });
-
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return view;
-            }
-
-        }
-
-    /**  function for update the captured image **/
-    public File saveBitmapToFile(File file){
+    /**
+     * function for update the captured image
+     **/
+    public File saveBitmapToFile(File file) {
         try {
 
             // BitmapFactory options to downsize the image
@@ -697,11 +743,11 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
             inputStream.close();
 
             // The new size we want to scale to
-            final int REQUIRED_SIZE=1024;
+            final int REQUIRED_SIZE = 1024;
 
             // Find the correct scale value. It should be the power of 2.
             int scale = 1;
-            while(o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
                     o.outHeight / scale / 2 >= REQUIRED_SIZE) {
                 scale *= 2;
             }
@@ -717,11 +763,11 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
 
             //file.createNewFile();
             File sdCard = Environment.getExternalStorageDirectory();
-            File dir = new File (sdCard.getAbsolutePath() + "/"+getString(R.string.app_name));
+            File dir = new File(sdCard.getAbsolutePath() + "/" + getString(R.string.app_name));
             dir.mkdirs();
             file = new File(dir, String.valueOf(System.currentTimeMillis()) + ".jpg");
             FileOutputStream outputStream = new FileOutputStream(file);
-            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 70 , outputStream);
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
             galleryAddPic(file.toString());
             outputStream.flush();
             outputStream.close();
@@ -740,15 +786,18 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         sendBroadcast(mediaScanIntent);
     }
 
-    /**  class for uploading images to server **/
+    /**
+     * class for uploading images to server
+     **/
     class moreLoadItems extends AsyncTask<String, Integer, Integer> {
         JSONObject jsonobject = null;
         String Json = "";
         String status;
+
         @Override
-        protected  Integer doInBackground(String... imgpath) {
-            for(int i = 0; i < count; i ++){
-                Log.v("i",""+i);
+        protected Integer doInBackground(String... imgpath) {
+            for (int i = 0; i < count; i++) {
+                Log.v("i", "" + i);
                 publishProgress(Math.min(i, count));
 
                 HttpURLConnection conn = null;
@@ -785,7 +834,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     bufferSize = Math.min(bytesAvailable, maxBufferSize);
                     buffer = new byte[bufferSize];
 
-                    Log.v("buffer", "buffer"+buffer);
+                    Log.v("buffer", "buffer" + buffer);
 
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
                     while (bytesRead > 0) {
@@ -794,7 +843,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                         bufferSize = Math.min(bytesAvailable, maxBufferSize);
                         bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
-                        Log.v("bytesRead","bytesRead"+bytesRead);
+                        Log.v("bytesRead", "bytesRead" + bytesRead);
                     }
                     dos.writeBytes(lineEnd);
                     dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
@@ -828,19 +877,19 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                 }
                 try {
                     jsonobject = new JSONObject(Json);
-                    Log.v("json","json"+Json);
-                    status=jsonobject.getString("status");
-                    if(status.equals("true")){
+                    Log.v("json", "json" + Json);
+                    status = jsonobject.getString("status");
+                    if (status.equals("true")) {
                         JSONObject image = jsonobject.getJSONObject("Image");
                         String msg = image.getString("Message");
                         String uploadedimgname = image.getString("Name");
                         uploadedImage.add(uploadedimgname);
                     }
 
-                } catch(JSONException e){
+                } catch (JSONException e) {
                     status = "false";
                     e.printStackTrace();
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     status = "false";
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -862,27 +911,27 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            Log.v("values[0]",""+values[0]);
+            Log.v("values[0]", "" + values[0]);
             loadingProgress.setProgress(values[0]);
-            uploadStatus.setText(values[0] + " "+getString(R.string.of)+" " + count + getString(R.string.image_uploaded));
+            uploadStatus.setText(values[0] + " " + getString(R.string.of) + " " + count + getString(R.string.image_uploaded));
         }
 
         @Override
         protected void onPostExecute(Integer unused) {
-            if(status.equals("true")){
+            if (status.equals("true")) {
                 loadingProgress.setProgress(count);
-                uploadStatus.setText(count + " "+getString(R.string.of)+" " + count + getString(R.string.image_uploaded));
+                uploadStatus.setText(count + " " + getString(R.string.of) + " " + count + getString(R.string.image_uploaded));
                 alert_title.setText(getString(R.string.posting_list));
                 loadingProgress.setVisibility(View.GONE);
                 postProgress.setVisibility(View.VISIBLE);
                 uploadStatus.setVisibility(View.GONE);
-                if (from.equals("edit") && uploadedImage.size() > 0){
+                if (from.equals("edit") && uploadedImage.size() > 0) {
                     ArrayList<String> tempAry = new ArrayList<String>();
                     tempAry.addAll(uploadedImage);
                     uploadedImage.clear();
                     int index = 0;
-                    for (int i = 0; i < images.size(); i++){
-                        if (images.get(i).get("type").equals("url")){
+                    for (int i = 0; i < images.size(); i++) {
+                        if (images.get(i).get("type").equals("url")) {
                             String imageurl = images.get(i).get("image").toString();
                             imageurl = imageurl.substring(imageurl.lastIndexOf("/") + 1);
                             uploadedImage.add(imageurl);
@@ -894,13 +943,15 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     }
                 }
                 new SendProducts().execute();
-            } else{
+            } else {
                 JoysaleApplication.dialog(AddProductDetail.this, getString(R.string.alert), getString(R.string.image_cannot));
             }
         }
     }
 
-    /**  class for add or edit a product**/
+    /**
+     * class for add or edit a product
+     **/
     class SendProducts extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -927,8 +978,8 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     imageLoadingLay.setVisibility(View.INVISIBLE);
                     CameraActivity.images.clear();
                     images.clear();
-                    if (promotionType.equalsIgnoreCase("Normal") && itemMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("onsale")){
-                        if (Constants.PROMOTION){
+                    if (promotionType.equalsIgnoreCase("Normal") && itemMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("onsale")) {
+                        if (Constants.PROMOTION) {
                             promote.setVisibility(View.VISIBLE);
                         } else {
                             promote.setVisibility(View.GONE);
@@ -936,7 +987,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     } else {
                         promote.setVisibility(View.GONE);
                     }
-                    if (from.equals("edit")){
+                    if (from.equals("edit")) {
                         DetailActivity.fromEdit = true;
                     }
                 } else {
@@ -947,7 +998,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                 e.printStackTrace();
             } catch (NullPointerException e) {
                 e.printStackTrace();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -964,7 +1015,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
             req.addProperty(Constants.SOAP_PASSWORD, Constants.SOAP_PASSWORD_VALUE);
 
             // Add your data
-            if(from.equals("edit")){
+            if (from.equals("edit")) {
                 req.addProperty("item_id", itemMap.get(Constants.TAG_ID));
                 req.addProperty("sold", "false");
                 req.addProperty("remove_img", removeAry.toString().replaceAll("[\\[\\]]|(?<=,)\\s+", ""));
@@ -987,36 +1038,36 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
             req.addProperty("paypal_id", paypalId.getText().toString().trim());
             req.addProperty("country_id", mcountryId);
             req.addProperty("shipping_cost", shippingFee.getText().toString().trim());
-            if (exchangeLay.getVisibility() == View.VISIBLE){
-                if (exchangeSwitch.isChecked()){
+            if (exchangeLay.getVisibility() == View.VISIBLE) {
+                if (exchangeSwitch.isChecked()) {
                     req.addProperty("exchange_to_buy", "1");
-                }else{
+                } else {
                     req.addProperty("exchange_to_buy", "0");
                 }
             } else {
                 req.addProperty("exchange_to_buy", "2");
             }
 
-            if (offerLay.getVisibility() == View.VISIBLE){
-                if (chatSwitch.isChecked()){
+            if (offerLay.getVisibility() == View.VISIBLE) {
+                if (chatSwitch.isChecked()) {
                     req.addProperty("make_offer", "1");
-                }else{
+                } else {
                     req.addProperty("make_offer", "0");
                 }
             } else {
                 req.addProperty("make_offer", "2");
             }
 
-            if (conditionLay.getVisibility() == View.VISIBLE){
+            if (conditionLay.getVisibility() == View.VISIBLE) {
                 req.addProperty("item_condition", itemCond);
             } else {
                 req.addProperty("item_condition", "0");
             }
 
-            if (instantLay.getVisibility() == View.VISIBLE){
-                if (buySwitch.isChecked()){
+            if (instantLay.getVisibility() == View.VISIBLE) {
+                if (buySwitch.isChecked()) {
                     req.addProperty("instant_buy", "1");
-                }else{
+                } else {
                     req.addProperty("instant_buy", "0");
                 }
             } else {
@@ -1026,13 +1077,15 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
             SOAPParsing soap = new SOAPParsing();
             result = soap.getJSONFromUrl(SOAP_ACTION, req);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
 
-    /** for converting lat, lon to address **/
+    /**
+     * for converting lat, lon to address
+     **/
     private class GetLocationAsync extends AsyncTask<String, Void, String> {
 
         // boolean duplicateResponse;
@@ -1064,11 +1117,11 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     String localityString = returnAddress.getLocality();
                     String city = returnAddress.getCountryName();
                     String region_code = returnAddress.getCountryCode();
-                //    String zipcode = returnAddress.getPostalCode();
+                    //    String zipcode = returnAddress.getPostalCode();
 
                     str.append(localityString + "");
                     str.append(city + "" + region_code + "");
-                //    str.append(zipcode + "");
+                    //    str.append(zipcode + "");
 
                 } else {
                 }
@@ -1100,7 +1153,9 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**  class for restrict space and spl characters**/
+    /**
+     * class for restrict space and spl characters
+     **/
     public static class addListenerOnTextChange implements TextWatcher {
         private Context mContext;
         EditText mEdittextview;
@@ -1145,7 +1200,9 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /** Class for filter the multiple spaces **/
+    /**
+     * Class for filter the multiple spaces
+     **/
     public static class addListenerForDes implements TextWatcher {
         private Context mContext;
         EditText mEdittextview;
@@ -1197,7 +1254,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         JoysaleApplication.registerReceiver(AddProductDetail.this);
         if (ContextCompat.checkSelfPermission(AddProductDetail.this, WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(AddProductDetail.this, new String[]{ WRITE_EXTERNAL_STORAGE }, 102);
+            ActivityCompat.requestPermissions(AddProductDetail.this, new String[]{WRITE_EXTERNAL_STORAGE}, 102);
         }
     }
 
@@ -1205,7 +1262,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.v("requestCode", "requestCode=" + requestCode);
-        if (requestCode == 102 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 102 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(AddProductDetail.this, getString(R.string.storage_permission_access), Toast.LENGTH_SHORT).show();
             //finish();
         } else {
@@ -1214,7 +1271,7 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void reset(){
+    private void reset() {
         itemCond = "";
         categId = "";
         subcategId = "";
@@ -1226,26 +1283,26 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         CameraActivity.images.clear();
     }
 
-    private String getCountryId(){
+    private String getCountryId() {
         mcountryId = "";
         try {
             String countryname = location.getText().toString();
-            Log.v("location", "location="+countryname);
-            if (countryname.contains(",")){
+            Log.v("location", "location=" + countryname);
+            if (countryname.contains(",")) {
                 countryname = countryname.substring(countryname.lastIndexOf(',') + 1).trim();
             }
             countryname = countryname.trim();
-            Log.v("countryname", "countryname="+countryname);
-            if (countryId.size() > 0){
+            Log.v("countryname", "countryname=" + countryname);
+            if (countryId.size() > 0) {
                 int index = countryName.indexOf(countryname);
-                Log.v("index", "index="+index);
-                Log.v("countryId", "countryId="+countryId);
+                Log.v("index", "index=" + index);
+                Log.v("countryId", "countryId=" + countryId);
                 mcountryId = countryId.get(index);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             mcountryId = "";
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             mcountryId = "";
             e.printStackTrace();
         }
@@ -1261,120 +1318,120 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.backbtn:
-                    JoysaleApplication.hideSoftKeyboard(AddProductDetail.this);
-                    reset();
-                    finish();
-                    break;
-                case R.id.cancelIcon:
-                    dialog.dismiss();
-                    finish();
-                    reset();
-                    break;
-                case R.id.cancel:
-                    finish();
-                    reset();
-                    break;
-                case R.id.post:
-                    try {
-                        postPrice = price.getText().toString().trim();
-                        if(productName.getText().toString().trim().equals("")) {
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                        } else if(productDes.getText().toString().trim().equals("")){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                        } else if (postPrice == null || postPrice.equals("")){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                        } else if(Integer.parseInt(postPrice) == 0){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.price_should), Toast.LENGTH_SHORT).show();
-                        } else if(location.getText().toString().equals(getString(R.string.set_your_location)) ||
-                                location.getText().toString().equals("")){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                        } else if (getCountryId().equals("")) {
-                            Toast.makeText(AddProductDetail.this, getString(R.string.problem_location), Toast.LENGTH_SHORT).show();
-                        } else if (category.getText().toString().equals(getString(R.string.select_your_category))) {
-                            Toast.makeText(AddProductDetail.this, getString(R.string.choose_category), Toast.LENGTH_SHORT).show();
-                        } else if (itemCond.equals("") && conditionLay.getVisibility()==View.VISIBLE){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.choose_condition), Toast.LENGTH_SHORT).show();
-                        } else if (instantLay.getVisibility()==View.VISIBLE && buySwitch.isChecked() && paypalId.getText().toString().trim().length() == 0){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                        } else if (instantLay.getVisibility()==View.VISIBLE && buySwitch.isChecked() && !paypalId.getText().toString().matches(emailPattern)){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_verify_paypalid), Toast.LENGTH_SHORT).show();
-                        } else if (instantLay.getVisibility()==View.VISIBLE && buySwitch.isChecked() && shippingFee.getText().toString().trim().length() == 0){
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
-                        } else if (images.size() <= 1) {
-                            Toast.makeText(AddProductDetail.this, getString(R.string.please_upload_image), Toast.LENGTH_SHORT).show();
-                        } else {
-                            for (int i = 0; i < images.size(); i++){
-                                if (images.get(i).get("type").equals("path")){
-                                    pathsAry.add(images.get(i).get("path").toString());
-                                }
-                            }
-                            count = pathsAry.size();
-                            loadingProgress.setMax(count);
-                            dialog.show();
-                            String paths = pathsAry.toString().replaceAll("[\\[\\]]|(?<=,)\\s+", "");
-                            if(paths.contains(",")) {
-                                String path[] = paths.split(",");
-                                Log.v("path", "path" + path);
-                                new moreLoadItems().execute(path);
-                            } else {
-                                if (pathsAry.size() > 0){
-                                    new moreLoadItems().execute(paths);
-                                } else {
-                                    alert_title.setText(getString(R.string.posting_list));
-                                    loadingProgress.setVisibility(View.GONE);
-                                    postProgress.setVisibility(View.VISIBLE);
-                                    uploadStatus.setVisibility(View.GONE);
-                                    for (int i = 0; i<images.size(); i++){
-                                        if (images.get(i).get("type").equals("url")) {
-                                            String imageurl = images.get(i).get("image").toString();
-                                            imageurl = imageurl.substring(imageurl.lastIndexOf("/") + 1);
-                                            uploadedImage.add(imageurl);
-                                        }
-                                    }
-                                    new SendProducts().execute();
-                                }
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backbtn:
+                JoysaleApplication.hideSoftKeyboard(AddProductDetail.this);
+                reset();
+                finish();
+                break;
+            case R.id.cancelIcon:
+                dialog.dismiss();
+                finish();
+                reset();
+                break;
+            case R.id.cancel:
+                finish();
+                reset();
+                break;
+            case R.id.post:
+                try {
+                    postPrice = price.getText().toString().trim();
+                    if (productName.getText().toString().trim().equals("")) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (productDes.getText().toString().trim().equals("")) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (postPrice == null || postPrice.equals("")) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (Integer.parseInt(postPrice) == 0) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.price_should), Toast.LENGTH_SHORT).show();
+                    } else if (location.getText().toString().equals(getString(R.string.set_your_location)) ||
+                            location.getText().toString().equals("")) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (getCountryId().equals("")) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.problem_location), Toast.LENGTH_SHORT).show();
+                    } else if (category.getText().toString().equals(getString(R.string.select_your_category))) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.choose_category), Toast.LENGTH_SHORT).show();
+                    } else if (itemCond.equals("") && conditionLay.getVisibility() == View.VISIBLE) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.choose_condition), Toast.LENGTH_SHORT).show();
+                    } else if (instantLay.getVisibility() == View.VISIBLE && buySwitch.isChecked() && paypalId.getText().toString().trim().length() == 0) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (instantLay.getVisibility() == View.VISIBLE && buySwitch.isChecked() && !paypalId.getText().toString().matches(emailPattern)) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_verify_paypalid), Toast.LENGTH_SHORT).show();
+                    } else if (instantLay.getVisibility() == View.VISIBLE && buySwitch.isChecked() && shippingFee.getText().toString().trim().length() == 0) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
+                    } else if (images.size() <= 1) {
+                        Toast.makeText(AddProductDetail.this, getString(R.string.please_upload_image), Toast.LENGTH_SHORT).show();
+                    } else {
+                        for (int i = 0; i < images.size(); i++) {
+                            if (images.get(i).get("type").equals("path")) {
+                                pathsAry.add(images.get(i).get("path").toString());
                             }
                         }
+                        count = pathsAry.size();
+                        loadingProgress.setMax(count);
+                        dialog.show();
+                        String paths = pathsAry.toString().replaceAll("[\\[\\]]|(?<=,)\\s+", "");
+                        if (paths.contains(",")) {
+                            String path[] = paths.split(",");
+                            Log.v("path", "path" + path);
+                            new moreLoadItems().execute(path);
+                        } else {
+                            if (pathsAry.size() > 0) {
+                                new moreLoadItems().execute(paths);
+                            } else {
+                                alert_title.setText(getString(R.string.posting_list));
+                                loadingProgress.setVisibility(View.GONE);
+                                postProgress.setVisibility(View.VISIBLE);
+                                uploadStatus.setVisibility(View.GONE);
+                                for (int i = 0; i < images.size(); i++) {
+                                    if (images.get(i).get("type").equals("url")) {
+                                        String imageurl = images.get(i).get("image").toString();
+                                        imageurl = imageurl.substring(imageurl.lastIndexOf("/") + 1);
+                                        uploadedImage.add(imageurl);
+                                    }
+                                }
+                                new SendProducts().execute();
+                            }
+                        }
+                    }
 
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case R.id.promote:
-                    if (!posteditemId.equals("")){
-                        reset();
-                        finish();
-                        Intent u = new Intent(AddProductDetail.this, CreatePromote.class);
-                        u.putExtra("itemId", posteditemId);
-                        startActivity(u);
-                    } else {
-                        Toast.makeText(AddProductDetail.this, getString(R.string.somethingwrong), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case R.id.conditionLay:
-                    Intent i = new Intent(AddProductDetail.this, SubCategory.class);
-                    i.putExtra("data", conditionAry);
-                    i.putExtra("from", "add");
-                    i.putExtra("name", itemCond);
-                    startActivity(i);
-                    break;
-                case R.id.locationLay:
-                    Intent j = new Intent(AddProductDetail.this, LocationActivity.class);
-                    j.putExtra("from", "add");
-                    startActivity(j);
-                    break;
-                case R.id.categoryLay:
-                    Intent k = new Intent(AddProductDetail.this, SelectCategory.class);
-                    k.putExtra("from", "add");
-                    k.putExtra("categAry", categAry);
-                    k.putExtra("subcategAry", subcategAry);
-                    startActivity(k);
-                    break;
-            }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.promote:
+                if (!posteditemId.equals("")) {
+                    reset();
+                    finish();
+                    Intent u = new Intent(AddProductDetail.this, CreatePromote.class);
+                    u.putExtra("itemId", posteditemId);
+                    startActivity(u);
+                } else {
+                    Toast.makeText(AddProductDetail.this, getString(R.string.somethingwrong), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.conditionLay:
+                Intent i = new Intent(AddProductDetail.this, SubCategory.class);
+                i.putExtra("data", conditionAry);
+                i.putExtra("from", "add");
+                i.putExtra("name", itemCond);
+                startActivity(i);
+                break;
+            case R.id.locationLay:
+                Intent j = new Intent(AddProductDetail.this, LocationActivity.class);
+                j.putExtra("from", "add");
+                startActivity(j);
+                break;
+            case R.id.categoryLay:
+                Intent k = new Intent(AddProductDetail.this, SelectCategory.class);
+                k.putExtra("from", "add");
+                k.putExtra("categAry", categAry);
+                k.putExtra("subcategAry", subcategAry);
+                startActivity(k);
+                break;
         }
     }
+}

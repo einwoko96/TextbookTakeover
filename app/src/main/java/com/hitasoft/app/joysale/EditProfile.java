@@ -68,7 +68,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -840,7 +839,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         window.setAttributes(wlp);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
-        ImageView gal = (ImageView) dialog.findViewById(R.id.galery);
+        ImageView gal = (ImageView) dialog.findViewById(R.id.gallery);
         ImageView cam = (ImageView) dialog.findViewById(R.id.camra);
 
         cam.setOnClickListener(new View.OnClickListener() {

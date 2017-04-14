@@ -108,6 +108,7 @@
             android:name=".AddProductDetail"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
+            android:noHistory="false"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".MessageActivity"
@@ -277,7 +278,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="com.hitasoft.app.scanner.ScannerActivity" />
+        <activity
+            android:name="com.hitasoft.app.scanner.ScannerActivity"
+            android:noHistory="false" />
         <activity android:name="com.hitasoft.app.scanner.EmbeddedBook"></activity>
     </application>
 

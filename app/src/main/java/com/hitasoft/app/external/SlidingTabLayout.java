@@ -30,7 +30,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.R;
 
 
 /**

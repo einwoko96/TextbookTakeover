@@ -22,9 +22,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
-import android.util.Log;
 
-import com.hitasoft.app.joysale.JoysaleApplication;
+import com.hitasoft.app.textbooktakeover.TextbookTakeoverApplication;
 
 public class ItemsParsing {
 	
@@ -198,7 +197,7 @@ public class ItemsParsing {
 				}
 				}
 			} else if (response.equalsIgnoreCase("error")){
-			    JoysaleApplication.disabledialog(context, json.optString("message"));
+			    TextbookTakeoverApplication.disabledialog(context, json.optString("message"));
 		    }else{
 			  // Toast.makeText(getActivity(), "No More Data Found", Toast.LENGTH_SHORT).show();
 			}

@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.R;
 
 /**
  * Created by hitasoft on 30/6/15.

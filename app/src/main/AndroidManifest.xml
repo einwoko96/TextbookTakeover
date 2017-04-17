@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hitasoft.app.joysale">
+    package="com.hitasoft.app.textbooktakeover">
 
     <supports-screens
         android:anyDensity="true"
@@ -37,18 +37,18 @@
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="com.hitasoft.app.joysale.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.hitasoft.app.textbooktakeover.permission.C2D_MESSAGE" />
 
     <!-- Creates a custom permission so only this app can receive its messages. -->
     <permission
-        android:name="com.hitasoft.app.joysale.permission.C2D_MESSAGE"
+        android:name="com.hitasoft.app.textbooktakeover.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".JoysaleApplication"
+        android:name="com.hitasoft.app.textbooktakeover.TextbookTakeoverApplication"
         android:allowBackup="true"
         android:configChanges="locale"
         android:icon="@drawable/appicon"
@@ -57,7 +57,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.hitasoft.app.textbooktakeover.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -75,143 +75,143 @@
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1516433791956148"
-            android:exported="true" />
+            android:authorities="com.facebook.app.FacebookContentProvider281761768938055"
+            android:exported="false" />
 
         <activity
-            android:name=".FragmentMainActivity"
+            android:name="com.hitasoft.app.textbooktakeover.FragmentMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.hitasoft.app.textbooktakeover.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name="com.hitasoft.app.textbooktakeover.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".TwitterWebviewActivity"
+            android:name="com.hitasoft.app.textbooktakeover.TwitterWebviewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.hitasoft.app.textbooktakeover.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".CameraActivity"
+            android:name="com.hitasoft.app.textbooktakeover.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".AddProductDetail"
+            android:name="com.hitasoft.app.textbooktakeover.AddProductDetail"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
             android:noHistory="false"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".MessageActivity"
+            android:name="com.hitasoft.app.textbooktakeover.MessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".ChatActivity"
+            android:name="com.hitasoft.app.textbooktakeover.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".LocationActivity"
+            android:name="com.hitasoft.app.textbooktakeover.LocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".SearchActivity"
+            android:name="com.hitasoft.app.textbooktakeover.SearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".SearchAdvance"
+            android:name="com.hitasoft.app.textbooktakeover.SearchAdvance"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".SubCategory"
+            android:name="com.hitasoft.app.textbooktakeover.SubCategory"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".CategoryActivity"
+            android:name="com.hitasoft.app.textbooktakeover.CategoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".DetailActivity"
+            android:name="com.hitasoft.app.textbooktakeover.DetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".CommentsActivity"
+            android:name="com.hitasoft.app.textbooktakeover.CommentsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".Help"
+            android:name="com.hitasoft.app.textbooktakeover.Help"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".AboutUs"
+            android:name="com.hitasoft.app.textbooktakeover.AboutUs"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".ExchangeActivity"
+            android:name="com.hitasoft.app.textbooktakeover.ExchangeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".ExchangeView"
+            android:name="com.hitasoft.app.textbooktakeover.ExchangeView"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".PromotionDetail"
+            android:name="com.hitasoft.app.textbooktakeover.PromotionDetail"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".MyPromotions"
+            android:name="com.hitasoft.app.textbooktakeover.MyPromotions"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".CreatePromote"
+            android:name="com.hitasoft.app.textbooktakeover.CreatePromote"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".CreateExchange"
+            android:name="com.hitasoft.app.textbooktakeover.CreateExchange"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".ChangePassword"
+            android:name="com.hitasoft.app.textbooktakeover.ChangePassword"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".EditProfile"
+            android:name="com.hitasoft.app.textbooktakeover.EditProfile"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".EditProfilePhoto"
+            android:name="com.hitasoft.app.textbooktakeover.EditProfilePhoto"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".SelectCategory"
+            android:name="com.hitasoft.app.textbooktakeover.SelectCategory"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".Profile"
+            android:name="com.hitasoft.app.textbooktakeover.Profile"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".Notification"
+            android:name="com.hitasoft.app.textbooktakeover.Notification"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".SingleView"
+            android:name="com.hitasoft.app.textbooktakeover.SingleView"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
-            android:name=".Language"
+            android:name="com.hitasoft.app.textbooktakeover.Language"
             android:screenOrientation="portrait"
             android:theme="@style/AppCusTheme" />
         <activity
@@ -244,7 +244,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                <data android:scheme="com.hitasoft.app.joysale.braintree" />
+                <data android:scheme="com.hitasoft.app.textbooktakeover.braintree" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -262,11 +262,11 @@
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.hitasoft.app.joysale" />
+                <category android:name="com.hitasoft.app.textbooktakeover" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMIntentService" />
+        <service android:name="com.hitasoft.app.textbooktakeover.GCMIntentService" />
 
         <meta-data
             android:name="com.google.android.gms.gcm"

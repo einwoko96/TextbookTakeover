@@ -2,7 +2,7 @@ package com.hitasoft.app.helper;
 
 import android.content.Context;
 
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.R;
 import com.hitasoft.app.utils.Constants;
 
 import java.util.ArrayList;

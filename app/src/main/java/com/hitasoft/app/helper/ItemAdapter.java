@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hitasoft.app.external.BadgeView;
-import com.hitasoft.app.joysale.FragmentMainActivity;
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.FragmentMainActivity;
+import com.hitasoft.app.textbooktakeover.R;
 import com.hitasoft.app.utils.GetSet;
 
 public class ItemAdapter extends ArrayAdapter<String> {

@@ -13,13 +13,11 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.ImageView;
 
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.R;
 
 
-public class CircularImageView extends ImageView
+public class CircularImageView extends android.support.v7.widget.AppCompatImageView
 {
     private int borderWidth = 7;
     private int viewWidth;

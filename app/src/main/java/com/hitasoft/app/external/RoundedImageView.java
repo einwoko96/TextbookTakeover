@@ -1,6 +1,6 @@
 package com.hitasoft.app.external;
 
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

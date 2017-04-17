@@ -2,7 +2,7 @@ package com.hitasoft.app.utils;
 
 import android.content.Context;
 
-import com.hitasoft.app.joysale.JoysaleApplication;
+import com.hitasoft.app.textbooktakeover.TextbookTakeoverApplication;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +94,7 @@ public class ExchangeParsing  {
                     }
                 }
             } else if (response.equalsIgnoreCase("error")){
-                JoysaleApplication.disabledialog(context, json.optString("message"));
+                TextbookTakeoverApplication.disabledialog(context, json.optString("message"));
             }
 
         }catch (JSONException e) {

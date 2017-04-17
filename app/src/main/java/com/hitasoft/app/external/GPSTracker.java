@@ -16,8 +16,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.hitasoft.app.joysale.LocationActivity;
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.R;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;

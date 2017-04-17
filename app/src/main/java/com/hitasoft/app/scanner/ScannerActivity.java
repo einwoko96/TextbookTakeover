@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.hitasoft.app.joysale.AddProductDetail;
-import com.hitasoft.app.joysale.R;
+import com.hitasoft.app.textbooktakeover.AddProductDetail;
+import com.hitasoft.app.textbooktakeover.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

@@ -8,7 +8,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:600632316387:android:f7343b77a60ba4c5",
         "android_client_info": {
-          "package_name": "com.hitasoft.app.joysale"
+          "package_name": "com.hitasoft.app.textbooktakeover"
         }
       },
       "oauth_client": [
@@ -16,7 +16,7 @@
           "client_id": "600632316387-c647po6pl4nk7l8arf0jef5p61vs3tc3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hitasoft.app.joysale",
+            "package_name": "com.hitasoft.app.textbooktakeover",
             "certificate_hash": "6CD8960B6438566D3F2A0DABCDF2808681578030"
           }
         },
@@ -24,7 +24,7 @@
           "client_id": "600632316387-31u84iba1io8hbp9magekset0f7s2c4c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hitasoft.app.joysale",
+            "package_name": "com.hitasoft.app.textbooktakeover",
             "certificate_hash": "AF5FE4E05853B9E79476E734BC0465710061F2B4"
           }
         },
@@ -32,7 +32,7 @@
           "client_id": "600632316387-v91qssmrvp8murjn6sfbguh229opab0s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hitasoft.app.joysale",
+            "package_name": "com.hitasoft.app.textbooktakeover",
             "certificate_hash": "99A6147EE4A6BEE12EA31A005945B1171C75EE53"
           }
         },

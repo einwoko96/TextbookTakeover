@@ -56,10 +56,10 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
     Preview preview;
     Camera camera;
     ImagesAdapter imagesAdapter;
-    String from = "";
+    String from = "", productName, productDes;
     HorizontalListView listView;
-    ArrayList<HashMap<String, Object>> temp= new ArrayList<HashMap<String, Object>>();
-    public static ArrayList<HashMap<String, Object>> images= new ArrayList<HashMap<String, Object>>();
+    ArrayList<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>();
+    public static ArrayList<HashMap<String, Object>> images = new ArrayList<HashMap<String, Object>>();
     public static boolean flash = false, fromedit;
     int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK, previewWidth, previewHeight;
 
@@ -113,17 +113,22 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                 });
 
                 if (flash) {
-                     flashBtn.setSelected(true);
-                     flashBtn.setColorFilter(getResources().getColor(R.color.colorPrimary));
+                    flashBtn.setSelected(true);
+                    flashBtn.setColorFilter(getResources().getColor(R.color.colorPrimary));
                 } else {
-                     flashBtn.setSelected(false);
-                     flashBtn.setColorFilter(null);
+                    flashBtn.setSelected(false);
+                    flashBtn.setColorFilter(null);
                 }
             }
         });
 
         try {
-            from = getIntent().getExtras().getString("from");
+            Bundle i = getIntent().getExtras();
+            from = i.getString("from");
+            if (from.equals("AddProduct")) {
+                productDes = i.getString("productDes");
+                productName = i.getString("productName");
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -145,13 +150,13 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                         if (ContextCompat.checkSelfPermission(CameraActivity.this, CAMERA) != PackageManager.PERMISSION_GRANTED
                                 && ContextCompat.checkSelfPermission(CameraActivity.this, WRITE_EXTERNAL_STORAGE)
                                 != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{ CAMERA, WRITE_EXTERNAL_STORAGE }, 100);
+                            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{CAMERA, WRITE_EXTERNAL_STORAGE}, 100);
                         } else if (ContextCompat.checkSelfPermission(CameraActivity.this, CAMERA)
                                 != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{ CAMERA }, 101);
+                            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{CAMERA}, 101);
                         } else if (ContextCompat.checkSelfPermission(CameraActivity.this, WRITE_EXTERNAL_STORAGE)
                                 != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{ WRITE_EXTERNAL_STORAGE }, 102);
+                            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{WRITE_EXTERNAL_STORAGE}, 102);
                         } else {
                             camera = Camera.open(0);
                             preview.setCamera(camera, flash);
@@ -172,13 +177,13 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.v("requestCode", "requestCode="+requestCode);
-        switch (requestCode){
+        Log.v("requestCode", "requestCode=" + requestCode);
+        switch (requestCode) {
             case 100:
-                if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(CameraActivity.this, getString(R.string.storage_camera_permisssion), Toast.LENGTH_SHORT).show();
                     finish();
-                } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(CameraActivity.this, getString(R.string.camera_permission_access), Toast.LENGTH_SHORT).show();
                     finish();
                 } else if (grantResults.length > 1 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
@@ -190,7 +195,7 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                 }
                 break;
             case 101:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(CameraActivity.this, getString(R.string.camera_permission_access), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -199,7 +204,7 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                 }
                 break;
             case 102:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(CameraActivity.this, getString(R.string.storage_permission_access), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -258,7 +263,9 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
         }
     };
 
-    /** Save the captured image to gallery **/
+    /**
+     * Save the captured image to gallery
+     **/
     private class SaveImageTask extends AsyncTask<byte[], Void, Void> {
 
         Bitmap bitmapImage;
@@ -286,28 +293,28 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
 
                 int angleToRotate = getRoatationAngle(CameraActivity.this, 0);
 
-                if (currentCameraId != 0){
+                if (currentCameraId != 0) {
                     Matrix matrix = new Matrix();
-                    float[] mirrorY = { -1, 0, 0, 0, 1, 0, 0, 0, 1};
+                    float[] mirrorY = {-1, 0, 0, 0, 1, 0, 0, 0, 1};
                     Matrix matrixMirrorY = new Matrix();
                     matrixMirrorY.setValues(mirrorY);
 
                     matrix.postConcat(matrixMirrorY);
                     matrix.postRotate(90);
-                    bitmapImage = Bitmap.createBitmap(realImage, 0, 0, realImage.getWidth(), realImage.getHeight(),matrix, true);
+                    bitmapImage = Bitmap.createBitmap(realImage, 0, 0, realImage.getWidth(), realImage.getHeight(), matrix, true);
                 } else {
                     bitmapImage = rotate(realImage, angleToRotate);
                 }
 
                 previewWidth = bitmapImage.getWidth();
                 previewHeight = bitmapImage.getHeight() * 75 / 100;
-                Log.v("previewWidth&Height", "="+previewWidth+"&"+previewHeight);
+                Log.v("previewWidth&Height", "=" + previewWidth + "&" + previewHeight);
                 bitmapImage = Bitmap.createBitmap(bitmapImage, 0, 0, previewWidth, previewHeight);
 
                 refreshGallery(outFile);
 
-                File file = new File (dir, fileName);
-                if (file.exists ()) file.delete ();
+                File file = new File(dir, fileName);
+                if (file.exists()) file.delete();
                 try {
                     FileOutputStream out = new FileOutputStream(file);
                     bitmapImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -352,7 +359,9 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
 
     }
 
-    /** for rotating the captured image to correct angle **/
+    /**
+     * for rotating the captured image to correct angle
+     **/
     public static int getRoatationAngle(Activity mContext, int cameraId) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, info);
@@ -419,10 +428,10 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
 
     // for adding muliple images //
     public class ImagesAdapter extends BaseAdapter {
-        ArrayList<HashMap<String,Object>> imgAry;
+        ArrayList<HashMap<String, Object>> imgAry;
         private Context mContext;
 
-        public ImagesAdapter(Context ctx, ArrayList<HashMap<String,Object>> data) {
+        public ImagesAdapter(Context ctx, ArrayList<HashMap<String, Object>> data) {
             mContext = ctx;
             imgAry = data;
         }
@@ -462,7 +471,7 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                 final ImageView tick = (ImageView) view.findViewById(R.id.tick);
                 singleImage.setVisibility(View.VISIBLE);
 
-             //   gradient.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.camera_image_selector));
+                //   gradient.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.camera_image_selector));
                 final HashMap<String, Object> tempMap = imgAry.get(position);
 
                 if (images.contains(tempMap)) {
@@ -546,6 +555,10 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
             finish();
             Intent i = new Intent(CameraActivity.this, AddProductDetail.class);
             i.putExtra("from", from);
+            if (productDes != null && productName != null) {
+                i.putExtra("productDes", productDes);
+                i.putExtra("productName", productName);
+            }
             if (from.equals("edit")) {
                 i.putExtra("data", AddProductDetail.itemMap);
             }
@@ -572,29 +585,37 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                 }
                 break;
             case R.id.next:
-                if (temp.size() == 0){
+                if (temp.size() == 0) {
                     Toast.makeText(CameraActivity.this, getString(R.string.please_add_image), Toast.LENGTH_SHORT).show();
-                } else if (temp.size() == 1){
-                    if (images.size() == 0){
+                } else if (temp.size() == 1) {
+                    if (images.size() == 0) {
                         images.addAll(temp);
                     }
                     fromedit = false;
                     finish();
                     Intent i = new Intent(CameraActivity.this, AddProductDetail.class);
                     i.putExtra("from", from);
-                    if (from.equals("edit")){
+                    if (from.equals("edit")) {
                         i.putExtra("data", AddProductDetail.itemMap);
                     }
+                    if (productDes != null && productName != null) {
+                        i.putExtra("productDes", productDes);
+                        i.putExtra("productName", productName);
+                    }
                     startActivity(i);
-                } else if (images.size() == 0){
+                } else if (images.size() == 0) {
                     Toast.makeText(CameraActivity.this, getString(R.string.please_select_images), Toast.LENGTH_SHORT).show();
                 } else {
                     fromedit = false;
                     finish();
                     Intent i = new Intent(CameraActivity.this, AddProductDetail.class);
                     i.putExtra("from", from);
-                    if (from.equals("edit")){
+                    if (from.equals("edit")) {
                         i.putExtra("data", AddProductDetail.itemMap);
+                    }
+                    if (productDes != null && productName != null) {
+                        i.putExtra("productDes", productDes);
+                        i.putExtra("productName", productName);
                     }
                     startActivity(i);
                 }
@@ -608,6 +629,10 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                     i.putExtra("from", from);
                     if (from.equals("edit")) {
                         i.putExtra("data", AddProductDetail.itemMap);
+                    }
+                    if (productDes != null && productName != null) {
+                        i.putExtra("productDes", productDes);
+                        i.putExtra("productName", productName);
                     }
                     startActivity(i);
                 } else {
@@ -646,10 +671,9 @@ public class CameraActivity extends AppCompatActivity implements OnClickListener
                     camera = null;
                 }
                 //swap the id of the camera to be used
-                if(currentCameraId == Camera.CameraInfo.CAMERA_FACING_BACK){
+                if (currentCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     currentCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
-                }
-                else {
+                } else {
                     currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
                 }
                 camera = Camera.open(currentCameraId);

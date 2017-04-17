@@ -159,8 +159,10 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         img = (Bitmap) i.getParcelable("image");
         if (from != null && from.equals("scanner")) {
             loadData();
+        } else if (from.equals("AddProduct")) {
+            productDes.setText((String) i.getString("productDes"));
+            productName.setText((String) i.getString("productName"));
         }
-
         //Elements visibility
         backBtn.setVisibility(View.VISIBLE);
         title.setVisibility(View.VISIBLE);
@@ -222,24 +224,27 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void loadData(){
+    private void loadData() {
         String desc = "";
         if (bookTitle != null) {
             productName.setText(bookTitle.substring(7));
         }
-        if (author != null){
+        if (author != null) {
             desc += (author + "\n");
         }
 //        if(description != null){
 //            desc += (description + "\n");
 //        }
-        if(date != null){
+        if (date != null) {
             desc += (date + "\n");
         }
-        if(stars != null){
-            desc += (stars + " Stars" + "\n");
+        if (stars != null) {
+            if (stars != 0)
+                desc += (stars + " Stars" + "\n");
+            else
+                desc += "No Rating";
         }
-        if(img != null){
+        if (img != null) {
 //            desc += (stars + " Stars" + "\n");
         }
         productDes.setText(desc);
@@ -684,9 +689,12 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onClick(View v) {
                             CameraActivity.fromedit = true;
-                            finish();
+//                            finish();
                             Intent i = new Intent(AddProductDetail.this, CameraActivity.class);
-                            i.putExtra("from", from);
+                            i.putExtra("from", "AddProduct");
+                            i.putExtra("productName", productName.getText().toString());
+                            i.putExtra("productDes", productDes.getText().toString());
+                            finish();
                             startActivity(i);
                         }
                     });

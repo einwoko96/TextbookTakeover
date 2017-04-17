@@ -42,6 +42,7 @@
             android:id="@+id/book_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="#ffa13143"
             android:textIsSelectable="true" />
 
@@ -55,15 +56,32 @@
             android:id="@+id/book_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="#ff592d94"
             android:textIsSelectable="true" />
 
-        <TextView
-            android:id="@+id/book_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ff000000"
-            android:textIsSelectable="true" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/book_desc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/book_description"
+                android:layout_width="368dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textColor="#ff000000"
+                android:textIsSelectable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/star_layout"
@@ -75,6 +93,7 @@
             android:id="@+id/book_rating_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="#ff2d6994"
             android:textIsSelectable="true"
             android:textStyle="italic" />
@@ -100,6 +119,7 @@
                 android:id="@+id/next_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Next" />
 
         </LinearLayout>

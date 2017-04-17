@@ -68,6 +68,7 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
     private TextView title;
     private ImageView[] starViews;
     private Bitmap thumbImg;
+    private String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,10 +176,11 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
             if (scanContent != null && scanFormat != null && scanFormat.equalsIgnoreCase("EAN_13")) {
+                content = scanContent;
                 //book search
                 previewBtn.setTag(scanContent);
                 String bookSearchString = "https://www.googleapis.com/books/v1/volumes?" +
-                        "q=isbn:" + "8184316445" + "&key=AIzaSyArIPcFRYG5hKAExwtTrsCNarwniyA77FQ";
+                        "q=isbn:" + "9780393913309" + "&key=AIzaSyArIPcFRYG5hKAExwtTrsCNarwniyA77FQ";
                 new GetBookInfo().execute(bookSearchString);
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(),
@@ -343,7 +345,7 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
             } catch (Exception e) {
                 //no result
                 e.printStackTrace();
-                titleText.setText("Not Found on Google Books\n\n" +
+                titleText.setText(content + " Not Found on Google Books\n\n" +
                         "Sell your book using the Sell Your Stuff tab");
                 authorText.setText("");
                 descriptionText.setText("");

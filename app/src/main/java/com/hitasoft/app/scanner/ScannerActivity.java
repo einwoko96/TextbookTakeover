@@ -180,7 +180,7 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
                 //book search
                 previewBtn.setTag(scanContent);
                 String bookSearchString = "https://www.googleapis.com/books/v1/volumes?" +
-                        "q=isbn:" + "9780393913309" + "&key=AIzaSyArIPcFRYG5hKAExwtTrsCNarwniyA77FQ";
+                        "q=isbn:" + scanContent + "&key=AIzaSyArIPcFRYG5hKAExwtTrsCNarwniyA77FQ";
                 new GetBookInfo().execute(bookSearchString);
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(),

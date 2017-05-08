@@ -337,12 +337,14 @@ public class AddProductDetail extends AppCompatActivity implements View.OnClickL
                     }
 
                     JSONArray currency = res.getJSONArray("currency");
-                    for (int i = 0; i < currency.length(); i++) {
-                        JSONObject jcur = currency.getJSONObject(i);
-
-                        currencyID.add(jcur.getString("id"));
-                        currencyspin.add(jcur.getString("symbol"));
-                    }
+                    currencyID.add("dollar");
+                    currencyspin.add("USD-$");
+//                    for (int i = 0; i < currency.length(); i++) {
+//                        JSONObject jcur = currency.getJSONObject(i);
+//
+//                        currencyID.add(jcur.getString("id"));
+//                        currencyspin.add(jcur.getString("symbol"));
+//                    }
 
                     JSONArray productCondition = res.getJSONArray("product_condition");
                     for (int i = 0; i < productCondition.length(); i++) {

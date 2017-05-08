@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layoutDirection="@string/layout_direction">
+
+    <com.app.external.CustomTextView
+        android:id="@+id/selectedView"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/divider"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimary"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@+id/selectedView"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <com.app.external.CustomTextView
+            android:id="@+id/defaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Default"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/secondaryText"
+            android:paddingStart="10dp"
+            android:paddingBottom="10dp"
+            android:visibility="gone"
+            app:font="font_bold.ttf" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@+id/defaultText"
+            android:layout_toStartOf="@+id/options"
+            android:orientation="vertical"
+            android:paddingStart="10dp">
+
+            <com.app.external.CustomTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nickname"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/primaryText"
+                app:font="font_bold.ttf" />
+
+            <com.app.external.CustomTextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/Name"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/secondaryText"
+                app:font="font_regular.ttf" />
+
+            <com.app.external.CustomTextView
+                android:id="@+id/addressLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address1"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/secondaryText"
+                app:font="font_regular.ttf" />
+
+            <com.app.external.CustomTextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/secondaryText"
+                app:font="font_regular.ttf" />
+
+            <com.app.external.CustomTextView
+                android:id="@+id/country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/country"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/secondaryText"
+                app:font="font_regular.ttf" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/options"
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:layout_below="@+id/defaultText"
+            android:layout_alignParentEnd="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:src="@drawable/option_icon" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider"
+        android:layout_below="@+id/main"/>
+</RelativeLayout>

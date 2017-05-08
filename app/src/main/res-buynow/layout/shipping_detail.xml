@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/actionbar"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="@string/layout_direction"
+        android:layout_below="@+id/view"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <com.app.external.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemtitle"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/shipping_date"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/primaryText"
+            android:textSize="12sp"
+            app:font="font_regular.ttf" />
+
+        <com.app.external.CustomTextView
+            android:id="@+id/shippingdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text=""
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/actionbar"
+            android:background="@color/line" />
+
+        <com.app.external.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemtitle"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/courier_name"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/primaryText"
+            android:textSize="12sp"
+            app:font="font_regular.ttf" />
+
+        <com.app.external.CustomEditText
+            android:id="@+id/couriername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:text=""
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+        <View
+            android:id="@+id/vie"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/actionbar"
+            android:background="@color/line" />
+
+        <com.app.external.CustomTextView
+            android:id="@+id/transacid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemtitle"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/courier_service"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/primaryText"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:font="font_regular.ttf" />
+
+        <com.app.external.CustomEditText
+            android:id="@+id/shippingservice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:maxLength="60"
+            android:padding="10dp"
+            android:text=""
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            android:visibility="visible"
+            app:font="font_regular.ttf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/actionbar"
+            android:background="@color/line" />
+
+        <com.app.external.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemtitle"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/tracking_id"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/primaryText"
+            android:textSize="12sp"
+            app:font="font_regular.ttf" />
+
+        <com.app.external.CustomEditText
+            android:id="@+id/trackingid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:maxLength="60"
+            android:text=""
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/actionbar"
+            android:background="@color/line" />
+
+        <com.app.external.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemtitle"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/other_details"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/primaryText"
+            android:textSize="12sp"
+            app:font="font_regular.ttf" />
+
+        <com.app.external.CustomEditText
+            android:id="@+id/otherdetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:maxLength="500"
+            android:text=""
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/primaryText"
+            app:font="font_regular.ttf" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center_horizontal">
+
+        <com.app.external.CustomTextView
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:text="@string/save"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:font="font_bold.ttf" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@+id/actionbar"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/save"
+        android:layout_below="@+id/view"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/mainLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="@string/layout_direction"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/input_layout_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nickname"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/addressTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/country"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:id="@+id/country"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address1"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:maxLength="60"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_addressline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address2"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/addressLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:maxLength="60"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/city"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/state"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/state"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_zipcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zipcode"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/zipcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/input_layout_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.app.external.CustomTextView
+                    app:font="font_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone"
+                    android:textSize="12sp" />
+
+                <com.app.external.CustomEditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:imeOptions="actionDone"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/password_hint"
+                    android:maxLines="1"
+                    android:maxLength="20"
+                    android:inputType="phone"
+                    android:digits="1234567890"
+                    android:paddingTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@color/primaryText"
+                    app:font="font_regular.ttf" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:indicator="BallPulse"
+        app:indicator_color="@color/progressColor" />
+
+    <com.app.external.CustomTextView
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="15dp"
+        android:text="@string/save"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="@color/white"
+        app:font="font_bold.ttf" />
+
+</RelativeLayout>

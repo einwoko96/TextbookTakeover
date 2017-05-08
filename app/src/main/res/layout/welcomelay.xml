@@ -38,7 +38,7 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/transparent_logo"
+                android:background="@drawable/s_after"
                 android:gravity="center" />
 
             <com.hitasoft.app.external.CustomTextView

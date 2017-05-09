@@ -52,6 +52,7 @@ import com.app.external.BadgeView;
 import com.app.external.GPSTracker;
 import com.app.external.HorizontalListView;
 import com.app.external.TimeAgo;
+import com.app.scanner.ScannerActivity;
 import com.app.utils.Constants;
 import com.app.utils.SOAPParsing;
 import com.etsy.android.grid.StaggeredGridView;
@@ -984,7 +985,15 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 				Intent i = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
 				startActivity(i);
 			}
-		} else if (from.equals(getString(R.string.chat))) {
+		} else if (from.equals(getString(R.string.scan))) {
+            if (GetSet.isLogged()) {
+                Intent i = new Intent(FragmentMainActivity.this, ScannerActivity.class);
+                startActivity(i);
+            } else {
+                Intent i = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
+                startActivity(i);
+            }
+        } else if (from.equals(getString(R.string.chat))) {
 			if (GetSet.isLogged()) {
 				Intent i = new Intent(FragmentMainActivity.this, MessageActivity.class);
 				startActivity(i);

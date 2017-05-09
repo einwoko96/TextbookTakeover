@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.hitasoft.app.external.AutoScrollViewPager
+        <com.app.external.AutoScrollViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="180dp" />
@@ -18,9 +18,9 @@
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/view_pager"
             app:strokeWidth="2dp"
             app:lineWidth="10dp"

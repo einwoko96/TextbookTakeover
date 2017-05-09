@@ -8,12 +8,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         android:id="@+id/later"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/primaryText"
+        android:background="@color/colorSecondary"
         android:gravity="center"
         android:padding="15dp"
         android:singleLine="true"
@@ -22,7 +22,7 @@
         android:textColor="@color/white"
         app:font="font_bold.ttf" />
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         android:id="@+id/post"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

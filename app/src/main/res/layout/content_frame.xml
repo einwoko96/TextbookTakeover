@@ -18,19 +18,20 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layoutDirection="@string/layout_direction"
             android:background="@color/bg">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <com.hitasoft.app.external.HorizontalListView
+            <com.app.external.HorizontalListView
                 android:id="@+id/filterList"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginEnd="10dp"/>
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipeLayout"
@@ -66,48 +67,48 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/home_location_bg"
                 android:elevation="4dp"
                 android:padding="8dp">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     app:font="fontawesome-webfont.ttf"
                     android:id="@+id/locationIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/loc"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="5dp"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     app:font="font_regular.ttf"
                     android:id="@+id/locationTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/locationIcon"
+                    android:layout_toEndOf="@+id/locationIcon"
                     android:maxWidth="200dp"
                     android:textSize="12sp"
                     android:maxLines="1"
                     android:textColor="@color/primaryText"
                     android:text="@string/world_wide"/>
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     app:font="fontawesome-webfont.ttf"
                     android:id="@+id/downIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/down"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_toRightOf="@+id/locationTxt"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toEndOf="@+id/locationTxt"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/primaryText"
                     android:textStyle="bold" />
@@ -127,11 +128,11 @@
                     android:layout_gravity="center"
                     android:src="@drawable/no_item"/>
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:text="@string/sorry"
@@ -139,11 +140,11 @@
                     android:textColor="@color/primaryText"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:text="@string/noItem"
@@ -178,7 +179,7 @@
         android:id="@+id/left_drawer"
         android:layout_width="@dimen/slidingmenu_Behind_offset"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:background="@color/white"
         android:orientation="vertical">
 

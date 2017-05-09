@@ -16,11 +16,9 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/actionbar"
         android:divider="@color/divider"
-        android:dividerHeight="0.5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:dividerHeight="0.5dp"/>
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/progress"
@@ -45,11 +43,11 @@
             android:layout_gravity="center"
             android:src="@drawable/no_item"/>
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
             android:text="@string/sorry"
@@ -57,11 +55,11 @@
             android:textColor="@color/primaryText"
             app:font="font_regular.ttf" />
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
             android:text="@string/noData"

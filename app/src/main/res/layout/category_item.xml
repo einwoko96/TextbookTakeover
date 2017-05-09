@@ -28,7 +28,7 @@
                 android:src="@drawable/appicon"
                 android:layout_gravity="center"/>
 
-            <com.hitasoft.app.external.CustomTextView
+            <com.app.external.CustomTextView
                 android:id="@+id/txt1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -44,7 +44,7 @@
         </LinearLayout>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="1.1dp"
             android:layout_height="match_parent"
             android:background="@color/divider" />
 
@@ -64,7 +64,7 @@
                 android:src="@drawable/appicon"
                 android:layout_gravity="center" />
 
-            <com.hitasoft.app.external.CustomTextView
+            <com.app.external.CustomTextView
                 android:id="@+id/txt2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -83,8 +83,8 @@
     <!--<View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@color/divider" />-->
 
     <LinearLayout
@@ -103,7 +103,7 @@
             android:src="@drawable/appicon"
             android:layout_gravity="center" />
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/txt21"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

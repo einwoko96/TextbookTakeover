@@ -3,6 +3,7 @@
     <color name="colorPrimary">#2AC249</color>
     <color name="colorPrimaryDark">#4c7732</color>
     <color name="colorAccent">#334a5d</color>
+    <color name="colorSecondary">#334a5d</color>
     <color name="divider">#e5ebf1</color>
     <color name="bg">#f4f4f4</color>
     <color name="primaryText">#515e6a</color>
@@ -18,4 +19,5 @@
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="sold_out">#de6b18</color>
     <color name="line">#e5ebf1</color>
+    <color name="blue">#4d90fe</color>
 </resources>

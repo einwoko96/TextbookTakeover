@@ -16,10 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layoutDirection="@string/layout_direction"
             android:padding="10dp"
             android:text="Lorem ipsum"
             android:lineSpacingMultiplier="1.3"

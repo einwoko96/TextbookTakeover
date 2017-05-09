@@ -15,8 +15,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layoutDirection="@string/layout_direction"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -24,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -34,14 +35,14 @@
                     android:textSize="34sp"
                     app:font="font_bold.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:text="@string/signup_des"
                     android:textColor="@color/primaryText"
                     android:textSize="18sp"
@@ -54,22 +55,22 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="@string/fullname"
                     android:textColor="@color/primaryText"
                     android:textSize="16sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomEditText
+                <com.app.external.CustomEditText
                     android:id="@+id/fullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/editextbg"
                     android:imeOptions="actionNext"
                     android:maxLength="30"
@@ -80,23 +81,23 @@
                     android:textSize="20sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/username"
                     android:textColor="@color/primaryText"
                     android:textSize="16sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomEditText
+                <com.app.external.CustomEditText
                     android:id="@+id/userName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/editextbg"
                     android:digits="@string/Emailfilter"
                     android:maxLength="30"
@@ -108,23 +109,23 @@
                     android:textSize="20sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/email"
                     android:textColor="@color/primaryText"
                     android:textSize="16sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomEditText
+                <com.app.external.CustomEditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/editextbg"
                     android:digits="@string/Emailfilter"
                     android:imeOptions="actionNext"
@@ -135,23 +136,23 @@
                     android:textSize="20sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/password"
                     android:textColor="@color/primaryText"
                     android:textSize="16sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomEditText
+                <com.app.external.CustomEditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/editextbg"
                     android:digits="@string/Passwordfilter"
                     android:imeOptions="actionNext"
@@ -162,23 +163,23 @@
                     android:textSize="20sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/confirmpassword"
                     android:textColor="@color/primaryText"
                     android:textSize="16sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomEditText
+                <com.app.external.CustomEditText
                     android:id="@+id/confirmpwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/editextbg"
                     android:digits="@string/Passwordfilter"
                     android:imeOptions="actionDone"
@@ -189,13 +190,13 @@
                     android:textSize="20sp"
                     app:font="font_regular.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/blue_round_corner"
                     android:gravity="center"
                     android:padding="15dp"
@@ -204,13 +205,13 @@
                     android:textColor="@color/white"
                     app:font="font_bold.ttf" />
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/primary_bg_corner"
                     android:gravity="center"
@@ -234,7 +235,7 @@
             android:id="@+id/backbtn"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"

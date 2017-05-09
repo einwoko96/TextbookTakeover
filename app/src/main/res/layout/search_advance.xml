@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:hint="http://schemas.android.com/tools"
     android:background="@color/bg">
 
     <include
@@ -28,10 +27,11 @@
                 android:id="@+id/locationLay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layoutDirection="@string/layout_direction"
                 android:layout_marginTop="10dp"
                 android:background="@color/white">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -46,18 +46,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@+id/location"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider"/>
 
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/locationName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/vie"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/lnext"
+                    android:layout_toStartOf="@+id/lnext"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="@string/change_location"
@@ -69,7 +69,7 @@
                     android:id="@+id/lnext"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_below="@+id/vie"
                     android:layout_centerVertical="true"
                     android:background="@null"
@@ -86,7 +86,7 @@
                 android:background="@color/white"
                 android:paddingBottom="5dp">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/distna"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,8 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@+id/distna"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/divider"/>
 
@@ -117,33 +117,35 @@
                         android:id="@+id/home"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/f_hme" />
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/seektext"
-                        android:layout_width="wrap_content"
+                        android:layout_width="45dp"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/home"
+                        android:layout_toEndOf="@+id/home"
                         android:background="@drawable/cal"
                         android:gravity="center"
-                        android:padding="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="3dp"
                         android:text=""
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:visibility="invisible"
                         app:font="font_regular.ttf" />
 
-                    <com.hitasoft.app.external.MySeekBar
+                    <com.app.external.MySeekBar
                         android:id="@+id/conditionBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        android:layout_toLeftOf="@+id/road"
-                        android:layout_toRightOf="@+id/home"
+                        android:background="#00000000"
+                        android:layout_toStartOf="@+id/road"
+                        android:layout_toEndOf="@+id/home"
+                        android:layout_marginTop="27dp"
                         android:backgroundTint="@color/secondaryText"
                         android:max="100"
                         android:progressDrawable="@drawable/green_seek_progress"
@@ -153,9 +155,9 @@
                         android:id="@+id/road"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/f_road"/>
                 </RelativeLayout>
@@ -165,11 +167,12 @@
                 android:id="@+id/categoryLay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layoutDirection="@string/layout_direction"
                 android:layout_below="@+id/distnceLay"
                 android:layout_marginTop="10dp"
                 android:background="@color/white">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/categoryName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -184,18 +187,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@+id/categoryName"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider" />
 
-                <com.hitasoft.app.external.ExpandableHeightListView
+                <com.app.external.ExpandableHeightListView
                     android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@color/divider"
                     android:dividerHeight="0.5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_below="@+id/vief"
                     android:visibility="visible"/>
 
@@ -205,12 +208,13 @@
                 android:id="@+id/postetwith"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layoutDirection="@string/layout_direction"
                 android:orientation="vertical"
                 android:layout_below="@+id/categoryLay"
                 android:layout_marginTop="10dp"
                 android:background="@color/white">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/postedwithin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -224,8 +228,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@+id/postedwithin"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider"/>
 
                 <RelativeLayout
@@ -234,12 +238,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/last24Txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/last24Next"
+                        android:layout_toStartOf="@+id/last24Next"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/last24h"
@@ -251,7 +255,7 @@
                         android:id="@+id/last24Next"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -262,8 +266,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider"/>
 
                 <RelativeLayout
@@ -272,12 +276,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/last7Txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/last7Next"
+                        android:layout_toStartOf="@+id/last7Next"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/last7d"
@@ -289,7 +293,7 @@
                         android:id="@+id/last7Next"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -300,8 +304,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider" />
 
                 <RelativeLayout
@@ -310,12 +314,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/last30Txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/last30Next"
+                        android:layout_toStartOf="@+id/last30Next"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/last30d"
@@ -327,7 +331,7 @@
                         android:id="@+id/last30Next"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -338,8 +342,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider" />
 
                 <RelativeLayout
@@ -348,12 +352,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/allproductTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/allproductNext"
+                        android:layout_toStartOf="@+id/allproductNext"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/all"
@@ -365,7 +369,7 @@
                         android:id="@+id/allproductNext"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -379,13 +383,14 @@
                 android:id="@+id/shortby"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layoutDirection="@string/layout_direction"
                 android:orientation="vertical"
                 android:layout_below="@+id/postetwith"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -397,8 +402,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider"/>
 
                 <RelativeLayout
@@ -407,12 +412,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/popularTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/popularNext"
+                        android:layout_toStartOf="@+id/popularNext"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/popular"
@@ -424,7 +429,7 @@
                         android:id="@+id/popularNext"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -435,8 +440,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider"/>
 
                 <RelativeLayout
@@ -445,12 +450,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/urgentTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/urgentNext"
+                        android:layout_toStartOf="@+id/urgentNext"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/urgent"
@@ -462,20 +467,21 @@
                         android:id="@+id/urgentNext"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
                         android:src="@drawable/tick"
                         android:visibility="gone" />
-                </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/divider"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/urgentTxt"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@color/divider"/>
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/highLay"
@@ -483,12 +489,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/highTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/highNext"
+                        android:layout_toStartOf="@+id/highNext"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/hightlow"
@@ -500,7 +506,7 @@
                         android:id="@+id/highNext"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -511,8 +517,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@color/divider"/>
 
                 <RelativeLayout
@@ -521,12 +527,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/lowTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/lowNext"
+                        android:layout_toStartOf="@+id/lowNext"
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:text="@string/lowthigh"
@@ -538,7 +544,7 @@
                         android:id="@+id/lowNext"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:layout_margin="10dp"
@@ -568,12 +574,12 @@
         android:background="@color/white"
         android:orientation="horizontal">
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/reset"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/primaryText"
+            android:background="@color/colorSecondary"
             android:gravity="center"
             android:padding="15dp"
             android:singleLine="true"
@@ -582,7 +588,7 @@
             android:textColor="@color/white"
             app:font="font_bold.ttf" />
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/apply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

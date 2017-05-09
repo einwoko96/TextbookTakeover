@@ -11,7 +11,7 @@
         android:id="@+id/backbtn"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -24,7 +24,7 @@
         android:id="@+id/cancelbtn"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -33,37 +33,37 @@
         android:src="@drawable/cancel"
         android:visibility="gone" />
 
-    <com.hitasoft.app.external.RoundedImageView
+    <com.app.external.RoundedImageView
         android:id="@+id/userImg"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/backbtn"
+        android:layout_toEndOf="@+id/backbtn"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:corner_radius="100dip"
         app:round_background="true"
         android:visibility="gone"/>
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/userImg"
-        android:layout_toLeftOf="@+id/printbtn"
+        android:layout_toEndOf="@+id/userImg"
+        android:layout_toStartOf="@+id/printbtn"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:singleLine="true"
         android:text="Name"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/colorAccent"
         android:visibility="gone"
         app:font="font_bold.ttf"/>
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,8 +71,8 @@
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
-        android:paddingLeft="45dp"
-        android:paddingRight="45dp"
+        android:paddingStart="45dp"
+        android:paddingEnd="45dp"
         android:singleLine="true"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -80,7 +80,7 @@
         android:visibility="visible"
         app:font="font_bold.ttf" />
 
-    <com.hitasoft.app.external.CustomEditText
+    <com.app.external.CustomEditText
         android:id="@+id/titleEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,8 +91,8 @@
         android:textCursorDrawable="@drawable/cursor"
         android:layout_centerVertical="true"
         android:background="@color/white"
-        android:layout_toRightOf="@+id/backbtn"
-        android:layout_toLeftOf="@+id/selectbtn"
+        android:layout_toEndOf="@+id/backbtn"
+        android:layout_toStartOf="@+id/resetbtn"
         android:imeOptions="actionSearch"
         android:visibility="gone"/>
 
@@ -100,7 +100,7 @@
         android:id="@+id/resetbtn"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -114,7 +114,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="center_vertical"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
@@ -132,7 +132,7 @@
         android:clickable="true"
         android:padding="10dp"
         android:src="@drawable/print"
-        android:layout_toLeftOf="@+id/settingbtn"
+        android:layout_toStartOf="@+id/settingbtn"
         android:visibility="gone" />
 
     <ImageView
@@ -140,7 +140,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="center_vertical"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
@@ -148,34 +148,34 @@
         android:src="@drawable/option_icon"
         android:visibility="gone" />
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         app:font="font_regular.ttf"
         android:id="@+id/productTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="7dp"
-        android:gravity="right"
-        android:layout_marginLeft="30dp"
+        android:gravity="end"
+        android:layout_marginStart="30dp"
         android:maxLines="1"
         android:singleLine="true"
         android:layout_centerVertical="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
         android:textColor="@color/colorAccent"
-        android:layout_toRightOf="@+id/username"
-        android:layout_toLeftOf="@+id/productImg"
+        android:layout_toEndOf="@+id/username"
+        android:layout_toStartOf="@+id/productImg"
         android:visibility="gone"/>
 
-    <com.hitasoft.app.external.RoundedImageView
+    <com.app.external.RoundedImageView
         android:id="@+id/productImg"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
         android:adjustViewBounds="true"
         android:background="@color/bg"
         android:scaleType="centerCrop"

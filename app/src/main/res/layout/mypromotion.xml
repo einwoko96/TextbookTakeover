@@ -33,17 +33,17 @@
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TabLayout
+        <com.app.external.CustomTabLayout
             android:id="@+id/slideTab"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom"
             android:background="#00000000"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/colorPrimary"
             app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabTextColor="@color/secondaryText" />
     </LinearLayout>

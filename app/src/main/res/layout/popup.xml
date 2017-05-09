@@ -7,7 +7,7 @@
     android:background="@drawable/cal"
     android:gravity="center">
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         app:font="font_regular.ttf"
         android:id="@+id/text"
         android:padding="5dp"

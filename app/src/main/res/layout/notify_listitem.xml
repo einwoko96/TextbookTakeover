@@ -4,9 +4,10 @@
     android:id="@+id/mainLay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="@string/layout_direction"
     android:background="@color/white">
 
-    <com.hitasoft.app.external.RoundedImageView
+    <com.app.external.RoundedImageView
         android:id="@+id/userimg"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -23,27 +24,27 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/arrow"
-        android:layout_toRightOf="@+id/userimg"
+        android:layout_toStartOf="@+id/arrow"
+        android:layout_toEndOf="@+id/userimg"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/userlay"
-            android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.hitasoft.app.external.CustomTextView
+            <com.app.external.CustomTextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:textDirection="@string/layout_direction"
                 android:text="User name"
                 android:textColor="@color/secondaryText"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 app:font="font_regular.ttf" />
-
 
         </LinearLayout>
 
@@ -52,13 +53,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
-            <com.hitasoft.app.external.CustomTextView
+            <com.app.external.CustomTextView
                 android:id="@+id/product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:text="Product"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@color/secondaryText"
@@ -66,7 +66,7 @@
                 app:font="font_regular.ttf" />
         </LinearLayout>
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/date"
             android:paddingTop="5dp"
             android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
         android:id="@+id/arrow"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/vie"
         android:layout_centerVertical="true"
         android:layout_margin="10dp"

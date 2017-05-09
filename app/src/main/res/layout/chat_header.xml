@@ -17,7 +17,7 @@
         app:indicator="BallPulse"
         app:indicator_color="@color/progressColor" />
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         app:font="font_regular.ttf"
         android:id="@+id/nulltext"
         android:layout_width="wrap_content"

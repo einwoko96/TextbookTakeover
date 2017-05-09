@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="@string/layout_direction"
     android:background="@color/white">
 
-    <com.hitasoft.app.external.RoundedImageView
+    <com.app.external.RoundedImageView
         android:id="@+id/userimg"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -21,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/userimg"
+        android:layout_toEndOf="@+id/userimg"
         android:orientation="vertical">
 
         <LinearLayout
@@ -30,21 +31,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.hitasoft.app.external.CustomTextView
+            <com.app.external.CustomTextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:text="User name"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@color/primaryText"
                 app:font="font_regular.ttf" />
 
-            <com.hitasoft.app.external.CustomTextView
+            <com.app.external.CustomTextView
                 android:id="@+id/comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginTop="3dp"
                 android:text="comments"
                 android:textAppearance="@android:style/TextAppearance.Small"
@@ -56,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -68,14 +69,14 @@
             android:visibility="visible"
             app:font="font_regular.ttf" />
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/delete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="3dp"
             android:layout_weight="0.3"
-            android:gravity="right"
+            android:gravity="end"
             android:text="@string/delete"
             android:textAppearance="@android:style/TextAppearance.Small"
             android:textColor="@color/colorPrimary"

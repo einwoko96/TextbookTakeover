@@ -17,7 +17,7 @@
             android:id="@+id/backbtn"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -26,12 +26,12 @@
             android:src="@drawable/back"
             android:tint="@color/primaryText"
             android:visibility="visible" />
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/backbtn"
-            android:layout_toLeftOf="@+id/optionsLay"
+            android:layout_toEndOf="@+id/backbtn"
+            android:layout_toStartOf="@+id/optionsLay"
             android:layout_centerVertical="true"
             android:maxLines="1"
             android:text="12 h"
@@ -43,7 +43,7 @@
             android:id="@+id/optionsLay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             >
             <ImageView
@@ -51,11 +51,11 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/shareBtn"
+                android:layout_toStartOf="@+id/shareBtn"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/unlike_icon"
                 android:visibility="visible" />
 
@@ -64,11 +64,11 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/shareBtn"
+                android:layout_toStartOf="@+id/shareBtn"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/edit"
                 android:visibility="invisible" />
 
@@ -77,11 +77,11 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/settingBtn"
+                android:layout_toStartOf="@+id/settingBtn"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:paddingBottom="10dp"
-                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 android:paddingTop="10dp"
                 android:src="@drawable/share_icon"
                 android:visibility="visible" />
@@ -90,7 +90,7 @@
                 android:id="@+id/settingBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -107,13 +107,13 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/saveLay"
         android:layout_below="@+id/actionbar"
-        android:scrollbars="none"
-        app:parallax_factor="1.9">
+        android:scrollbars="none">
 
         <RelativeLayout
             android:id="@+id/parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layoutDirection="@string/layout_direction">
 
             <RelativeLayout
                 android:id="@+id/imglay"
@@ -145,15 +145,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/detailLay"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp">
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp">
 
-                <com.hitasoft.app.external.CustomTextView
+                <com.app.external.CustomTextView
                     android:id="@+id/postedTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:singleLine="true"
                     android:text="12 hours ago"
@@ -168,75 +168,84 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_below="@+id/imglay"
-                android:background="@color/white"
-                >
+                android:background="@color/white">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_toLeftOf="@+id/itemStatus"
-                        android:layout_marginLeft="10dp"
+                        android:layout_toStartOf="@+id/statusLay"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
                         android:text="Product Title"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/primaryText"
                         android:visibility="visible"
                         app:font="font_bold.ttf" />
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/itemPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/title"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:gravity="center_vertical"
                         android:singleLine="true"
                         android:text="$ 0"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/colorPrimary"
                         app:font="font_bold.ttf" />
 
-                    <com.hitasoft.app.external.CustomTextView
-                        android:id="@+id/itemStatus"
+                    <LinearLayout
+                        android:id="@+id/statusLay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
-                        android:background="@drawable/urgentbg"
-                        android:gravity="bottom"
-                        android:layout_marginTop="-5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:paddingBottom="7dp"
-                        android:paddingLeft="7dp"
-                        android:paddingRight="7dp"
-                        android:paddingTop="18dp"
-                        android:singleLine="true"
-                        android:text="Urgent"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:visibility="visible"
-                        app:font="font_regular.ttf" />
+                        android:orientation="horizontal">
 
-                    <com.hitasoft.app.external.CustomTextView
+                        <com.app.external.CustomTextView
+                            android:id="@+id/itemStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/urgentbg"
+                            android:gravity="bottom"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="-5dp"
+                            android:paddingBottom="7dp"
+                            android:paddingStart="7dp"
+                            android:paddingEnd="7dp"
+                            android:paddingTop="18dp"
+                            android:singleLine="true"
+                            android:text="Urgent"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:visibility="visible"
+                            app:font="font_regular.ttf" />
+
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="20dp"
+                            android:background="@color/white"/>
+                    </LinearLayout>
+
+
+
+                    <com.app.external.CustomTextView
                         android:id="@+id/itemCond"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/itemPrice"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:paddingBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:paddingTop="5dp"
                         android:background="@drawable/secondary_curve_corner"
                         android:singleLine="true"
@@ -246,16 +255,18 @@
                         android:textColor="@color/white"
                         app:font="font_regular.ttf" />
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/itemCond"
+                        android:textIsSelectable="true"
                         android:paddingTop="15dp"
                         android:paddingBottom="15dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:text="descriptions"
+                        android:textColorLink="@color/blue"
                         android:textAppearance="@android:style/TextAppearance.Small"
                         android:textColor="@color/primaryText"
                         app:font="font_regular.ttf" />
@@ -263,8 +274,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_below="@+id/description"
                         android:background="@color/divider" />
                 </RelativeLayout>
@@ -285,7 +296,7 @@
                         android:layout_weight="1"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -294,7 +305,7 @@
                             android:layout_height="20dp"
                             android:src="@drawable/view_icon" />
 
-                        <com.hitasoft.app.external.CustomTextView
+                        <com.app.external.CustomTextView
                             android:id="@+id/viewCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -316,7 +327,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -326,7 +337,7 @@
                             android:layout_height="20dp"
                             android:src="@drawable/likecount" />
 
-                        <com.hitasoft.app.external.CustomTextView
+                        <com.app.external.CustomTextView
                             android:id="@+id/likesCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -342,7 +353,7 @@
                         android:layout_width="0.5dp"
                         android:layout_height="match_parent"
                         android:background="@color/divider"
-                        android:layout_marginRight="5dp"/>
+                        android:layout_marginEnd="5dp"/>
 
                     <LinearLayout
                         android:id="@+id/commentLay"
@@ -358,7 +369,7 @@
                             android:layout_height="20dp"
                             android:src="@drawable/commentcount" />
 
-                        <com.hitasoft.app.external.CustomTextView
+                        <com.app.external.CustomTextView
                             android:id="@+id/commentCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -394,20 +405,20 @@
                             android:id="@+id/locationImg"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
                             android:src="@drawable/location_icon" />
 
-                        <com.hitasoft.app.external.CustomTextView
+                        <com.app.external.CustomTextView
                             android:id="@+id/location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_toRightOf="@+id/locationImg"
-                            android:paddingLeft="5dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_toEndOf="@+id/locationImg"
+                            android:paddingStart="5dp"
+                            android:layout_marginEnd="10dp"
                             android:singleLine="true"
                             android:text="Madurai, Tamil Nadu, India"
                             android:textAppearance="@android:style/TextAppearance.Small"
@@ -430,93 +441,136 @@
                         android:id="@+id/view"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
-                        android:layout_alignBottom="@+id/banner"
+                        android:layout_below="@+id/banner"
                         android:background="@color/white" />
 
-                    <com.hitasoft.app.external.RoundedImageView
+                    <com.app.external.RoundedImageView
                         android:id="@+id/userImage"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:layout_alignBottom="@+id/view"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="16dp"
                         android:layout_gravity="center_horizontal"
                         android:adjustViewBounds="true"
                         android:gravity="center_horizontal"
                         android:scaleType="centerCrop"
                         app:corner_radius="100dip"
-                        app:round_background="true" />
+                        app:round_background="true"
+                        android:layout_alignBottom="@+id/view"/>
 
-                    <com.hitasoft.app.external.CustomTextView
-                        android:id="@+id/userName"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/view"
-                        android:layout_toRightOf="@+id/userImage"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:singleLine="true"
-                        android:text="demo"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/primaryText"
-                        app:font="font_regular.ttf" />
+                        android:layout_below="@+id/banner"
+                        android:layout_toEndOf="@+id/userImage">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/userName"
-                        android:layout_toRightOf="@+id/userImage"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="15dp"
-                        android:weightSum="3">
+                        <com.app.external.CustomTextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginTop="10dp"
+                            android:singleLine="true"
+                            android:text="demo"
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="@color/primaryText"
+                            app:font="font_regular.ttf" />
 
-                        <ImageView
-                            android:id="@+id/mblverify"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/mob_unveri"
-                            android:visibility="visible" />
+                        <RelativeLayout
+                            android:id="@+id/reviewLay"
+                            android:layout_width="235dp"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="ltr"
+                            android:layout_marginEnd="-115dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="35dp"
+                            android:layout_below="@+id/userName"
+                            android:orientation="horizontal"
+                            android:visibility="visible">
 
-                        <ImageView
-                            android:id="@+id/fbverify"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:src="@drawable/fb_unveri"
-                            android:visibility="visible" />
+                            <RatingBar
+                                android:id="@+id/ratingBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:isIndicator="true"
+                                android:layout_centerHorizontal="true"
+                                android:theme="@style/RatingBar"
+                                android:scaleX=".4"
+                                android:scaleY=".4"
+                                android:transformPivotX="-1dp"
+                                android:transformPivotY="0dp"
+                                android:numStars="5"
+                                android:stepSize="1"
+                                android:rating="3.5" />
 
-                        <ImageView
-                            android:id="@+id/mailverify"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/mail_unveri"
-                            android:visibility="visible" />
-                    </LinearLayout>
+                            <com.app.external.CustomTextView
+                                android:id="@+id/ratingCount"
+                                android:layout_width="33dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="95dp"
+                                android:layout_marginTop="2dp"
+                                android:text="(4.0)"
+                                android:textAppearance="@android:style/TextAppearance.Small"
+                                android:textColor="@color/primaryText"
+                                app:font="font_regular.ttf" />
+                        </RelativeLayout>
 
-                    <com.hitasoft.app.external.CustomTextView
-                        android:id="@+id/call"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="240dp"
-                        android:layout_marginRight="10dp"
-                        android:maxLines="1"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:text="@string/call"
-                        android:background="@drawable/primary_curve_corner"
-                        android:textAppearance="@android:style/TextAppearance.Small"
-                        android:textColor="@color/white"
-                        android:visibility="visible"
-                        app:font="font_regular.ttf" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:orientation="horizontal"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="40dp"
+                            android:paddingBottom="15dp"
+                            android:weightSum="3">
+
+                            <ImageView
+                                android:id="@+id/mblverify"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/mob_unveri"
+                                android:visibility="visible" />
+
+                            <ImageView
+                                android:id="@+id/fbverify"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:src="@drawable/fb_unveri"
+                                android:visibility="visible" />
+
+                            <ImageView
+                                android:id="@+id/mailverify"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/mail_unveri"
+                                android:visibility="visible" />
+                        </LinearLayout>
+
+                        <com.app.external.CustomTextView
+                            android:id="@+id/call"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:maxLines="1"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/call"
+                            android:background="@drawable/primary_curve_corner"
+                            android:textAppearance="@android:style/TextAppearance.Small"
+                            android:textColor="@color/white"
+                            android:visibility="visible"
+                            app:font="font_regular.ttf" />
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
@@ -529,7 +583,7 @@
                     android:clipToPadding="false"
                     android:orientation="vertical">
 
-                    <com.hitasoft.app.external.CustomTextView
+                    <com.app.external.CustomTextView
                         android:id="@+id/moretext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -549,7 +603,7 @@
                         app:indicator="BallPulse"
                         app:indicator_color="@color/progressColor" />
 
-                    <com.hitasoft.app.external.HorizontalListView
+                    <com.app.external.HorizontalListView
                         android:id="@+id/listView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -570,12 +624,12 @@
         android:background="@color/white"
         android:orientation="horizontal">
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/chat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@color/colorSecondary"
             android:gravity="center"
             android:padding="15dp"
             android:singleLine="true"
@@ -584,7 +638,7 @@
             android:textColor="@color/white"
             app:font="font_bold.ttf" />
 
-        <com.hitasoft.app.external.CustomTextView
+        <com.app.external.CustomTextView
             android:id="@+id/offer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

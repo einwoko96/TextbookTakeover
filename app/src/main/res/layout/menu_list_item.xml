@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/menuLay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="@string/layout_direction"
     android:padding="10dp"
     android:layout_marginBottom="10dp"
     android:layout_marginTop="10dp"
@@ -10,14 +12,15 @@
 
     <LinearLayout
         android:id="@+id/leftLay"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:layout_marginLeft="10dp">
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp">
 
         <ImageView
             android:id="@+id/imageView"
@@ -27,14 +30,14 @@
             android:src="@drawable/s_cam"/>
     </LinearLayout>
 
-    <com.hitasoft.app.external.CustomTextView
+    <com.app.external.CustomTextView
         app:font="font_bold.ttf"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/leftLay"
-        android:layout_toLeftOf="@+id/rightLay"
+        android:layout_toEndOf="@+id/leftLay"
+        android:layout_toStartOf="@+id/rightLay"
         android:textColor="@color/primaryText"
         android:singleLine="true"
         android:text="Demo"
@@ -44,9 +47,10 @@
         android:id="@+id/rightLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:orientation="horizontal">
 
         <ImageView
@@ -56,7 +60,7 @@
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
             android:src="@drawable/ad"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/badgeIcon"

@@ -1,6 +1,13 @@
 package com.app.textbooktakeover;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.ksoap2.serialization.SoapObject;
+
+import com.app.utils.Constants;
+import com.app.utils.SOAPParsing;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -23,14 +30,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.app.utils.Constants;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.ksoap2.serialization.SoapObject;
 
 public class RegisterActivity extends Activity implements OnClickListener {
 
@@ -113,16 +112,23 @@ public class RegisterActivity extends Activity implements OnClickListener {
             }
             try {
                 JSONObject jonj = new JSONObject(result);
-                if (jonj.getString("status").equalsIgnoreCase(
-                        "true")) {
+                if (jonj.getString("status").equalsIgnoreCase("true")) {
                     String msg = jonj.getString("message");
-                    dialog(RegisterActivity.this, getString(R.string.success), msg);
+                    dialog(RegisterActivity.this, getString(R.string.success), getString(R.string.signup_true_response));
 
                 } else {
                     email.setText("");
                     password.setText("");
                     String msg = jonj.getString("message");
-                    TextbookTakeoverApplication.dialog(RegisterActivity.this, getString(R.string.alert), msg);
+                    if (msg.equalsIgnoreCase("Sorry, unable to create user, please try again later")) {
+                        TextbookTakeoverApplication.dialog(RegisterActivity.this, getString(R.string.alert), getString(R.string.unable_to_create_user));
+                    } else if (msg.equalsIgnoreCase("Email already exists")) {
+                        TextbookTakeoverApplication.dialog(RegisterActivity.this, getString(R.string.alert), getString(R.string.email_already_exists));
+                    } else if (msg.equalsIgnoreCase("Username already exists")){
+                        TextbookTakeoverApplication.dialog(RegisterActivity.this, getString(R.string.alert), getString(R.string.username_already_exists));
+                    } else {
+                        TextbookTakeoverApplication.dialog(RegisterActivity.this, getString(R.string.alert), msg);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

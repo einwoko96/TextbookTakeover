@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +19,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.utils.Constants;
+import com.app.utils.SOAPParsing;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -113,6 +116,7 @@ public class ExpiredPromotion extends Fragment {
                         String itemId = DefensiveClass.optString(temp, Constants.TAG_ITEM_ID);
                         String itemName = DefensiveClass.optString(temp, Constants.TAG_ITEM_NAME);
                         String itemImage = DefensiveClass.optString(temp, Constants.TAG_ITEM_IMAGE);
+                        String itemApprove = DefensiveClass.optString(temp, Constants.TAG_ITEM_APPROVE);
 
                         map.put(Constants.TAG_ID, id);
                         map.put(Constants.TAG_PROMOTION_NAME, name);
@@ -125,6 +129,7 @@ public class ExpiredPromotion extends Fragment {
                         map.put(Constants.TAG_ITEM_ID, itemId);
                         map.put(Constants.TAG_ITEM_NAME, itemName);
                         map.put(Constants.TAG_ITEM_IMAGE, itemImage);
+                        map.put(Constants.TAG_ITEM_APPROVE, itemApprove);
 
                         expiredAry.add(map);
 
@@ -211,6 +216,14 @@ public class ExpiredPromotion extends Fragment {
 
             try{
 
+                if (TextbookTakeoverApplication.isRTL(mContext)){
+                    holder.view.setRotation(180);
+                    holder.itemtitle.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+                } else {
+                    holder.view.setRotation(0);
+                    holder.itemtitle.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                }
+
                 final HashMap<String, String> tempMap=Items.get(position);
 
                 if (tempMap.get(Constants.TAG_PROMOTION_NAME).equals("urgent")) {
@@ -222,7 +235,6 @@ public class ExpiredPromotion extends Fragment {
                 }
 
                 holder.itemtitle.setText(tempMap.get(Constants.TAG_ITEM_NAME));
-                holder.date.setText(tempMap.get(Constants.TAG_UPTO));
 
                 holder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -232,6 +244,18 @@ public class ExpiredPromotion extends Fragment {
                         startActivity(j);
                     }
                 });
+
+                String upto = tempMap.get(Constants.TAG_UPTO);
+                if (upto.contains("-")){
+                    String[] date = upto.split(" - ");
+                    long timestamp0 = 0, timestamp1 = 0;
+                    if(date[0] != null && date[1] != null){
+                        timestamp0 = Long.parseLong(date[0]);
+                        timestamp1 = Long.parseLong(date[1]);
+
+                        holder.date.setText(getDate(timestamp0) + " - " + getDate(timestamp1));
+                    }
+                }
 
             }catch(NullPointerException e){
                 e.printStackTrace();
@@ -243,4 +267,17 @@ public class ExpiredPromotion extends Fragment {
 
     }
 
+    /**
+     * To convert timestamp to Date
+     **/
+    private String getDate(long timeStamp) {
+
+        try {
+            DateFormat sdf = new SimpleDateFormat("MMM d, yyyy", getResources().getConfiguration().locale);
+            Date netDate = (new Date(timeStamp * 1000));
+            return sdf.format(netDate);
+        } catch (Exception ex) {
+            return "xx";
+        }
+    }
 }

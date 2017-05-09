@@ -23,7 +23,6 @@ import com.app.utils.Constants;
 import com.app.utils.ExchangeParsing;
 import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -244,22 +243,22 @@ public class OutgoingExchange extends Fragment implements FragmentChangeListener
                     holder.view.setVisibility(View.VISIBLE);
                 }
 
-                Picasso.with(getActivity()).load(tempMap.get("e"+ Constants.TAG_ITEMIMAGE)).into(holder.exitemImage);
-                Picasso.with(getActivity()).load(tempMap.get("m"+ Constants.TAG_ITEMIMAGE)).into(holder.myitemImage);
+                Picasso.with(getActivity()).load(tempMap.get("e"+Constants.TAG_ITEMIMAGE)).into(holder.exitemImage);
+                Picasso.with(getActivity()).load(tempMap.get("m"+Constants.TAG_ITEMIMAGE)).into(holder.myitemImage);
                 Picasso.with(getActivity()).load(tempMap.get(Constants.TAG_EXCHANGERIMG)).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(holder.userImage);
 
-                holder.myitemName.setText(tempMap.get("m"+ Constants.TAG_ITEM_NAME));
-                holder.exitemName.setText(tempMap.get("e"+ Constants.TAG_ITEM_NAME));
+                holder.myitemName.setText(tempMap.get("m"+Constants.TAG_ITEM_NAME));
+                holder.exitemName.setText(tempMap.get("e"+Constants.TAG_ITEM_NAME));
                 holder.userName.setText(tempMap.get(Constants.TAG_EXCHANGERNAME));
                 holder.time.setText(tempMap.get(Constants.TAG_EXCHANGETIME));
                 if(tempMap.get(Constants.TAG_STATUS).equals("Pending")){
                     holder.status2.setVisibility(View.VISIBLE);
                     holder.status.setVisibility(View.GONE);
-                    holder.status2.setText(tempMap.get(Constants.TAG_STATUS));
+                    holder.status2.setText(getString(R.string.pending));
                 }else  {
                     holder.status.setVisibility(View.VISIBLE);
                     holder.status2.setVisibility(View.GONE);
-                    holder.status.setText(tempMap.get(Constants.TAG_STATUS));
+                    holder.status.setText(getString(R.string.accepted));
                 }
 
                 holder.view.setOnClickListener(new View.OnClickListener() {

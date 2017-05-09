@@ -33,7 +33,6 @@ import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -438,7 +437,7 @@ public class ChatActivity extends Activity implements OnClickListener,ChatCallba
 						holder.price.setVisibility(View.GONE);
 						holder.aboutMsg.setVisibility(View.VISIBLE);
 						Picasso.with(ChatActivity.this).load(tempMap.get(Constants.TAG_ITEM_IMAGE)).into(holder.itemImage);
-						String name = "About " + "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_ITEM_TITLE) + "</font>";
+						String name = getString(R.string.about) + " " + "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_ITEM_TITLE) + "</font>";
 						holder.itemName.setText(Html.fromHtml(name));
 						holder.aboutDate.setText(chatDate);
 						holder.aboutMsg.setText(TextbookTakeoverApplication.stripHtml(tempMap.get("message")));
@@ -449,7 +448,7 @@ public class ChatActivity extends Activity implements OnClickListener,ChatCallba
 						holder.price.setVisibility(View.VISIBLE);
 						holder.aboutMsg.setVisibility(View.VISIBLE);
 						Picasso.with(ChatActivity.this).load(tempMap.get(Constants.TAG_ITEM_IMAGE)).into(holder.itemImage);
-						String name2 = "Sent offer request on " + "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_ITEM_TITLE) + "</font>";
+						String name2 = getString(R.string.sent_offer_request_on) + " " + "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_ITEM_TITLE) + "</font>";
 						holder.itemName.setText(Html.fromHtml(name2));
 						holder.aboutDate.setText(chatDate);
 						holder.price.setText(tempMap.get(Constants.TAG_OFFER_PRICE));
@@ -502,38 +501,12 @@ public class ChatActivity extends Activity implements OnClickListener,ChatCallba
 	private String getDate(long timeStamp) {
 
 		try {
-			DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+			DateFormat sdf = new SimpleDateFormat("MMM d, yyyy", getResources().getConfiguration().locale);
 			Date netDate = (new Date(timeStamp * 1000));
-			return getChatDate(sdf.format(netDate));
+			return sdf.format(netDate);
 		} catch (Exception ex) {
 			return "xx";
 		}
-	}
-
-	/** for converting the date to specific format **/
-	private String getChatDate(String date){
-		if (date.contains("-")){
-			String data[] = date.split("-");
-			String day = data[0];
-			if(day.equals("01")){
-				day = "1st";
-			}else if(day.equals("02")){
-				day = "2nd";
-			} else if(day.equals("03")){
-				day = "3rd";
-			} else if(day.equals("22")){
-				day= day+"nd";
-			}else if(day.equals("23")){
-				day=day+"rd";
-			}else if(day.equals("21")||day.equals("31")){
-				day=day+"st";
-			}else{
-				day = day + "th";
-			}
-
-			date = data[1] + " " + day + " " + data[2];
-		}
-		return date;
 	}
 
 	/** class for send the message **/
@@ -735,37 +708,6 @@ public class ChatActivity extends Activity implements OnClickListener,ChatCallba
 		handler.postDelayed(runnable, 1000);
 	}
 
-	/** function for get the current date to convert specific format **//*
-	private String getDate(){
-		String date = "";
-		Calendar cal = Calendar.getInstance();
-		Date currentLocalTime = cal.getTime();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM - yyyy");
-		String dateformat = simpleDateFormat.format(currentLocalTime);
-
-		SimpleDateFormat simpleday = new SimpleDateFormat("dd");
-		String day = simpleday.format(currentLocalTime);
-		Log.v("day", "day="+ day);
-		if(day.equals("01")){
-			day = "01st";
-		}else if(day.equals("02")){
-			day = "02nd";
-		} else if(day.equals("03")){
-			day = "03rd";
-		} else if(day.equals("22")){
-			day= day+"nd";
-		}else if(day.equals("23")){
-			day=day+"rd";
-		}else if(day.equals("21")||day.equals("31")){
-			day=day+"st";
-		}else{
-			day = day + "th";
-		}
-
-		date = dateformat.replace("-", day);
-		//	Log.v("dateformat", "dateformat "+dateformat +"/" + day);
-		return date;
-	}*/
 
 	@Override
 	protected void onPause() {

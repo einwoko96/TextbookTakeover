@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -18,11 +19,13 @@ import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.external.GPSTracker;
@@ -35,7 +38,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.app.textbooktakeover.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,10 +74,12 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     GPSTracker gps;
     String from = "";
     InputMethodManager imm;
+    RelativeLayout searchLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Locale.setDefault(getResources().getConfiguration().locale);
         setContentView(R.layout.location_activity);
 
         mapView = (MapView) findViewById(R.id.mapView);
@@ -88,6 +92,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         address = (AutoCompleteTextView) findViewById(R.id.address);
         crossIcon = (ImageView) findViewById(R.id.cross_icon);
         myLocation = (ImageView) findViewById(R.id.my_location);
+        searchLay = (RelativeLayout) findViewById(R.id.searchLay);
 
         Display display = getWindowManager().getDefaultDisplay();
         int height = display.getHeight();
@@ -230,6 +235,22 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+
+        ViewTreeObserver observer = searchLay.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Log.v("searchLay.getWidth()", "searchLay.getWidth()==" + searchLay.getWidth());
+                if (searchLay.getWidth() > 0) {
+                    address.setDropDownWidth(searchLay.getWidth());
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                        searchLay.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } else {
+                        searchLay.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                }
+            }
+        });
     }
 
     /** for get the lat, lon from gps **/
@@ -313,7 +334,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         protected String doInBackground(String... params) {
 
             try {
-                geocoder = new Geocoder(LocationActivity.this, Locale.ENGLISH);
+                geocoder = new Geocoder(LocationActivity.this, getResources().getConfiguration().locale);
                 addresses = geocoder.getFromLocation(x, y, 1);
                 str = new StringBuilder();
                 if (geocoder.isPresent() && addresses.size() > 0) {
@@ -384,7 +405,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 StringBuilder sb = new StringBuilder("http://maps.google.com/maps/api/geocode/json");
                 sb.append("?address=" + URLEncoder.encode(params[0], "utf8"));
                 sb.append("&ka&sensor=false");
-                // sb.append("&components=country:uk");
+                sb.append("&language="+ getResources().getConfiguration().locale.getLanguage());
                 URL url = new URL(sb.toString());
 
                 Log.v("MAP URL", "" + url);
@@ -485,6 +506,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
                     FragmentMainActivity.currentPage = 0;
                     FragmentMainActivity.HomeItems.clear();
+                    if (FragmentMainActivity.homeAdapter != null){
+                        FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+                    }
                     finish();
                     Intent i = new Intent(LocationActivity.this, FragmentMainActivity.class);
                     startActivity(i);
@@ -532,6 +556,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
                     FragmentMainActivity.currentPage = 0;
                     FragmentMainActivity.HomeItems.clear();
+                    if (FragmentMainActivity.homeAdapter != null){
+                        FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+                    }
                     finish();
                     Intent j = new Intent(LocationActivity.this, FragmentMainActivity.class);
                     startActivity(j);

@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.app.utils.Constants;
 import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,10 +160,17 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                     GetSet.setPassword(newpassword);
                     Constants.editor.putString("Password", GetSet.getPassword());
                     Constants.editor.commit();
-                    Toast.makeText(ChangePassword.this, json.getString("message"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChangePassword.this, getString(R.string.password_changed_successfully), Toast.LENGTH_LONG).show();
                     finish();
                 }else{
-                    TextbookTakeoverApplication.dialog(ChangePassword.this, getString(R.string.alert), json.getString("message"));
+                    if (json.getString("message").equalsIgnoreCase("Old Password Incorrect")){
+                        TextbookTakeoverApplication.dialog(ChangePassword.this, getString(R.string.alert), getString(R.string.old_password_incorrect));
+                    } else if (json.getString("message").equalsIgnoreCase("Old Password and new password are same, Please enter different one!")) {
+                        TextbookTakeoverApplication.dialog(ChangePassword.this, getString(R.string.alert), getString(R.string.old_password_and_new_password_are_same));
+                    } else {
+                        TextbookTakeoverApplication.dialog(ChangePassword.this, getString(R.string.alert), json.getString("message"));
+                    }
+
                 }
             }catch (JSONException e) {
                 e.printStackTrace();

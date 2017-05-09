@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.utils.Constants;
+import com.app.utils.SOAPParsing;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
@@ -114,7 +114,7 @@ public class UrgentPromotion extends Fragment {
                         String itemId = DefensiveClass.optString(temp, Constants.TAG_ITEM_ID);
                         String itemName = DefensiveClass.optString(temp, Constants.TAG_ITEM_NAME);
                         String itemImage = DefensiveClass.optString(temp, Constants.TAG_ITEM_IMAGE);
-
+                        String itemApprove = DefensiveClass.optString(temp, Constants.TAG_ITEM_APPROVE);
 
                         map.put(Constants.TAG_ID, id);
                         map.put(Constants.TAG_PROMOTION_NAME, name);
@@ -127,6 +127,7 @@ public class UrgentPromotion extends Fragment {
                         map.put(Constants.TAG_ITEM_ID, itemId);
                         map.put(Constants.TAG_ITEM_NAME, itemName);
                         map.put(Constants.TAG_ITEM_IMAGE, itemImage);
+                        map.put(Constants.TAG_ITEM_APPROVE, itemApprove);
 
                         urgentAry.add(map);
 
@@ -215,10 +216,18 @@ public class UrgentPromotion extends Fragment {
 
             try{
 
+                if (TextbookTakeoverApplication.isRTL(mContext)){
+                    holder.view.setRotation(180);
+                    holder.itemtitle.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+                } else {
+                    holder.view.setRotation(0);
+                    holder.itemtitle.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                }
+
                 final HashMap<String, String> tempMap=Items.get(position);
 
                 holder.itemtitle.setText(tempMap.get(Constants.TAG_ITEM_NAME));
-                holder.date.setText(tempMap.get(Constants.TAG_UPTO));
+            //    holder.date.setText(tempMap.get(Constants.TAG_UPTO));
                 holder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

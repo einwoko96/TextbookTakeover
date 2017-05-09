@@ -27,10 +27,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.external.TimeAgo;
+import com.app.utils.SOAPParsing;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
-import com.app.utils.SOAPParsing;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -241,11 +242,6 @@ public class CommentsActivity extends AppCompatActivity implements OnClickListen
 
                 holder.username.setText(tempMap.get(Constants.TAG_USERNAME));
                 holder.comments.setText(tempMap.get(Constants.TAG_COMMENT));
-                if (tempMap.get(Constants.TAG_COMMENTTIME).equals(" ago")){
-                    holder.date.setText("Just now");
-                } else {
-                    holder.date.setText(tempMap.get(Constants.TAG_COMMENTTIME));
-                }
 
                 if (tempMap.get(Constants.TAG_USERID).equals(GetSet.getUserId())){
                     holder.delete.setVisibility(View.VISIBLE);
@@ -281,7 +277,21 @@ public class CommentsActivity extends AppCompatActivity implements OnClickListen
                     }
                 });
 
+                long timestamp = 0;
+                String time = tempMap.get(Constants.TAG_COMMENTTIME);
+                if (time.equals("ago")){
+                    holder.date.setText(getString(R.string.time_ago_seconds));
+                } else {
+                    if(time != null){
+                        timestamp = Long.parseLong(time) * 1000;
+                        TimeAgo timeAgo = new TimeAgo(mContext);
+                        holder.date.setText(timeAgo.timeAgo(timestamp));
+                    }
+                }
+
             } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch(NumberFormatException e){
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -355,7 +365,7 @@ public class CommentsActivity extends AppCompatActivity implements OnClickListen
                     tempmap.put(Constants.TAG_USERID, user_id);
                     tempmap.put(Constants.TAG_USERIMG, user_img);
                     tempmap.put(Constants.TAG_USERNAME, username);
-                    tempmap.put(Constants.TAG_COMMENTTIME, commentTime);
+                    tempmap.put(Constants.TAG_COMMENTTIME, "ago");
 
                     commentsList.add(tempmap);
                     commentText.setText("");

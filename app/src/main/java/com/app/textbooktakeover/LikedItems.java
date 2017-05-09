@@ -22,7 +22,6 @@ import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.ItemsParsing;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -37,7 +36,7 @@ import java.util.HashMap;
  * Created by hitasoft on 29/6/16.
  */
 
-public class LikedItems  extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class LikedItems extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static String userId = "";
     private static final String ARG_POSITION = "position";
@@ -291,30 +290,34 @@ public class LikedItems  extends Fragment implements SwipeRefreshLayout.OnRefres
         }
 
         @Override
-        public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.mylisting_list_items, parent, false);
 
-            return new RecyclerViewAdapter.MyViewHolder(itemView);
+            return new MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(MyViewHolder holder, int position) {
             HashMap<String, String> tempMap=Items.get(position);
             Picasso.with(context).load(tempMap.get(Constants.TAG_ITEM_URL_350)).into(holder.singleImage);
             if (tempMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
                 holder.productType.setVisibility(View.VISIBLE);
-                holder.productType.setText("Sold");
+                holder.productType.setText(getString(R.string.sold));
                 holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.soldbg));
             } else {
-                if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
-                    holder.productType.setVisibility(View.VISIBLE);
-                    holder.productType.setText("Ad");
-                    holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
-                } else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
-                    holder.productType.setVisibility(View.VISIBLE);
-                    holder.productType.setText("Urgent");
-                    holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                if (Constants.PROMOTION){
+                    if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
+                        holder.productType.setVisibility(View.VISIBLE);
+                        holder.productType.setText(getString(R.string.ad));
+                        holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
+                    } else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
+                        holder.productType.setVisibility(View.VISIBLE);
+                        holder.productType.setText(getString(R.string.urgent));
+                        holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                    } else {
+                        holder.productType.setVisibility(View.GONE);
+                    }
                 } else {
                     holder.productType.setVisibility(View.GONE);
                 }

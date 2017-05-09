@@ -26,7 +26,6 @@ import com.braintreepayments.api.PaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.google.android.gms.wallet.Cart;
 import com.google.android.gms.wallet.LineItem;
-import com.app.textbooktakeover.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;

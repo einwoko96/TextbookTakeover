@@ -15,6 +15,7 @@ public class Model {
 
 		Items = new ArrayList<Item>();
 
+		Items.add(new Item(0, R.drawable.s_cam, ctx.getString(R.string.scan)));
 		Items.add(new Item(1, R.drawable.s_cam, ctx.getString(R.string.sell_your_stuff)));
 		Items.add(new Item(2, R.drawable.s_message, ctx.getString(R.string.chat)));
 		Items.add(new Item(3, R.drawable.s_category, ctx.getString(R.string.categories)));

@@ -24,12 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.app.external.TimeAgo;
 import com.app.utils.Constants;
-import com.app.utils.GetSet;
-import com.app.utils.ItemsParsing;
 import com.app.utils.SOAPParsing;
 import com.etsy.android.grid.StaggeredGridView;
-import com.app.textbooktakeover.R;
+import com.app.utils.GetSet;
+import com.app.utils.ItemsParsing;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -137,8 +137,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    ArrayList<HashMap<String,String>> temp=new ArrayList<HashMap<String,String>>();
                     ItemsParsing parse = new ItemsParsing(SearchActivity.this);
-                    HomeItems.addAll(parse.parsing(json));
+                    temp.addAll(parse.parsing(json));
+                    if (!HomeItems.contains(temp)){
+                        HomeItems.addAll(temp);
+                    }
                     Log.v("HomeItems","HomeItems"+HomeItems);
                 }
             });
@@ -241,27 +245,40 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 holder.itemPrice.setText(tempMap.get(Constants.TAG_CURRENCY_SYM) + " "
                         + tempMap.get(Constants.TAG_PRICE));
                 holder.location.setText(tempMap.get(Constants.TAG_LOCATION));
-                holder.postedTime.setText(tempMap.get(Constants.TAG_POSTED_TIME).toUpperCase());
 
                 if (tempMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
                     holder.productType.setVisibility(View.VISIBLE);
-                    holder.productType.setText("Sold");
+                    holder.productType.setText(getString(R.string.sold));
                     holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.soldbg));
                 } else {
-                    if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
-                        holder.productType.setVisibility(View.VISIBLE);
-                        holder.productType.setText("Ad");
-                        holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
-                    } else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
-                        holder.productType.setVisibility(View.VISIBLE);
-                        holder.productType.setText("Urgent");
-                        holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                    if (Constants.PROMOTION){
+                        if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
+                            holder.productType.setVisibility(View.VISIBLE);
+                            holder.productType.setText(getString(R.string.ad));
+                            holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
+                        } else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
+                            holder.productType.setVisibility(View.VISIBLE);
+                            holder.productType.setText(getString(R.string.urgent));
+                            holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                        } else {
+                            holder.productType.setVisibility(View.GONE);
+                        }
                     } else {
                         holder.productType.setVisibility(View.GONE);
                     }
                 }
 
+                long timestamp = 0;
+                String time = tempMap.get(Constants.TAG_POSTED_TIME);
+                if(time != null){
+                    timestamp = Long.parseLong(time) * 1000;
+                }
+                TimeAgo timeAgo = new TimeAgo(mContext);
+                holder.postedTime.setText(timeAgo.timeAgo(timestamp));
+
             } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch(NumberFormatException e){
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();

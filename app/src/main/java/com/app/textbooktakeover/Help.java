@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.app.utils.SOAPParsing;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
@@ -187,6 +187,14 @@ public class Help extends AppCompatActivity implements View.OnClickListener,Adap
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
+            }
+
+            if (TextbookTakeoverApplication.isRTL(mContext)){
+                holder.next.setRotation(180);
+                holder.name.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            } else {
+                holder.next.setRotation(0);
+                holder.name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             }
 
             try{

@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,14 +34,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.app.buynow.Addresses;
+import com.app.buynow.Review;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
+import com.app.buynow.MySalesnOrder;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -65,14 +70,15 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
     private TabLayout mTabLayout;
     AppBarLayout appbar;
     LinearLayout verificationLay;
-    RelativeLayout userLay;
+    RelativeLayout userLay,reviewLay;
     public static ImageView userImg, mHeaderLogo, fbVerify, mailVerify, mobVerify;
-    public static TextView userName, location, userName2, location2, followStatus;
+    public static TextView userName, location, userName2, location2, followStatus, ratingCount;
     int headerPosition;
     public static HashMap<String, String> profileMap = new HashMap<String, String>();
     public static ArrayList<String> followingId = new ArrayList<String>();
     String userId="", userNam = "", fullName = "", userImage = "";
     Display display;
+    RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +103,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         mobVerify = (ImageView) findViewById(R.id.mblverify);
         verificationLay = (LinearLayout) findViewById(R.id.verificationLay);
         main = (CoordinatorLayout) findViewById(R.id.main_content);
+        reviewLay = (RelativeLayout) findViewById(R.id.reviewLay);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingCount = (TextView) findViewById(R.id.ratingCount);
 
         setToolbar();
 
@@ -106,7 +115,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         mTabLayout= (TabLayout) findViewById(R.id.detail_tabs);
         tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(tabPagerAdapter);
-        mTabLayout.setTabsFromPagerAdapter(tabPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
         display = this.getWindowManager().getDefaultDisplay();
@@ -136,6 +144,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
         profileMap.clear();
         new getProfileInformation().execute();
+
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable().getCurrent();
+        stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(0).setColorFilter(getResources().getColor(R.color.secondaryText), PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(1).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
 
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -238,6 +251,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                         String email = DefensiveClass.optString(result, "email");
                         String facebook_id = DefensiveClass.optString(result, "facebook_id");
                         String mobile_no = DefensiveClass.optString(result, "mobile_no");
+                        String rating = DefensiveClass.optInt(result, "rating");
                         JSONObject verification = result.optJSONObject("verification");
                         String facebook_ver = DefensiveClass.optString(verification, "facebook");
                         String email_ver = DefensiveClass.optString(verification, "email");
@@ -248,6 +262,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                         profileMap.put("full_name", fullname);
                         profileMap.put("user_img", userimage);
                         profileMap.put("email", email);
+                        profileMap.put("rating", rating);
                         profileMap.put("facebook_id", facebook_id);
                         profileMap.put("mobile_no", mobile_no);
                         profileMap.put("facebook_ver", facebook_ver);
@@ -290,7 +305,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             Picasso.with(Profile.this).load(profileMap.get("user_img")).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(userImg);
 
             if(userId.equalsIgnoreCase(GetSet.getUserId())) {
-                Constants.pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+                Constants.pref = getApplicationContext().getSharedPreferences("JoysalePref",
                         MODE_PRIVATE);
                 Constants.editor = Constants.pref.edit();
                 Constants.editor.putString("photo", profileMap.get("user_img"));
@@ -306,6 +321,24 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                     Picasso.with(Profile.this).load(GetSet.getImageUrl()).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(FragmentMainActivity.userImage);
                     FragmentMainActivity.username.setText(GetSet.getFullName());
                 }
+            }
+
+            if (Constants.BUYNOW){
+                reviewLay.setVisibility(View.VISIBLE);
+                location.setVisibility(View.GONE);
+                try {
+                    ratingBar.setRating(Float.parseFloat(profileMap.get("rating")));
+                    ratingCount.setText("(" + profileMap.get("rating") + ")");
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            } else {
+                reviewLay.setVisibility(View.GONE);
+                location.setVisibility(View.VISIBLE);
             }
 
             verificationLay.setVisibility(View.VISIBLE);
@@ -363,11 +396,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 if (!userId.equals(GetSet.getUserId())){
                     followStatus.setVisibility(View.VISIBLE);
                     if (followingId.contains(userId)){
-                        followStatus.setText("Unfollow");
+                        followStatus.setText(getString(R.string.unfollow));
                         followStatus.setTextColor(getResources().getColor(R.color.white));
                         followStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.primary_curve_corner));
                     } else {
-                        followStatus.setText("Follow");
+                        followStatus.setText(getString(R.string.follow));
                         followStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
                         followStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.primary_bg_corner));
                     }
@@ -397,29 +430,55 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
         public TabPagerAdapter(FragmentManager fm){
             super(fm);
-            if(userId.equalsIgnoreCase(GetSet.getUserId())) {
-                Log.v("userlogged","userlogged");
-                TITLES = new String[]{getString(R.string.my_listing), getString(R.string.liked), getString(R.string.followers), getString(R.string.followings)};
-            }else {
-                Log.v("otheruser","otheruser");
-                TITLES = new String[]{getString(R.string.listing), getString(R.string.liked), getString(R.string.followers), getString(R.string.followings)};
+            if (Constants.BUYNOW){
+                if(userId.equalsIgnoreCase(GetSet.getUserId())) {
+                    TITLES = new String[]{getString(R.string.my_listing), getString(R.string.review), getString(R.string.liked), getString(R.string.followers), getString(R.string.followings)};
+                }else {
+                    TITLES = new String[]{getString(R.string.listing), getString(R.string.review), getString(R.string.liked), getString(R.string.followers), getString(R.string.followings)};
+                }
+            } else {
+                if(userId.equalsIgnoreCase(GetSet.getUserId())) {
+                    TITLES = new String[]{getString(R.string.my_listing), getString(R.string.liked), getString(R.string.followers), getString(R.string.followings)};
+                }else {
+                    TITLES = new String[]{getString(R.string.listing), getString(R.string.liked), getString(R.string.followers), getString(R.string.followings)};
+                }
             }
+
         }
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
-                MyListing fragment = MyListing.newInstance(position, userId);
-                return fragment;
-            } else if (position == 1) {
-                LikedItems fragment = LikedItems.newInstance(position, userId);
-                return fragment;
-            } else if (position == 2) {
-                Followers fragment = Followers.newInstance(position, userId);
-                return fragment;
+            if (Constants.BUYNOW){
+                if (position == 0) {
+                    MyListing fragment = MyListing.newInstance(position, userId);
+                    return fragment;
+                } else if (position == 1) {
+                    Review fragment = Review.newInstance(position, userId);
+                    return fragment;
+                } else if (position == 2) {
+                    LikedItems fragment = LikedItems.newInstance(position, userId);
+                    return fragment;
+                } else if (position == 3) {
+                    Followers fragment = Followers.newInstance(position, userId);
+                    return fragment;
+                } else {
+                    Followings fragment = Followings.newInstance(position, userId);
+                    return fragment;
+                }
             } else {
-                Followings fragment = Followings.newInstance(position, userId);
-                return fragment;
+                if (position == 0) {
+                    MyListing fragment = MyListing.newInstance(position, userId);
+                    return fragment;
+                } else if (position == 1) {
+                    LikedItems fragment = LikedItems.newInstance(position, userId);
+                    return fragment;
+                } else if (position == 2) {
+                    Followers fragment = Followers.newInstance(position, userId);
+                    return fragment;
+                } else {
+                    Followings fragment = Followings.newInstance(position, userId);
+                    return fragment;
+                }
             }
         }
 
@@ -520,8 +579,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                             Intent j = new Intent(Profile.this, MyPromotions.class);
                             startActivity(j);
                         } else {
-                            /*Intent k = new Intent(Profile.this, MySalesnOrder.class);
-                            startActivity(k);*/
+                            Intent k = new Intent(Profile.this, MySalesnOrder.class);
+                            startActivity(k);
                         }
                         popup.dismiss();
                         break;
@@ -530,35 +589,35 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                             Intent j = new Intent(Profile.this, MyPromotions.class);
                             startActivity(j);
                         } else if ((Constants.BUYNOW && Constants.EXCHANGE) || (Constants.BUYNOW && Constants.PROMOTION)){
-                            /*Intent k = new Intent(Profile.this, MySalesnOrder.class);
-                            startActivity(k);*/
+                            Intent k = new Intent(Profile.this, MySalesnOrder.class);
+                            startActivity(k);
                         } else if (Constants.EXCHANGE && Constants.PROMOTION){
                             Intent j = new Intent(Profile.this, MyPromotions.class);
                             startActivity(j);
                         } else if (Constants.BUYNOW){
-                            /*Intent l = new Intent(Profile.this, Addresses.class);
+                            Intent l = new Intent(Profile.this, Addresses.class);
                             l.putExtra("from", "profile");
-                            startActivity(l);*/
+                            startActivity(l);
                         }
                         popup.dismiss();
                         break;
                     // The below cases only for buy now module, Otherwise comment it.
                     case 2:
-                        /*if (Constants.BUYNOW && Constants.EXCHANGE && Constants.PROMOTION){
+                        if (Constants.BUYNOW && Constants.EXCHANGE && Constants.PROMOTION){
                             Intent k = new Intent(Profile.this, MySalesnOrder.class);
                             startActivity(k);
                         } else {
                             Intent l = new Intent(Profile.this, Addresses.class);
                             l.putExtra("from", "profile");
                             startActivity(l);
-                        }*/
+                        }
                         popup.dismiss();
                         break;
                     case 3:
-                        /*Intent l = new Intent(Profile.this, Addresses.class);
+                        Intent l = new Intent(Profile.this, Addresses.class);
                         l.putExtra("from", "profile");
                         startActivity(l);
-                        popup.dismiss();*/
+                        popup.dismiss();
                         break;
                 }
             }
@@ -591,7 +650,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 JSONObject jobj = new JSONObject(response);
                 String status = DefensiveClass.optString(jobj, Constants.TAG_STATUS);
                 if (status.equalsIgnoreCase("true")){
-                    followStatus.setText("Unfollow");
+                    followStatus.setText(getString(R.string.unfollow));
                     followStatus.setTextColor(getResources().getColor(R.color.white));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         followStatus.setBackground(getResources().getDrawable(R.drawable.primary_curve_corner));
@@ -635,7 +694,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 JSONObject jobj = new JSONObject(response);
                 String status = DefensiveClass.optString(jobj, Constants.TAG_STATUS);
                 if (status.equalsIgnoreCase("true")){
-                    followStatus.setText("Follow");
+                    followStatus.setText(getString(R.string.follow));
                     followStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
                     followStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.primary_bg_corner));
                 }
@@ -679,7 +738,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             case R.id.followStatus:
                 if (GetSet.isLogged()){
                     followStatus.setOnClickListener(null);
-                    if (followStatus.getText().toString().equals("Follow")){
+                    if (followStatus.getText().toString().equals(getString(R.string.follow))){
                         new follow().execute(userId);
                     } else {
                         new unfollow().execute(userId);

@@ -16,13 +16,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.app.external.ExpandableHeightListView;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
@@ -32,7 +30,7 @@ import com.braintreepayments.api.PaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.google.android.gms.wallet.Cart;
 import com.google.android.gms.wallet.LineItem;
-import com.app.textbooktakeover.R;
+import com.app.external.ExpandableHeightListView;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
@@ -47,17 +45,17 @@ import java.util.HashMap;
  **/
 public class Promotead extends Fragment implements View.OnClickListener {
 
-    ImageView promote;
-    RelativeLayout ad;
+    ImageView promote, tick1, tick2, tick3, tick4;
+    static RelativeLayout ad, main;
     public static TextView payPromote;
     ExpandableHeightListView promoteList;
     static AVLoadingIndicatorView progress;
     static ScrollView scrollView;
-    TextView adText;
+    TextView adText, tagText, adText1, adText2, adText3, adText4, productType;
     public static PromoteAdapter adapter;
     Context context;
     String selectedId = "", selectedPrice = "";
-    static LinearLayout main;
+    View tagView;
 
     public Promotead(){}
 
@@ -76,6 +74,7 @@ public class Promotead extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         promote = (ImageView) getView().findViewById(R.id.imageView);
         ad = (RelativeLayout) getView().findViewById(R.id.promotead);
         payPromote = (TextView) getView().findViewById(R.id.promote);
@@ -83,15 +82,27 @@ public class Promotead extends Fragment implements View.OnClickListener {
         promoteList = (ExpandableHeightListView) getView().findViewById(R.id.promoteList);
         scrollView = (ScrollView) getView().findViewById(R.id.scrollView);
         progress = (AVLoadingIndicatorView) getView().findViewById(R.id.progress);
-        main = (LinearLayout) getView().findViewById(R.id.main);
+        main = (RelativeLayout) getView().findViewById(R.id.main);
+        tick1 = (ImageView) getView().findViewById(R.id.tick1);
+        tick2 = (ImageView) getView().findViewById(R.id.tick2);
+        tick3 = (ImageView) getView().findViewById(R.id.tick3);
+        tick4 = (ImageView) getView().findViewById(R.id.tick4);
+        tagText = (TextView) getView().findViewById(R.id.tagText);
+        adText1 = (TextView) getView().findViewById(R.id.adText1);
+        adText2 = (TextView) getView().findViewById(R.id.adText2);
+        adText3 = (TextView) getView().findViewById(R.id.adText3);
+        adText4 = (TextView) getView().findViewById(R.id.adText4);
+        tagView = (View) getView().findViewById(R.id.tagView);
+        productType = (TextView) getView().findViewById(R.id.productType);
 
         context = getActivity();
 
         ad.setVisibility(View.VISIBLE);
         adText.setVisibility(View.VISIBLE);
 
-        promote.setImageResource(R.drawable.promote_ad);
+        promote.setImageResource(R.drawable.promote_bg);
         payPromote.setText(getString(R.string.pay_and_promote));
+        adText.setText(getString(R.string.ads_des));
 
         payPromote.setOnClickListener(this);
 
@@ -105,11 +116,24 @@ public class Promotead extends Fragment implements View.OnClickListener {
             }
         });
 
+        tick1.setColorFilter(getResources().getColor(R.color.colorPrimary));
+        tick2.setColorFilter(getResources().getColor(R.color.colorPrimary));
+        tick3.setColorFilter(getResources().getColor(R.color.colorPrimary));
+        tick4.setColorFilter(getResources().getColor(R.color.colorPrimary));
+        tagText.setText(getString(R.string.promote_tag_features));
+        tagText.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tagView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        adText1.setText(getString(R.string.promote_feature_list1));
+        adText2.setText(getString(R.string.promote_feature_list2));
+        adText3.setText(getString(R.string.promote_feature_list3));
+        adText4.setText(getString(R.string.promote_feature_list4));
+        productType.setText(getString(R.string.ad));
+        productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
         setAdapter();
     }
 
     private void setAdapter() {
-        adapter = new PromoteAdapter(getActivity(), CreatePromote.promoteItems);
+        adapter = new PromoteAdapter(getActivity(),CreatePromote.promoteItems);
         promoteList.setAdapter(adapter);
         promoteList.setExpanded(true);
     }
@@ -192,11 +216,11 @@ public class Promotead extends Fragment implements View.OnClickListener {
                     ((Activity)getActivity()).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showDialog(Promotead.this.getActivity(), getString(R.string.success), message);
+                            showDialog(Promotead.this.getActivity(), getString(R.string.success), getString(R.string.your_promotion_was_activated_successfully));
                         }
                     });
                 }else{
-                    TextbookTakeoverApplication.dialog(getActivity(), getString(R.string.alert), message);
+                    TextbookTakeoverApplication.dialog(getActivity(), getString(R.string.alert), getString(R.string.somethingwrong));
                 }
             } catch (JSONException e){
                 e.printStackTrace();
@@ -258,7 +282,6 @@ public class Promotead extends Fragment implements View.OnClickListener {
             View viewLine;
         }
 
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
@@ -289,7 +312,7 @@ public class Promotead extends Fragment implements View.OnClickListener {
                 }
 
                 holder.promotionName.setText(map.get(Constants.TAG_NAME));
-                holder.promotionDays.setText(map.get(Constants.TAG_DAYS) + " days");
+                holder.promotionDays.setText(map.get(Constants.TAG_DAYS) + " " + getString(R.string.days));
                 holder.promotionPrice.setText(CreatePromote.currencySymbol+
                         String.format("%.2f", Float.parseFloat(map.get(Constants.TAG_PRICE))));
 

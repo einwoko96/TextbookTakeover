@@ -20,10 +20,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.utils.Constants;
+import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
 import com.google.android.gcm.GCMRegistrar;
-import com.app.textbooktakeover.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity);
 
-		Constants.pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+		Constants.pref = getApplicationContext().getSharedPreferences("JoysalePref",
 				MODE_PRIVATE);
 		Constants.editor = Constants.pref.edit();
 
@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 					GetSet.setUserName(jonj.getString("user_name"));
 					GetSet.setFullName(jonj.getString("full_name"));
 					GetSet.setImageUrl(jonj.getString("photo"));
+					GetSet.setRating(DefensiveClass.optInt(jonj, "rating"));
 
 					Constants.editor.putBoolean("isLogged", true);
 					Constants.editor.putString("userId", GetSet.getUserId());
@@ -123,6 +124,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 					Constants.editor.putString("Password", GetSet.getPassword());
 					Constants.editor.putString("photo", GetSet.getImageUrl());
 					Constants.editor.putString("fullName", GetSet.getFullName());
+					Constants.editor.putString("rating", GetSet.getRating());
 					Constants.editor.putString("language", Constants.LANGUAGE);
 					Constants.editor.commit();
 
@@ -135,7 +137,17 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 					TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), jonj.getString("message"));
 				} else {
 					dialog.dismiss();
-					TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), jonj.getString("message"));
+					if (jonj.getString("message").equalsIgnoreCase("Please activate your account by the email sent to you")){
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), getString(R.string.please_activate_your_account));
+					} else if (jonj.getString("message").equalsIgnoreCase("Your account has been blocked by admin")){
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), getString(R.string.your_account_blocked_by_admin));
+					} else if (jonj.getString("message").equalsIgnoreCase("Please enter correct email and password")){
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), getString(R.string.please_enter_correct_email_and_password));
+					} else if (jonj.getString("message").equalsIgnoreCase("User not registered yet")){
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), getString(R.string.user_not_registered_yet));
+					} else {
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), jonj.getString("message"));
+					}
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -153,11 +165,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 	/**  For register push notification **/
 	public void  Registernotifi(){
 		Constants.REGISTER_ID = GCMRegistrar.getRegistrationId(getApplicationContext());
-		Log.v("enetered push","registerid="+ Constants.REGISTER_ID);
+		Log.v("enetered push","registerid="+Constants.REGISTER_ID);
 		Constants.editor.putString("registerId", Constants.REGISTER_ID);
 		Constants.editor.commit();
 
-		if(Constants.REGISTER_ID=="" || Constants.REGISTER_ID.equals("")){
+		if(Constants.REGISTER_ID=="" ||Constants.REGISTER_ID.equals("")){
 			GCMRegistrar.register(this, Constants.SENDER_ID);
 		}else{
 			if (GCMRegistrar.isRegisteredOnServer(this)) {
@@ -233,7 +245,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			dialog.setMessage("Please Wait...");
+			dialog.setMessage(getString(R.string.pleasewait));
 			dialog.setCancelable(false);
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.show();
@@ -249,9 +261,21 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 			try {
 				jonj = new JSONObject(result);
 				if (jonj.getString("status").equalsIgnoreCase("true")) {
-					TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.success), jonj.getString("message"));
+					String msg = jonj.getString("message");
+					if (msg.equalsIgnoreCase("Reset password link has been mailed to you")) {
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.success), getString(R.string.reset_password_link_mailed));
+					} else if (msg.equalsIgnoreCase("User not verified yet, activate the account from the email")) {
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), getString(R.string.user_not_verified_activate_account));
+					} else {
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.success), msg);
+					}
 				}else{
-					TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), jonj.getString("message"));
+					String msg = jonj.getString("message");
+					if (msg.equalsIgnoreCase("User not found")) {
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), getString(R.string.user_not_registered_yet));
+					} else {
+						TextbookTakeoverApplication.dialog(LoginActivity.this, getString(R.string.alert), msg);
+					}
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

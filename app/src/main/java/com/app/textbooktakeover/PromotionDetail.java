@@ -3,6 +3,7 @@ package com.app.textbooktakeover;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 
 import com.app.utils.Constants;
 import com.app.utils.GetSet;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -67,18 +70,65 @@ public class PromotionDetail extends Activity implements View.OnClickListener {
 
     /** set promotion details to elements **/
     private void setData() {
-        Picasso.with(PromotionDetail.this).load(Constants.url + "item/products/resized/350/" + data.get(Constants.TAG_ITEM_ID) + "/" + data.get(Constants.TAG_ITEM_IMAGE)).into(itemImage);
-        itemName.setText(data.get(Constants.TAG_ITEM_NAME));
-        promotionType.setText(data.get(Constants.TAG_PROMOTION_NAME));
-        paidAmount.setText(data.get(Constants.TAG_CURRENCY_SYM)+data.get(Constants.TAG_PAID_AMOUNT));
-        transactionId.setText(data.get(Constants.TAG_TRANSACTION_ID));
-        upto.setText(data.get(Constants.TAG_UPTO));
-        status.setText(data.get(Constants.TAG_STATUS));
-        //if(data.get(Constants.TAG_STATUS).equalsIgnoreCase("expired"))
-        if (data.get(Constants.TAG_PROMOTION_NAME).equals("urgent")){
-            dateLay.setVisibility(View.GONE);
-        } else {
-            dateLay.setVisibility(View.VISIBLE);
+        try {
+            Picasso.with(PromotionDetail.this).load(Constants.url + "item/products/resized/350/" + data.get(Constants.TAG_ITEM_ID) + "/" + data.get(Constants.TAG_ITEM_IMAGE)).into(itemImage);
+            itemName.setText(data.get(Constants.TAG_ITEM_NAME));
+            paidAmount.setText(data.get(Constants.TAG_CURRENCY_SYM)+data.get(Constants.TAG_PAID_AMOUNT));
+            transactionId.setText(data.get(Constants.TAG_TRANSACTION_ID));
+            if (data.get(Constants.TAG_PROMOTION_NAME).equalsIgnoreCase("urgent")){
+                promotionType.setText(getString(R.string.urgent));
+            } else {
+                promotionType.setText(getString(R.string.ad));
+            }
+            if (data.get(Constants.TAG_STATUS).equalsIgnoreCase("Live")){
+                status.setText(getString(R.string.live));
+            } else {
+                status.setText(getString(R.string.expired));
+            }
+            if (data.get(Constants.TAG_PROMOTION_NAME).equals("urgent")){
+                dateLay.setVisibility(View.GONE);
+            } else {
+                dateLay.setVisibility(View.VISIBLE);
+            }
+
+            if (TextbookTakeoverApplication.isRTL(PromotionDetail.this)){
+                itemName.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            } else {
+                itemName.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            }
+
+            String uptoD = data.get(Constants.TAG_UPTO);
+            if (uptoD.contains("-")){
+                String[] date = uptoD.split(" - ");
+                long timestamp0 = 0, timestamp1 = 0;
+                if(date[0] != null && date[1] != null){
+                    timestamp0 = Long.parseLong(date[0]);
+                    timestamp1 = Long.parseLong(date[1]);
+
+                    upto.setText(getDate(timestamp0) + " - " + getDate(timestamp1));
+                }
+            }
+
+        } catch(NullPointerException e){
+            e.printStackTrace();
+        } catch(NumberFormatException e){
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * To convert timestamp to Date
+     **/
+    private String getDate(long timeStamp) {
+
+        try {
+            DateFormat sdf = new SimpleDateFormat("MMM d, yyyy", getResources().getConfiguration().locale);
+            Date netDate = (new Date(timeStamp * 1000));
+            return sdf.format(netDate);
+        } catch (Exception ex) {
+            return "xx";
         }
     }
 

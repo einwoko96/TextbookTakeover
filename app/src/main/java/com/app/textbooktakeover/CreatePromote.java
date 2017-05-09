@@ -15,9 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.utils.Constants;
-import com.app.utils.DefensiveClass;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
+import com.app.utils.DefensiveClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;

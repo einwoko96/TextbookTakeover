@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +19,11 @@ import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.text.InputFilter;
+import android.text.Spannable;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -38,17 +44,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.buynow.AddAddress;
+import com.app.buynow.Addresses;
+import com.app.buynow.Checkout;
 import com.app.external.HorizontalListView;
+import com.app.external.MyTagHandler;
+import com.app.external.TimeAgo;
+import com.app.external.URLSpanNoUnderline;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.ItemsParsing;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.nirhart.parallaxscroll.views.ParallaxScrollView;
 import com.nirhart.parallaxscroll.views.ParallaxScrollView.OnScrollViewListener;
 import com.squareup.picasso.Picasso;
@@ -70,11 +82,11 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
 
     ImageView backBtn, shareBtn, settingBtn, mblVerify, fbVerify, mailVerify;
     TextView title, itemPrice, itemCond, likeCount, userName, description, itemStatus,
-            postedTime, viewCount, moreItems, location, chat, offer, titleText, call;
+            postedTime, viewCount, moreItems, location, chat, offer, titleText, call, ratingCount;
     ImageView image, userImg, map, likeImg, edit;
     Display display;
     int height1, height2, screenWidth2, screenWidth, listHeight, screenheight, position, screenHalf;
-    RelativeLayout actionbar, main;
+    RelativeLayout actionbar, main, reviewLay;
     LinearLayout commentLay, detailLay;
     HorizontalListView listView;
     Target target;
@@ -93,6 +105,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
     public static boolean fromEdit = false;
     AVLoadingIndicatorView progress;
     public HashMap<String, String> backupMap = new HashMap<String, String>();
+    RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +147,9 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
         progress = (AVLoadingIndicatorView) findViewById(R.id.progress);
         titleText = (TextView) findViewById(R.id.title_text);
         call = (TextView) findViewById(R.id.call);
+        reviewLay = (RelativeLayout) findViewById(R.id.reviewLay);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingCount = (TextView) findViewById(R.id.ratingCount);
 
         actionbar.bringToFront();
 
@@ -177,6 +193,11 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
 
         viewPager.getLayoutParams().height = height2;
 
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable().getCurrent();
+        stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(0).setColorFilter(getResources().getColor(R.color.secondaryText), PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(1).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+
         setData();
 
         new moreLoadItems().execute(0);
@@ -214,12 +235,42 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
         likeCount.setText(itemMap.get(Constants.TAG_LIKECOUNT) + " " + getResources().getString(R.string.likes));
         commentCount.setText(itemMap.get(Constants.TAG_COMMENTCOUNT) + " " + getResources().getString(R.string.comments));
         userName.setText(itemMap.get(Constants.TAG_SELLERNAME));
-        description.setText(itemMap.get(Constants.TAG_ITEM_DES));
-        postedTime.setText(itemMap.get(Constants.TAG_POSTED_TIME));
+        Spannable spannedText = (Spannable) Html.fromHtml(itemMap.get(Constants.TAG_ITEM_DES), null, new MyTagHandler());
+        description.setText(spannedText);
+        description.setMovementMethod(LinkMovementMethod.getInstance());
+        stripUnderlines(description);
         viewCount.setText(TextbookTakeoverApplication.format(Double.parseDouble(itemMap.get(Constants.TAG_VIEWCOUNT))) + " " + getResources().getString(R.string.views));
         moreItems.setText(getResources().getString(R.string.more_items_from) + " " + itemMap.get(Constants.TAG_SELLERNAME));
         location.setText(itemMap.get(Constants.TAG_LOCATION));
         shopaddress = itemMap.get(Constants.TAG_LOCATION);
+
+        if (!itemMap.get(Constants.TAG_SELLERID).equals(GetSet.getUserId())){
+            new checkItemStatus().execute();
+        }
+
+        if (TextbookTakeoverApplication.isRTL(DetailActivity.this)){
+            title.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            description.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+        } else {
+            title.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            description.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        }
+
+        try {
+            long timestamp = 0;
+            String time = itemMap.get(Constants.TAG_POSTED_TIME);
+            if(time != null){
+                timestamp = Long.parseLong(time) * 1000;
+            }
+            TimeAgo timeAgo = new TimeAgo(DetailActivity.this);
+            postedTime.setText(timeAgo.timeAgo(timestamp));
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         String url = "http://maps.google.com/maps/api/staticmap?center=" + itemMap.get(Constants.TAG_LATITUDE) + "," + itemMap.get(Constants.TAG_LONGITUDE) +
                 "&zoom=15&size=" + screenWidth2 + "x" + screenWidth2 / 2 + "&sensor=false";
@@ -240,20 +291,41 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
 
         if (itemMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
             itemStatus.setVisibility(View.VISIBLE);
-            itemStatus.setText("Sold");
+            itemStatus.setText(getString(R.string.sold));
             itemStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.soldbg));
         } else {
-            if(itemMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
-                itemStatus.setVisibility(View.VISIBLE);
-                itemStatus.setText("Ad");
-                itemStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
-            } else if(itemMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
-                itemStatus.setVisibility(View.VISIBLE);
-                itemStatus.setText("Urgent");
-                itemStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+            if (Constants.PROMOTION){
+                if(itemMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
+                    itemStatus.setVisibility(View.VISIBLE);
+                    itemStatus.setText(getString(R.string.ad));
+                    itemStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
+                } else if(itemMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
+                    itemStatus.setVisibility(View.VISIBLE);
+                    itemStatus.setText(getString(R.string.urgent));
+                    itemStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                } else {
+                    itemStatus.setVisibility(View.GONE);
+                }
             } else {
                 itemStatus.setVisibility(View.GONE);
             }
+
+        }
+
+        if (Constants.BUYNOW){
+            reviewLay.setVisibility(View.VISIBLE);
+            try {
+                ratingBar.setRating(Float.parseFloat(itemMap.get(Constants.TAG_SELLER_RATING)));
+                ratingCount.setText("(" + itemMap.get(Constants.TAG_SELLER_RATING) + ")");
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            } catch (NumberFormatException e){
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            reviewLay.setVisibility(View.GONE);
         }
 
         if (itemMap.get(Constants.TAG_FACEBOOK_VERIFICATION).equals("true")){
@@ -326,7 +398,6 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
 
         }
     };
-
 
     /** for change the bottom button by user **/
     private void checkUser() {
@@ -527,6 +598,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
             req.addProperty("item_id", itemMap.get(Constants.TAG_ID));
             req.addProperty("offset", Integer.toString(offset));
             req.addProperty("limit", "20");
+            req.addProperty("user_id", "");
 
             SOAPParsing soap = new SOAPParsing();
             String json = soap.getJSONFromUrl(SOAP_ACTION, req);
@@ -630,26 +702,40 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 holder.itemPrice.setText(tempMap.get(Constants.TAG_CURRENCY_SYM) + " "
                         + tempMap.get(Constants.TAG_PRICE));
                 holder.location.setText(tempMap.get(Constants.TAG_LOCATION));
-                holder.postedTime.setText(tempMap.get(Constants.TAG_POSTED_TIME).toUpperCase());
 
                 if (tempMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
                     holder.productType.setVisibility(View.VISIBLE);
-                    holder.productType.setText("Sold");
+                    holder.productType.setText(getString(R.string.sold));
                     holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.soldbg));
                 } else {
-                    if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
-                        holder.productType.setVisibility(View.VISIBLE);
-                        holder.productType.setText("Ad");
-                        holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
-                    } else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
-                        holder.productType.setVisibility(View.VISIBLE);
-                        holder.productType.setText("Urgent");
-                        holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                    if (Constants.PROMOTION){
+                        if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
+                            holder.productType.setVisibility(View.VISIBLE);
+                            holder.productType.setText(getString(R.string.ad));
+                            holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
+                        } else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
+                            holder.productType.setVisibility(View.VISIBLE);
+                            holder.productType.setText(getString(R.string.urgent));
+                            holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+                        } else {
+                            holder.productType.setVisibility(View.GONE);
+                        }
                     } else {
                         holder.productType.setVisibility(View.GONE);
                     }
                 }
+
+                long timestamp = 0;
+                String time = tempMap.get(Constants.TAG_POSTED_TIME);
+                if(time != null){
+                    timestamp = Long.parseLong(time) * 1000;
+                }
+                TimeAgo timeAgo = new TimeAgo(mContext);
+                holder.postedTime.setText(timeAgo.timeAgo(timestamp));
+
             } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch(NumberFormatException e){
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -686,25 +772,32 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 if (status.equalsIgnoreCase("true")) {
                     String count = itemMap.get(Constants.TAG_VIEWCOUNT);
                     viewCount.setText(TextbookTakeoverApplication.format(Double.parseDouble(count)) + " " + getResources().getString(R.string.views));
-                    int view = (Integer.parseInt(count) + 1);
-    				switch (from){
-    				case "home":
-    					FragmentMainActivity.HomeItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
-    					break;
-    				case "search":
-    					SearchActivity.HomeItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
-    					break;
-    				case "mylisting":
-    					MyListing.AddedItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
-    					break;
-    				case "liked":
-    					LikedItems.likedItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
-    					break;
-    				case "detail":
-						Log.v("FromDetail","FromDetailUpdated"+MoreItems.get(position).get(Constants.TAG_ID)+" "+MoreItems.get(position).get(Constants.TAG_VIEWCOUNT));
-    					MoreItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
-    					break;
-    				}
+                    final int view = (Integer.parseInt(count) + 1);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            switch (from){
+                                case "home":
+                                    FragmentMainActivity.HomeItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
+                                    FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+                                    break;
+                                case "search":
+                                    SearchActivity.HomeItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
+                                    FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+                                    break;
+                                case "mylisting":
+                                    MyListing.AddedItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
+                                    break;
+                                case "liked":
+                                    LikedItems.likedItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
+                                    break;
+                                case "detail":
+                                    Log.v("FromDetail","FromDetailUpdated"+MoreItems.get(position).get(Constants.TAG_ID)+" "+MoreItems.get(position).get(Constants.TAG_VIEWCOUNT));
+                                    MoreItems.get(position).put(Constants.TAG_VIEWCOUNT, Integer.toString(view));
+                                    break;
+                            }
+                        }
+                    });
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -903,7 +996,11 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 JSONObject json = new JSONObject(res);
                 String response = DefensiveClass.optString(json, Constants.TAG_STATUS);
                 if (response.equalsIgnoreCase("true")) {
-                    Toast.makeText(DetailActivity.this, DefensiveClass.optString(json, Constants.TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                    if (DefensiveClass.optString(json, Constants.TAG_MESSAGE).equalsIgnoreCase("Item Status changed to Sold")){
+                        Toast.makeText(DetailActivity.this, getString(R.string.item_status_changed_to_sold), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(DetailActivity.this, getString(R.string.item_status_changed_to_available), Toast.LENGTH_LONG).show();
+                    }
                     String value = "";
                     String promotionType = "";
                     if (itemMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
@@ -947,7 +1044,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                     }
                     finish();
                 } else {
-                    Toast.makeText(DetailActivity.this, DefensiveClass.optString(json, Constants.TAG_MESSAGE), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, getString(R.string.somethingwrong), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e){
                 e.printStackTrace();
@@ -985,7 +1082,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 JSONObject json = new JSONObject(res);
                 String response = DefensiveClass.optString(json, Constants.TAG_STATUS);
                 if (response.equalsIgnoreCase("true")) {
-                    Toast.makeText(DetailActivity.this, DefensiveClass.optString(json, Constants.TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailActivity.this, getString(R.string.product_deleted_duccessfully), Toast.LENGTH_LONG).show();
                     finish();
                     switch (from){
                         case "home":
@@ -1010,7 +1107,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                             break;
                     }
                 } else {
-                    Toast.makeText(DetailActivity.this, DefensiveClass.optString(json, Constants.TAG_MESSAGE), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, getString(R.string.somethingwrong), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e){
                 e.printStackTrace();
@@ -1053,9 +1150,49 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 JSONObject json = new JSONObject(res);
                 String response = DefensiveClass.optString(json, Constants.TAG_STATUS);
                 if (response.equalsIgnoreCase("true")) {
-                    Toast.makeText(DetailActivity.this, DefensiveClass.optString(json, Constants.TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailActivity.this, getString(R.string.message_send_successfully), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(DetailActivity.this, DefensiveClass.optString(json, Constants.TAG_MESSAGE), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, getString(R.string.somethingwrong), Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e){
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /** class for checking item approval or not **/
+    class checkItemStatus extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String SOAP_ACTION = Constants.NAMESPACE + Constants.API_CHECK_ITEM_STATUS;
+
+            SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_CHECK_ITEM_STATUS);
+            req.addProperty(Constants.SOAP_USERNAME, Constants.SOAP_USERNAME_VALUE);
+            req.addProperty(Constants.SOAP_PASSWORD, Constants.SOAP_PASSWORD_VALUE);
+            req.addProperty("item_id", itemMap.get(Constants.TAG_ID));
+
+            SOAPParsing soap = new SOAPParsing();
+            String json = soap.getJSONFromUrl(SOAP_ACTION, req);
+
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            try {
+                JSONObject json = new JSONObject(res);
+                String response = DefensiveClass.optString(json, Constants.TAG_STATUS);
+                if (response.equalsIgnoreCase("true")) {
+                    if (DefensiveClass.optInt(json, Constants.TAG_ITEM_APPROVE).equals("0")){
+                        approveDialog(DetailActivity.this);
+                    }
+                } else {
+                //    Toast.makeText(DetailActivity.this, getString(R.string.somethingwrong), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e){
                 e.printStackTrace();
@@ -1082,7 +1219,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
 
     /** for show the popupmenu window **/
     public void shareImage(View v) {
-        ArrayList<String> values = new ArrayList<>();
+        final ArrayList<String> values = new ArrayList<>();
 
         if (itemMap.get(Constants.TAG_SELLERID).equals(GetSet.getUserId())) {
             if (itemMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
@@ -1132,72 +1269,66 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                switch (position) {
-                    case 0:
-                        if (GetSet.isLogged()){
-                            if (isSeller) {
-                                confirmdialog(getString(R.string.delete_product_confirmation));
-                            } else {
-                                if (Constants.EXCHANGE && itemMap.get(Constants.TAG_EXCHANGE_BUY).equals("1")) {
-                                    Intent i = new Intent(DetailActivity.this, CreateExchange.class);
-                                    i.putExtra("itemId", itemMap.get(Constants.TAG_ID));
-                                    startActivity(i);
-                                } else if (Constants.BUYNOW && itemMap.get(Constants.TAG_MAKE_OFFER).equals("0")){
-                                    dialog(getString(R.string.make_an_offer), itemMap.get(Constants.TAG_SELLERIMG));
-                                } else {
-                                    if (itemMap.get(Constants.TAG_REPORT).equals("yes")) {
-                                        confirmdialog(getString(R.string.undoreport_product_confirmation));
-                                    } else {
-                                        confirmdialog(getString(R.string.report_product_confirmation));
-                                    }
-                                }
-                            }
-                        } else {
-                            Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
-                            startActivity(j);
-                        }
-                        popup.dismiss();
-                        break;
-                    case 1:
-                        if (GetSet.isLogged()){
-                            if (isSeller) {
-                                if (itemMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
-                                    confirmdialog(getString(R.string.back_sale_confirmation));
-                                } else {
-                                    confirmdialog(getString(R.string.sold_product_confirmation));
-                                }
-                            } else {
-                                if (Constants.BUYNOW && itemMap.get(Constants.TAG_MAKE_OFFER).equals("0")){
-                                    dialog(getString(R.string.make_an_offer), itemMap.get(Constants.TAG_SELLERIMG));
-                                } else {
-                                    if (itemMap.get(Constants.TAG_REPORT).equals("yes")) {
-                                        confirmdialog(getString(R.string.undoreport_product_confirmation));
-                                    } else {
-                                        confirmdialog(getString(R.string.report_product_confirmation));
-                                    }
-                                }
-                            }
-                        } else {
-                            Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
-                            startActivity(j);
-                        }
-                        popup.dismiss();
-                        break;
-                    case 2:
-                        if (GetSet.isLogged()){
-                            if (!isSeller) {
-                                if (itemMap.get(Constants.TAG_REPORT).equals("yes")) {
-                                    confirmdialog(getString(R.string.undoreport_product_confirmation));
-                                } else {
-                                    confirmdialog(getString(R.string.report_product_confirmation));
-                                }
-                            }
-                        }
-                        popup.dismiss();
-                        break;
-                }
+                popup.dismiss();
+                openAction(values.get(position));
             }
         });
+    }
+
+    public void openAction(String from) {
+        Log.v("from", "from=" + from);
+        if (from.equals(getString(R.string.delete_product))) {
+            if (GetSet.isLogged()){
+                confirmdialog(getString(R.string.delete_product_confirmation));
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        } else if (from.equals(getString(R.string.back_to_sale))) {
+            if (GetSet.isLogged()){
+                confirmdialog(getString(R.string.back_sale_confirmation));
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        } else if (from.equals(getString(R.string.mark_as_sold))) {
+            if (GetSet.isLogged()){
+                confirmdialog(getString(R.string.sold_product_confirmation));
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        } else if (from.equals(getString(R.string.create_exchange))) {
+            if (GetSet.isLogged()){
+                Intent i = new Intent(DetailActivity.this, CreateExchange.class);
+                i.putExtra("itemId", itemMap.get(Constants.TAG_ID));
+                startActivity(i);
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        } else if (from.equals(getString(R.string.make_an_offer))) {
+            if (GetSet.isLogged()){
+                dialog(getString(R.string.make_an_offer), itemMap.get(Constants.TAG_SELLERIMG));
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        } else if (from.equals(getString(R.string.undo_report))) {
+            if (GetSet.isLogged()){
+                confirmdialog(getString(R.string.undoreport_product_confirmation));
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        } else if (from.equals(getString(R.string.report_product))) {
+            if (GetSet.isLogged()){
+                confirmdialog(getString(R.string.report_product_confirmation));
+            } else {
+                Intent j = new Intent(DetailActivity.this, WelcomeActivity.class);
+                startActivity(j);
+            }
+        }
     }
 
     /** class for like & unlike the product **/
@@ -1315,6 +1446,11 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 String status = json.getString(Constants.TAG_STATUS);
                 String message = json.getString(Constants.TAG_MESSAGE);
                 if (status.equalsIgnoreCase("true")) {
+                    if (message.equalsIgnoreCase("Reported Successfully")){
+                        message = getString(R.string.reported_successfully);
+                    } else {
+                        message = getString(R.string.unreported_successfully);
+                    }
                     Toast.makeText(DetailActivity.this, message, Toast.LENGTH_LONG).show();
 					if(itemMap.get(Constants.TAG_REPORT).equals("yes")){
                         itemMap.put(Constants.TAG_REPORT, "no");
@@ -1644,7 +1780,7 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 this.dialog.dismiss();
             }
 
-            /*if (addressAry.size() > 0){
+            if (addressAry.size() > 0){
                 int haveDefaultAddress = 0;
                 for (int i = 0; i < addressAry.size(); i++){
                     if (addressAry.get(i).get(Constants.TAG_DEFAULTSHIPPING).equals("1")) {
@@ -1671,8 +1807,86 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
                 i.putExtra("to", "add");
                 i.putExtra("itemData", itemMap);
                 startActivity(i);
-            }*/
+            }
         }
+    }
+
+    public void approveDialog(final Context ctx) {
+        final Dialog dialog = new Dialog(DetailActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.default_dialog);
+
+        dialog.getWindow().setLayout(display.getWidth()*90/100, LinearLayout.LayoutParams.WRAP_CONTENT);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView message = (TextView) dialog.findViewById(R.id.alert_msg);
+        TextView ok = (TextView) dialog.findViewById(R.id.alert_button);
+        TextView cancel = (TextView) dialog.findViewById(R.id.cancel_button);
+
+        message.setText(getString(R.string.product_waiting_for_admin_approval));
+
+        cancel.setVisibility(View.GONE);
+
+        ok.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    switch (from){
+                        case "home":
+                            FragmentMainActivity.HomeItems.remove(position);
+                            FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+                            break;
+                        case "search":
+                            SearchActivity.HomeItems.remove(position);
+                            SearchActivity.homeAdapter.notifyDataSetChanged();
+                            break;
+                        case "mylisting":
+                            MyListing.AddedItems.remove(position);
+                            MyListing.itemAdapter.notifyDataSetChanged();
+                            break;
+                        case "liked":
+                            LikedItems.likedItems.remove(position);
+                            LikedItems.itemAdapter.notifyDataSetChanged();
+                            break;
+                        case "detail":
+                            MoreItems.remove(position);
+                            itemAdapter.notifyDataSetChanged();
+                            break;
+                    }
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                } catch (IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+                ((Activity)ctx).finish();
+            }
+        });
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    private void stripUnderlines(TextView textView) {
+        Spannable s = (Spannable) (textView.getText());
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span: spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
     }
 
     @Override
@@ -1681,7 +1895,6 @@ public class DetailActivity extends Activity implements OnClickListener, OnScrol
         super.onBackPressed();
         this.finish();
     }
-
 
     @Override
     public void onClick(View v) {

@@ -24,15 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.external.Preview;
-import com.app.textbooktakeover.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.Manifest.permission.CAMERA;
 
 /**
  * Created by hitasoft on 27/6/16.

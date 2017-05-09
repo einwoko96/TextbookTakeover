@@ -131,7 +131,7 @@ public class MySale extends Fragment implements FragmentChangeListener,AbsListVi
         @Override
         protected Void doInBackground(Integer... params) {
             int offset = (params[0] * 20);
-            //final String json = JoysaleApplication.loadJSONFromAsset(getActivity(), "MySale.json");
+            //final String json = TextbookTakeoverApplication.loadJSONFromAsset(getActivity(), "MySale.json");
             String SOAP_ACTION = Constants.NAMESPACE + Constants.API_MYSALE;
 
             SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_MYSALE);

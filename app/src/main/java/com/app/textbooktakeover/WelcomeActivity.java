@@ -20,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.utils.Constants;
-import com.app.utils.DefensiveClass;
-import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
@@ -38,7 +36,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.app.textbooktakeover.R;
+import com.app.utils.DefensiveClass;
+import com.app.utils.GetSet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -497,6 +496,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                     GetSet.setUserName(results.getString("user_name"));
                     GetSet.setFullName(DefensiveClass.optString(results, "full_name"));
                     GetSet.setImageUrl(results.getString("photo"));
+                    GetSet.setRating(DefensiveClass.optInt(results, "rating"));
 
                     Constants.editor.putBoolean("isLogged", true);
                     Constants.editor.putString("userId", GetSet.getUserId());
@@ -505,6 +505,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                     Constants.editor.putString("Password", "");
                     Constants.editor.putString("photo", GetSet.getImageUrl());
                     Constants.editor.putString("fullName", GetSet.getFullName());
+                    Constants.editor.putString("rating", GetSet.getRating());
                     Constants.editor.putString("language", Constants.LANGUAGE);
                     Constants.editor.commit();
 
@@ -515,6 +516,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                     Constants.editor.putString("twtPassword", "");
                     Constants.editor.putString("twtphoto", GetSet.getImageUrl());
                     Constants.editor.putString("twtfullname", GetSet.getFullName());
+                    Constants.editor.putString("twtrating", GetSet.getRating());
                     Constants.editor.putBoolean(PREF_KEY_TWITTER_LOGIN, false);
                     Constants.editor.commit();
 
@@ -525,9 +527,16 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
                 } else if(status.equalsIgnoreCase("false")){
                     if(results.getString(Constants.TAG_MESSAGE).equalsIgnoreCase("Account not found")){
-                        getEmailForTwitter(datas);}
-                    else{
-                        TextbookTakeoverApplication.dialog(WelcomeActivity.this, getString(R.string.alert), results.getString(Constants.TAG_MESSAGE));
+                        getEmailForTwitter(datas);
+                    } else{
+                        if (results.getString(Constants.TAG_MESSAGE).equalsIgnoreCase("Email Already Exist")){
+                            TextbookTakeoverApplication.dialog(WelcomeActivity.this, getString(R.string.alert), getString(R.string.email_already_exists));
+                        } else if (results.getString(Constants.TAG_MESSAGE).equalsIgnoreCase("Your account has been blocked by admin")){
+                            TextbookTakeoverApplication.dialog(WelcomeActivity.this, getString(R.string.alert), getString(R.string.your_account_blocked_by_admin));
+                        } else {
+                            TextbookTakeoverApplication.dialog(WelcomeActivity.this, getString(R.string.alert), results.getString(Constants.TAG_MESSAGE));
+                        }
+
                         Constants.editor.putBoolean(PREF_KEY_TWITTER_LOGIN, false);
                         Constants.editor.commit();
                     }
@@ -562,11 +571,11 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     /**  For register push notification **/
     public void  Registernotifi(){
         Constants.REGISTER_ID = GCMRegistrar.getRegistrationId(getApplicationContext());
-        Log.v("enetered push","registerid="+ Constants.REGISTER_ID);
+        Log.v("enetered push","registerid="+Constants.REGISTER_ID);
         Constants.editor.putString("registerId", Constants.REGISTER_ID);
         Constants.editor.commit();
 
-        if(Constants.REGISTER_ID=="" || Constants.REGISTER_ID.equals("")){
+        if(Constants.REGISTER_ID=="" ||Constants.REGISTER_ID.equals("")){
             GCMRegistrar.register(this, Constants.SENDER_ID);
         }else{
             if (GCMRegistrar.isRegisteredOnServer(this)) {

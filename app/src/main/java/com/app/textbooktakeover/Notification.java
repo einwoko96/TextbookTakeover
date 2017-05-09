@@ -27,7 +27,7 @@ import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.ItemsParsing;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
+import com.app.buynow.MySalesnOrder;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -36,7 +36,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.SoapObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -79,7 +82,7 @@ public class Notification extends AppCompatActivity implements AbsListView.OnScr
         swipeLayout.setOnRefreshListener(this);
 
         // For Set Login & Logout State
-        Constants.pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+        Constants.pref = getApplicationContext().getSharedPreferences("JoysalePref",
                 MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
         if (Constants.pref.getBoolean("isLogged", false)) {
@@ -90,6 +93,7 @@ public class Notification extends AppCompatActivity implements AbsListView.OnScr
             GetSet.setPassword(Constants.pref.getString("Password", null));
             GetSet.setFullName(Constants.pref.getString("fullName", null));
             GetSet.setImageUrl(Constants.pref.getString("photo", null));
+            GetSet.setRating(Constants.pref.getString("rating", "0"));
         }
 
         new getNotification().execute(0);
@@ -316,65 +320,158 @@ public class Notification extends AppCompatActivity implements AbsListView.OnScr
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            final HashMap<String, String> tempMap = dataNotifi.get(position);
-            String type = tempMap.get(Constants.TAG_TYPE);
+            try {
+                final HashMap<String, String> tempMap = dataNotifi.get(position);
+                String type = tempMap.get(Constants.TAG_TYPE);
 
-            holder.time.setText(tempMap.get(Constants.TAG_EVENTTIME));
-            Picasso.with(Notification.this).load(tempMap.get(Constants.TAG_USERIMAGE)).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(holder.userImage);
-
-            if (type.equals("admin") || type.equals("adminpayment")){
-                String name = "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + getString(R.string.app_name) + "</font>" + " sent message '" + tempMap.get(Constants.TAG_MESSAGE) + "'";
-                holder.user_name.setText(Html.fromHtml(name));
-                holder.arrow.setVisibility(View.GONE);
-            } else if (type.equals("follow") || type.equals("order")) {
-                String name = "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_USERNAME) + "</font>" + " " + tempMap.get(Constants.TAG_MESSAGE);
-                holder.user_name.setText(Html.fromHtml(name));
-                holder.arrow.setVisibility(View.VISIBLE);
-            } else {
-                String name = "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_USERNAME) + "</font>" + " " + tempMap.get(Constants.TAG_MESSAGE)
-                        + " " + "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_ITEM_TITLE) + "</font>";
-                holder.user_name.setText(Html.fromHtml(name));
-                holder.arrow.setVisibility(View.VISIBLE);
-            }
-
-            holder.userImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!tempMap.get(Constants.TAG_TYPE).equals("admin") && !tempMap.get(Constants.TAG_TYPE).equals("adminpayment")){
-                        Intent i = new Intent(Notification.this, Profile.class);
-                        i.putExtra("userId", tempMap.get(Constants.TAG_USERID));
-                        startActivity(i);
-                    }
+                if (TextbookTakeoverApplication.isRTL(context)){
+                    holder.arrow.setRotation(180);
+                } else {
+                    holder.arrow.setRotation(0);
                 }
-            });
 
-            holder.mainLay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.mainLay.setOnClickListener(null);
-                    String type = tempMap.get(Constants.TAG_TYPE);
-                    if (type.equals("add") || type.equals("like") || type.equals("comment")) {
-                        try {
-                            new homeLoadItems().execute(tempMap.get(Constants.TAG_ITEM_ID));
-                            holder.mainLay.setOnClickListener(this);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                Picasso.with(Notification.this).load(tempMap.get(Constants.TAG_USERIMAGE)).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(holder.userImage);
+
+                if (type.equals("admin") || type.equals("adminpayment")){
+                    String name = "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + getString(R.string.app_name) + "</font> " +  getString(R.string.sent_message) + " " + translateNotification(tempMap.get(Constants.TAG_MESSAGE)) + "'";
+                    holder.user_name.setText(Html.fromHtml(name));
+                    holder.arrow.setVisibility(View.INVISIBLE);
+                } else if (type.equals("follow") || type.equals("order")) {
+                    String name = "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_USERNAME) + "</font>" + " " + translateNotification(tempMap.get(Constants.TAG_MESSAGE));
+                    holder.user_name.setText(Html.fromHtml(name));
+                    holder.arrow.setVisibility(View.VISIBLE);
+                } else {
+                    String name = "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_USERNAME) + "</font>" + " " + translateNotification(tempMap.get(Constants.TAG_MESSAGE))
+                            + " " + "<font color='" + String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorPrimary))) + "'>" + tempMap.get(Constants.TAG_ITEM_TITLE) + "</font>";
+                    holder.user_name.setText(Html.fromHtml(name));
+                    holder.arrow.setVisibility(View.VISIBLE);
+                }
+
+                holder.userImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!tempMap.get(Constants.TAG_TYPE).equals("admin") && !tempMap.get(Constants.TAG_TYPE).equals("adminpayment")){
+                            Intent i = new Intent(Notification.this, Profile.class);
+                            i.putExtra("userId", tempMap.get(Constants.TAG_USERID));
+                            startActivity(i);
                         }
-                    } else if (type.equals("follow") || type.equals("order")){
-                        Intent i = new Intent(Notification.this, Profile.class);
-                        i.putExtra("userId", tempMap.get(Constants.TAG_USERID));
-                        startActivity(i);
-                    } else if (type.equals("myoffer")){
-                        Intent i = new Intent(Notification.this, MessageActivity.class);
-                        startActivity(i);
-                    } else if (type.equals("exchange")) {
-                        Intent i = new Intent(Notification.this, ExchangeActivity.class);
-                        startActivity(i);
                     }
+                });
+
+                holder.mainLay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.mainLay.setOnClickListener(null);
+                        String type = tempMap.get(Constants.TAG_TYPE);
+                        if (type.equals("add") || type.equals("like") || type.equals("comment")) {
+                            try {
+                                new homeLoadItems().execute(tempMap.get(Constants.TAG_ITEM_ID));
+                                holder.mainLay.setOnClickListener(this);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if (type.equals("follow")){
+                            Intent i = new Intent(Notification.this, Profile.class);
+                            i.putExtra("userId", tempMap.get(Constants.TAG_USERID));
+                            startActivity(i);
+                        } else if (type.equals("myoffer")){
+                            Intent i = new Intent(Notification.this, MessageActivity.class);
+                            startActivity(i);
+                        } else if (type.equals("exchange")) {
+                            Intent i = new Intent(Notification.this, ExchangeActivity.class);
+                            startActivity(i);
+                        } else if (type.equals("order")) {
+                            Intent k = new Intent(Notification.this, MySalesnOrder.class);
+                            startActivity(k);
+                        }
+                    }
+                });
+
+                long timestamp = 0;
+                String time = tempMap.get(Constants.TAG_EVENTTIME);
+                if(time != null){
+                    timestamp = Long.parseLong(time);
                 }
-            });
+                holder.time.setText(getDate(timestamp));
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch(NumberFormatException e){
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return convertView;
         }
+    }
+
+    /**
+     * To convert timestamp to Date
+     **/
+    private String getDate(long timeStamp) {
+
+        try {
+            DateFormat sdf = new SimpleDateFormat("MMM d, yyyy", getResources().getConfiguration().locale);
+            Date netDate = (new Date(timeStamp * 1000));
+            return sdf.format(netDate);
+        } catch (Exception ex) {
+            return "xx";
+        }
+    }
+
+    private String translateNotification (String message){
+        String msg="";
+        if (message.contains("start Following you")){
+            msg = message.replace("start Following you", getString(R.string.start_following_you));
+        } else if (message.contains("added a product")){
+            msg = message.replace("added a product", getString(R.string.added_a_product));
+        } else if (message.contains("liked your product")){
+            msg = message.replace("liked your product", getString(R.string.liked_your_product));
+        } else if (message.contains("comment on your product")){
+            msg = message.replace("comment on your product", getString(R.string.comment_on_your_product));
+        } else if (message.contains("sent offer request")){
+            msg = message.replace("sent offer request", getString(R.string.sent_offer_request)).
+                    replace("on your product", getString(R.string.on_your_product));
+        } else if (message.contains("sent exchange request to your product")){
+            msg = message.replace("sent exchange request to your product", getString(R.string.sent_exchange_request_to_your_product));
+        } else if (message.contains("accepted your exchange request on")){
+            msg = message.replace("accepted your exchange request on", getString(R.string.accepted_your_exchange_request_on));
+        } else if (message.contains("declined your exchange request on")){
+            msg = message.replace("declined your exchange request on", getString(R.string.declined_your_exchange_request_on));
+        } else if (message.contains("canceled your exchange request on")){
+            msg = message.replace("canceled your exchange request on", getString(R.string.canceled_your_exchange_request_on));
+        } else if (message.contains("successed your exchange request on")){
+            msg = message.replace("successed your exchange request on", getString(R.string.successed_your_exchange_request_on));
+        } else if (message.contains("failed your exchange request on")){
+            msg = message.replace("failed your exchange request on", getString(R.string.failed_your_exchange_request_on));
+        } else if (message.contains("contacted you on your product")){
+            msg = message.replace("contacted you on your product", getString(R.string.contacted_you_on_your_product));
+        } else if (message.contains("sent message")){
+            msg = message.replace("sent message", getString(R.string.sent_message));
+        } else if (message.contains("placed an order in your shop, order id :")){
+            msg = message.replace("placed an order in your shop, order id :", getString(R.string.placed_an_order_in_your_shop));
+        } else if (message.contains("your order has been cancelled Order Id :")){
+            msg = message.replace("your order has been cancelled Order Id :", getString(R.string.your_order_has_been_cancelled));
+        } else if (message.contains("added tracking details for your order. Order Id :")){
+            msg = message.replace("added tracking details for your order. Order Id :", getString(R.string.added_tracking_details_for_your_order));
+        } else if (message.contains("has marked your order as delivered. Order Id :")){
+            msg = message.replace("has marked your order as delivered. Order Id :", getString(R.string.has_marked_your_order_as_delivered));
+        } else if (message.contains("paid the amount for your order. Order Id :")){
+            msg = message.replace("paid the amount for your order. Order Id :", getString(R.string.paid_the_amount_for_your_order));
+        } else if (message.contains("refunded the amount for your order. Order Id :")){
+            msg = message.replace("refunded the amount for your order. Order Id :", getString(R.string.refunded_the_amount_for_your_order));
+        } else if (message.contains("You have promoted your product")){
+            msg = message.replace("You have promoted your product", getString(R.string.you_have_promoted_your_product)).replace("by", getString(R.string.by));
+        } else if (message.contains("your order has been marked as shipped Order Id :")){
+            msg = message.replace("your order has been marked as shipped Order Id :", getString(R.string.your_order_has_been_shipped));
+        } else if (message.contains("your order has been marked as processing Order Id :")){
+            msg = message.replace("your order has been marked as processing Order Id :", getString(R.string.your_order_has_been_processing));
+        } else if (message.contains("your order has been marked as delivered Order Id :")){
+            msg = message.replace("your order has been marked as delivered Order Id :", getString(R.string.your_order_has_been_delivered));
+        } else {
+            msg = message;
+        }
+        return msg;
     }
 
     // home items //

@@ -33,12 +33,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.helper.Chat;
+import com.app.utils.SOAPParsing;
 import com.app.helper.ChatCallbackAdapter;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -124,10 +123,10 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 		chat.start();
 
 		Picasso.with(ExchangeView.this).load(datas.get(Constants.TAG_EXCHANGERIMG)).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(userImage);
-		Picasso.with(ExchangeView.this).load(datas.get("e"+ Constants.TAG_ITEMIMAGE)).into(exchangeImage);
-		Picasso.with(ExchangeView.this).load(datas.get("m"+ Constants.TAG_ITEMIMAGE)).into(myitemImage);
-		itemName.setText(datas.get("e"+ Constants.TAG_ITEM_NAME));
-		myitemName.setText(datas.get("m"+ Constants.TAG_ITEM_NAME));
+		Picasso.with(ExchangeView.this).load(datas.get("e"+Constants.TAG_ITEMIMAGE)).into(exchangeImage);
+		Picasso.with(ExchangeView.this).load(datas.get("m"+Constants.TAG_ITEMIMAGE)).into(myitemImage);
+		itemName.setText(datas.get("e"+Constants.TAG_ITEM_NAME));
+		myitemName.setText(datas.get("m"+Constants.TAG_ITEM_NAME));
         username.setText(datas.get(Constants.TAG_EXCHANGERNAME));
         time.setText(datas.get(Constants.TAG_EXCHANGETIME));
         
@@ -138,20 +137,20 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
         
 		if (datas.get(Constants.TAG_REQUEST_BY_ME).equals("true")) {
             if (status.equals("Pending")) {
-                success.setText("Cancel");
+                success.setText(getString(R.string.cancel));
                 failed.setVisibility(View.GONE);
             } else if (status.equals("Accepted")) {
-                failed.setText("Failed");
-                success.setText("Success");
+                failed.setText(getString(R.string.failed));
+                success.setText(getString(R.string.success));
             }
 
 		} else {
 			if (status.equals("Pending")) {
-				failed.setText("Decline");
-				success.setText("Accept");
+				failed.setText(getString(R.string.decline));
+				success.setText(getString(R.string.accept));
 			} else if (status.equals("Accepted")) {
-				failed.setText("Failed");
-				success.setText("Success");
+				failed.setText(getString(R.string.failed));
+				success.setText(getString(R.string.success));
 			}
 		}
 		
@@ -175,10 +174,10 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 		failed.setOnClickListener(this);
 		success.setOnClickListener(this);
 		editText.setFilters(new InputFilter[]{TextbookTakeoverApplication.EMOJI_FILTER});
-
+		
 		chatAdapter = new ChatAdapter(ExchangeView.this, chats);
 		listView.setAdapter(chatAdapter);
-
+		
 		try{
 			new GetChat().execute(0);
 		}catch(Exception e){
@@ -229,7 +228,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 		protected Void doInBackground(Integer... params) {
 			try {
 				int offset= (params[0]*20);
-
+				
 				String SOAP_ACTION = Constants.NAMESPACE + Constants.API_GET_CHAT;
 
 				SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_GET_CHAT);
@@ -241,10 +240,10 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				req.addProperty("offset", Integer.toString(offset));
 				req.addProperty("limit", "20");
 				req.addProperty("source_id", datas.get(Constants.TAG_EXCHANGEID));
-
+				
 				SOAPParsing soap = new SOAPParsing();
 				String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-
+				
 				tempAry.clear();
 				tempAry.addAll(parsing(json));
 				Collections.reverse(tempAry);
@@ -272,7 +271,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				listView.setVisibility(View.INVISIBLE);
 				progress.setVisibility(View.VISIBLE);
 			}
-
+			
 		}
 
 		@Override
@@ -286,7 +285,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				if(pulldown){
 					pulldown=false;
 				    listView.setSelection(chats.size()-1);
-				    chatAdapter.notifyDataSetChanged();
+				    chatAdapter.notifyDataSetChanged();    
 				    listView.setSelection(tempAry.size());
 				}else{
 					chatAdapter.notifyDataSetChanged();
@@ -307,13 +306,13 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				listView.setVisibility(View.VISIBLE);
 	    		progress.setVisibility(View.GONE);
 	    		chatAdapter.notifyDataSetChanged();
-
+	    		
 			} catch (Exception e) {
 				Log.d("doIndb", e.toString());
 			}
 		}
 	}
-
+	
 	private ArrayList<HashMap<String,String>> parsing(String url) {
 		ArrayList<HashMap<String, String>> chats = new ArrayList<HashMap<String, String>>();
 		try {
@@ -335,7 +334,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 						String userImage = DefensiveClass.optString(msg, Constants.TAG_userImage);
 						String chatTime = DefensiveClass.optString(msg, Constants.TAG_CHATTIME);
 						String message = DefensiveClass.optString(msg, Constants.TAG_MESSAGE);
-
+						
 						map.put("message", message);
 						map.put("sender", sender);
 						map.put("date", chatTime);
@@ -348,7 +347,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 			} else {
                 new getChatId().execute();
             }
-
+			
 		} catch (JSONException e) {
 			new getChatId().execute();
 			e.printStackTrace();
@@ -492,38 +491,12 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 	private String getDate(long timeStamp) {
 
 		try {
-			DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+			DateFormat sdf = new SimpleDateFormat("MMM d, yyyy", getResources().getConfiguration().locale);
 			Date netDate = (new Date(timeStamp * 1000));
-			return getChatDate(sdf.format(netDate));
+			return sdf.format(netDate);
 		} catch (Exception ex) {
 			return "xx";
 		}
-	}
-
-	/** for change the given date to specific format **/
-	private String getChatDate(String date){
-		if (date.contains("-")){
-			String data[] = date.split("-");
-			String day = data[0];
-			if(day.equals("01")){
-				day = "1st";
-			}else if(day.equals("02")){
-				day = "2nd";
-			} else if(day.equals("03")){
-				day = "3rd";
-			} else if(day.equals("22")){
-				day= day+"nd";
-			}else if(day.equals("23")){
-				day=day+"rd";
-			}else if(day.equals("21")||day.equals("31")){
-				day=day+"st";
-			}else{
-				day = day + "th";
-			}
-
-			date = data[1] + " " + day + " " + data[2];
-		}
-		return date;
 	}
 
 	/** for send the message to user **/
@@ -561,7 +534,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 
 
 			}
-
+		
 			return null;
 		}
 	}
@@ -571,7 +544,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 
 		@Override
 		protected String doInBackground(String... params) {
-
+			
 			String SOAP_ACTION = Constants.NAMESPACE + Constants.API_CHANGE_EXCHANGE;
 
 			SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_CHANGE_EXCHANGE);
@@ -580,10 +553,10 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 			req.addProperty("user_id", GetSet.getUserId());
 			req.addProperty("exchange_id", datas.get(Constants.TAG_EXCHANGEID));
 			req.addProperty("status", params[0]);
-
+			
 			SOAPParsing soap = new SOAPParsing();
 			String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-
+			
 			return json;
 		}
 
@@ -598,17 +571,17 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				JSONObject jobj = new JSONObject(result);
 				String status = jobj.getString(Constants.TAG_STATUS);
 				if(status.equals("true")){
-					dialog(ExchangeView.this, getResources().getString(R.string.success), getResources().getString(R.string.exchange_status_chngd));
+					dialog(ExchangeView.this, getString(R.string.success), getString(R.string.exchange_status_chngd));
 					failed.setEnabled(true);
 					success.setEnabled(true);
 					Log.d("hai","successstatus"+success.isEnabled());
-
+					
 				}else{
-					TextbookTakeoverApplication.dialog(ExchangeView.this, getResources().getString(R.string.alert), jobj.getString("message"));
+					TextbookTakeoverApplication.dialog(ExchangeView.this, getString(R.string.alert), jobj.getString("message"));
 					failed.setEnabled(true);
 					success.setEnabled(true);
 				}
-
+				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} catch(NullPointerException e){
@@ -617,9 +590,9 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				e.printStackTrace();
 			}
 		}
-
+		
 	}
-
+	
 	public void dialog(Context ctx, String title,String content){
 		final Dialog dialog = new Dialog(ctx ,R.style.AlertDialog);
 		Display display = ((Activity) ctx).getWindowManager().getDefaultDisplay();
@@ -629,19 +602,19 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 		dialog.getWindow().setLayout(display.getWidth()*80/100, LayoutParams.WRAP_CONTENT);
 		dialog.setCancelable(true);
 		dialog.setCanceledOnTouchOutside(false);
-
+		
 		TextView alertTitle = (TextView) dialog.findViewById(R.id.alert_title);
 		TextView alertMsg = (TextView) dialog.findViewById(R.id.alert_msg);
 		ImageView alertIcon = (ImageView) dialog.findViewById(R.id.alert_icon);
 		TextView alertOk = (TextView) dialog.findViewById(R.id.alert_button);
-
+		
 		alertTitle.setText(title);
 		alertMsg.setText(content);
 		alertIcon.setImageResource(R.drawable.success_icon);
-
-
+		
+		
 		alertOk.setOnClickListener(new OnClickListener() {
-
+			
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
@@ -655,18 +628,18 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				doActionOnClick();
 			}
 		});
-
+		
 		if(!dialog.isShowing()){
 			dialog.show();
 		}
-
+		
 	}
 
 	private void doActionOnClick(){
-		if(failed.getText().toString().equals("Decline") && success.getText().toString().equals("Accept")){
+		if(failed.getText().toString().equals(getString(R.string.decline)) && success.getText().toString().equals(getString(R.string.accept))){
 			if(clickedBtn.equals("success")){
-				failed.setText("Failed");
-				success.setText("Success");
+				failed.setText(getString(R.string.failed));
+				success.setText(getString(R.string.success));
 				if (type.equals("incoming")){
 					Log.v("hai","checkstatus"+success.isEnabled());
 					IncomeExchange.incomingAry.get(position).put(Constants.TAG_STATUS, "Accepted");
@@ -681,7 +654,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				finish();
 			}
 
-		} else if (failed.getText().toString().equals("Failed") && success.getText().toString().equals("Success")){
+		} else if (failed.getText().toString().equals(getString(R.string.failed)) && success.getText().toString().equals(getString(R.string.success))){
 			if(clickedBtn.equals("success")){
 				ExchangeActivity.type="success";
 				ExchangeActivity.statusChanged = true;
@@ -692,42 +665,12 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 				finish();
 			}
 
-		} else if(success.getText().toString().equals("Cancel")){
+		} else if(success.getText().toString().equals(getString(R.string.cancel))){
 			ExchangeActivity.type="failed";
 			ExchangeActivity.statusChanged = true;
 			finish();
 		}
 	}
-
-	/*private String getDate(){
-		String date = "";
-		Calendar cal = Calendar.getInstance();
-		Date currentLocalTime = cal.getTime();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM - yyyy");
-		String dateformat = simpleDateFormat.format(currentLocalTime);
-
-		SimpleDateFormat simpleday = new SimpleDateFormat("dd");
-		String day = simpleday.format(currentLocalTime);
-		if(day.equals("01")){
-			day = "1st";
-		}else if(day.equals("02")){
-			day = "2nd";
-		} else if(day.equals("03")){
-			day = "3rd";
-		} else if(day.equals("22")){
-			day= day+"nd";
-		}else if(day.equals("23")){
-			day=day+"rd";
-		}else if(day.equals("21")||day.equals("31")){
-			day=day+"st";
-		}else{
-			day = day + "th";
-		}
-
-		date = dateformat.replace("-", day);
-	//	Log.v("dateformat", "dateformat "+dateformat +"/" + day);
-		return date;
-	}*/
 
 	@Override
 	public void onBackPressed() {
@@ -753,7 +696,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 					message.put("userImage", GetSet.getImageUrl().replace("/150/", "/40/"));
 					message.put("chatTime", Long.toString(unixTime));
 					message.put("message", editText.getText().toString().trim());
-
+					
 					jobj.put("receiverId", GetSet.getUserName());
 					jobj.put("senderId", datas.get(Constants.TAG_EXCHANGERUSERNAME));
 					jobj.put("sourceId", datas.get(Constants.TAG_EXCHANGEID));
@@ -786,16 +729,16 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 			}else{
 				editText.setError(getResources().getString(R.string.please_enter_message));
 			}
-
+			
 			break;
 		case R.id.failed:
 			failed.setEnabled(false);
 			clickedBtn = "failed";
 
 			String status = failed.getText().toString();
-			if(status.equals("Failed")){
+			if(status.equals(getString(R.string.failed))){
 				new changestatus().execute("failed");
-			}else if(status.equals("Decline")){
+			}else if(status.equals(getString(R.string.decline))){
 				new changestatus().execute("decline");
 			}
 			Log.v("clicked", "clicked");
@@ -807,17 +750,16 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 
 			String stat = success.getText().toString();
 			Log.v("clicked", "clickedsucces"+stat);
-			if(stat.equals("Success")){
+			if(stat.equals(getString(R.string.success))){
 				new changestatus().execute("success");
-			} else if(stat.equals("Accept")){
+			} else if(stat.equals(getString(R.string.accept))){
 				new changestatus().execute("accept");
-			} else if(stat.equals("Cancel")){
+			} else if(stat.equals(getString(R.string.cancel))){
 				new changestatus().execute("cancel");
-			}
-			else{
+			} else{
 				Log.v("hai","check"+stat);
 			}
-
+			
 			break;
 		}
 	}
@@ -884,43 +826,43 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 	public void onChat(String event, JSONObject data, Object... obj) {
 		Log.v("CHATevent",""+event);
 		Log.v("CHATdata",""+data);
-
+		
 	}
 
 	@Override
 	public void onMessage(String message) {
 		Log.v("MSG",""+message);
-
+		
 	}
 
 	@Override
 	public void onMessage(JSONObject json) {
 		Log.v("MSGJS",""+json);
-
+		
 	}
 
 	@Override
 	public void onConnect() {
 		Log.v("Connect","connected");
-
+		
 	}
 
 	@Override
 	public void onDisconnect() {
 		Log.v("disConnect","dis connected");
-
+		
 	}
 
 	@Override
 	public void onConnectFailure() {
-		Log.v("Connect falied","connection failed");
+		Log.v("Connect falied","connection failed");		
 	}
-
+	
 
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
-
+		
 	}
 
 	@Override
@@ -968,7 +910,7 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+		
 	}
 
 	@Override
@@ -982,9 +924,9 @@ public class ExchangeView extends Activity implements OnClickListener,ChatCallba
 			pulldown = true;
 			if (TextbookTakeoverApplication.isNetworkAvailable(ExchangeView.this)) {
 				new GetChat().execute(currentPage);
-			}
+			} 
 		}
-
+		
 	}
 
 	@Override

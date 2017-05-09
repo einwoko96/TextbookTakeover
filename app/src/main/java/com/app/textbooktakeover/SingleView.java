@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class SingleView extends Activity {
         title = (TextView) findViewById(R.id.title);
 
         back.setVisibility(View.VISIBLE);
-        title.setText("Photos");
+        title.setText(getString(R.string.photos));
         back.setOnClickListener(new View.OnClickListener() {
 
             @Override

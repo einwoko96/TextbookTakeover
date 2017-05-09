@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,12 +23,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.external.ExpandableHeightListView;
 import com.app.external.MySeekBar;
 import com.app.utils.Constants;
-import com.app.utils.DefensiveClass;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
+import com.app.external.ExpandableHeightListView;
+import com.app.utils.DefensiveClass;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
@@ -42,9 +42,9 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
 
     TextView title, last24Txt, last7Txt, last30Txt, allproductTxt, popularTxt, urgentTxt, highTxt, lowTxt, reset, apply, seektext;
     InputMethodManager imm;
-    ImageView backbtn, home, road, last24Next, last7Next, last30Next, allproductNext, popularNext, urgentNext, highNext, lowNext;
+    ImageView backbtn, home, road, last24Next, last7Next, last30Next, allproductNext, popularNext, urgentNext, highNext, lowNext, lnext;
     MySeekBar conditionBar;
-    RelativeLayout locationLay, mainLay;
+    RelativeLayout locationLay, mainLay, urgentLay;
     LinearLayout saveLay;
     ExpandableHeightListView category;
     AVLoadingIndicatorView progress;
@@ -94,6 +94,8 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
         urgentNext = (ImageView) findViewById(R.id.urgentNext);
         highNext = (ImageView) findViewById(R.id.highNext);
         lowNext = (ImageView) findViewById(R.id.lowNext);
+        urgentLay = (RelativeLayout) findViewById(R.id.urgentLay);
+        lnext = (ImageView) findViewById(R.id.lnext);
 
         title.setVisibility(View.VISIBLE);
         backbtn.setVisibility(View.VISIBLE);
@@ -131,6 +133,10 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
 
         setSortBy(sortBy);
         setPostedWithin(postedWithin);
+        //conditionBar.setPadding(0,0,0,0);
+        //Bitmap thumbImage = BitmapFactory.decodeResource(getResources(), R.drawable.green_seek);
+        /*int paddingDp = (int)(0.5f * (TextbookTakeoverApplication.dpToPx(SearchAdvance.this, 35)));
+        conditionBar.setPadding(paddingDp,0,paddingDp,0);*/
         conditionBar.setProgress(Integer.parseInt(distance));
 
         new getCategory().execute();
@@ -141,6 +147,18 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
             conditionBar.setEnabled(false);
         }else{
             conditionBar.setEnabled(true);
+        }
+
+        if (Constants.PROMOTION){
+            urgentLay.setVisibility(View.VISIBLE);
+        } else {
+            urgentLay.setVisibility(View.GONE);
+        }
+
+        if (TextbookTakeoverApplication.isRTL(SearchAdvance.this)){
+            lnext.setRotation(180);
+        } else {
+            lnext.setRotation(0);
         }
 
         ViewTreeObserver observer = conditionBar.getViewTreeObserver();
@@ -227,7 +245,7 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
         p.addRule(RelativeLayout.ABOVE, seekBar.getId());
         Rect thumbRect = conditionBar.getSeekBarThumb().getBounds();
         p.setMargins(
-                thumbRect.centerX(), 0, 0, 0);
+                thumbRect.centerX(), 0, 0, TextbookTakeoverApplication.dpToPx(SearchAdvance.this, 10));
        /* textView.setLayoutParams(p);
         textView.setText(String.valueOf(progress) + " ft.");*/
 
@@ -251,7 +269,10 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
         String what_to_say = String.valueOf(how_many);
         seektext.setText(what_to_say + " MI");
 
-        int seek_label_pos = (((conditionBar.getRight() - conditionBar.getLeft()) * conditionBar.getProgress()) / conditionBar.getMax()) + conditionBar.getLeft();
+        int extraPadding = TextbookTakeoverApplication.dpToPx(SearchAdvance.this, 15);
+        int right = conditionBar.getRight() - extraPadding;
+        int left = conditionBar.getLeft() + extraPadding;
+        int seek_label_pos = (((right - left) * conditionBar.getProgress()) / conditionBar.getMax()) + left;
         Log.v("xvalue", "xvalue=" + seek_label_pos);
         if (seek_label_pos == 0) {
             float xvalue = distanceX - seektext.getWidth() / 2;
@@ -439,6 +460,14 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
                     }
                 }
 
+                if (TextbookTakeoverApplication.isRTL(mContext)){
+                    holder.next.setRotation(180);
+                    holder.name.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+                } else {
+                    holder.next.setRotation(0);
+                    holder.name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                }
+
                 holder.mainLay.setOnClickListener(new OnClickListener() {
 
                     @Override
@@ -605,7 +634,10 @@ public class SearchAdvance extends AppCompatActivity implements OnClickListener,
                 FragmentMainActivity.filterAry.clear();
                 if(FragmentMainActivity.filterAdapter!=null)
                     FragmentMainActivity.filterAdapter.notifyDataSetChanged();
-                applyFilter = true;
+                applyFilter = false;
+                finish();
+                Intent l = new Intent(SearchAdvance.this, FragmentMainActivity.class);
+                startActivity(l);
                 break;
             case R.id.apply:
                 //categoryName.clear();

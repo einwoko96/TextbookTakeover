@@ -20,11 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.external.TimeAgo;
+import com.app.utils.SOAPParsing;
 import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 

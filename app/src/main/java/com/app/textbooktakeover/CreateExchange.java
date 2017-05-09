@@ -1,5 +1,20 @@
 package com.app.textbooktakeover;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.ksoap2.serialization.SoapObject;
+
+import com.app.utils.Constants;
+import com.app.utils.SOAPParsing;
+import com.app.utils.GetSet;
+import com.app.utils.ItemsParsing;
+
+import com.squareup.picasso.Picasso;
+import com.wang.avi.AVLoadingIndicatorView;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,10 +28,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -27,21 +42,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.app.utils.Constants;
-import com.app.utils.GetSet;
-import com.app.utils.ItemsParsing;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
-import com.squareup.picasso.Picasso;
-import com.wang.avi.AVLoadingIndicatorView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.ksoap2.serialization.SoapObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CreateExchange extends AppCompatActivity implements OnClickListener,OnScrollListener,OnItemClickListener{
 
@@ -117,7 +117,7 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	     // home items //
 		class homeLoadItems extends AsyncTask<Integer, Void, Void> {
@@ -129,7 +129,7 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 					HomeItems.clear();
 					Log.v("cleared","cleared");
 				}
-
+				
 				String SOAP_ACTION = Constants.NAMESPACE + Constants.API_HOME;
 
 				SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_HOME);
@@ -139,10 +139,11 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 				req.addProperty("seller_id", GetSet.getUserId());
 				req.addProperty("offset", Integer.toString(offset));
 				req.addProperty("limit", "20");
-
+				req.addProperty("user_id", "");
+				
 				SOAPParsing soap = new SOAPParsing();
 				String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-
+				
 				ItemsParsing parse =new ItemsParsing(CreateExchange.this);
 				HomeItems.addAll(parse.parsing(json));
 				return null;
@@ -171,7 +172,7 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 					nullLay.setVisibility(View.INVISIBLE);
 				}
 			}
-
+			
 		}
 
 
@@ -185,30 +186,30 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 			}
 			@Override
 			public int getCount() {
-
+				
 				return Items.size();
 			}
 
 			@Override
 			public Object getItem(int position) {
-
+				
 				return null;
 			}
 
 			@Override
 			public long getItemId(int position) {
-
+				
 				return position;
 			}
-
+			
 			private class ViewHolder {
 				ImageView singleImage2,singleImage,tick;
-
+				
 			}
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
-
+				
 			      if (convertView == null) {
 			    	  LayoutInflater inflater = (LayoutInflater) mContext
 								.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -225,13 +226,13 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 			      } else {
 			    	  holder = (ViewHolder) convertView.getTag();
 			      }
-
+			      
 			    try{
-
+			    	
 	            final HashMap<String, String> tempMap=Items.get(position);
 
 	            Picasso.with(CreateExchange.this).load(tempMap.get(Constants.TAG_ITEM_URL_350)).into(holder.singleImage);
-
+	            
 	            if(select == null){
 					holder.tick.setVisibility(View.GONE);
 					holder.singleImage2.setVisibility(View.GONE);
@@ -244,7 +245,7 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 						holder.singleImage2.setVisibility(View.GONE);
 					}
 	            }
-
+	           
 			    }catch(NullPointerException e){
 			    	e.printStackTrace();
 			    } catch(Exception e){
@@ -252,7 +253,7 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 			    }
 				return convertView;
 			}
-
+			
 		}
 
 	/** class for create exchanges **/
@@ -260,7 +261,7 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 
 			@Override
 			protected String doInBackground(Integer... params) {
-
+				
 				String SOAP_ACTION = Constants.NAMESPACE + Constants.API_CREATE_EXCHANGE;
 
 				SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_CREATE_EXCHANGE);
@@ -269,10 +270,10 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 				req.addProperty("user_id", GetSet.getUserId());
 				req.addProperty("myitem_id", itemId);
 				req.addProperty("exchangeitem_id", HomeItems.get(Integer.parseInt(select)).get(Constants.TAG_ID));
-
+				
 				SOAPParsing soap = new SOAPParsing();
 				String json = soap.getJSONFromUrl(SOAP_ACTION, req);
-
+				
 				return json;
 			}
 
@@ -288,11 +289,16 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 					String status = jobj.getString(Constants.TAG_STATUS);
 					create.setOnClickListener(CreateExchange.this);
 					if(status.equals("true")){
-						dialog(CreateExchange.this, getResources().getString(R.string.success), jobj.getString("result"));
+						dialog(CreateExchange.this, getString(R.string.success), getString(R.string.exchange_created_successfully));
 					}else{
-						TextbookTakeoverApplication.dialog(CreateExchange.this, getResources().getString(R.string.alert), jobj.getString("message"));
-					}
+						if (jobj.getString("message").equalsIgnoreCase(getString(R.string.product_has_been_soldout_unexpectedly))) {
+							TextbookTakeoverApplication.dialog(CreateExchange.this, getString(R.string.alert), getString(R.string.product_has_been_soldout_unexpectedly));
+						} else {
+							TextbookTakeoverApplication.dialog(CreateExchange.this, getString(R.string.alert), getString(R.string.somethingwrong));
+						}
 
+					}
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				} catch(NullPointerException e){
@@ -301,9 +307,9 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 					e.printStackTrace();
 				}
 			}
-
+			
 		}
-
+		
 		public void dialog(Context ctx, String title,String content){
 			final Dialog dialog = new Dialog(ctx ,R.style.AlertDialog);
 			Display display = ((Activity) ctx).getWindowManager().getDefaultDisplay();
@@ -313,18 +319,18 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 			dialog.getWindow().setLayout(display.getWidth()*90/100, LayoutParams.WRAP_CONTENT);
 			dialog.setCancelable(true);
 			dialog.setCanceledOnTouchOutside(false);
-
+			
 			TextView alertTitle = (TextView) dialog.findViewById(R.id.alert_title);
 			TextView alertMsg = (TextView) dialog.findViewById(R.id.alert_msg);
 			ImageView alertIcon = (ImageView) dialog.findViewById(R.id.alert_icon);
 			TextView alertOk = (TextView) dialog.findViewById(R.id.alert_button);
-
+			
 			alertTitle.setText(title);
 			alertMsg.setText(content);
 			alertIcon.setImageResource(R.drawable.success_icon);
 
 			alertOk.setOnClickListener(new OnClickListener() {
-
+				
 				@Override
 				public void onClick(View v) {
 					finish();
@@ -334,16 +340,16 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 					startActivity(i);
 				}
 			});
-
+			
 			if(!dialog.isShowing()){
 				dialog.show();
 			}
-
+			
 		}
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+		
 	}
 
 	@Override
@@ -380,8 +386,8 @@ public class CreateExchange extends AppCompatActivity implements OnClickListener
 		// For Internet checking
 		TextbookTakeoverApplication.registerReceiver(CreateExchange.this);
 	}
-
-
+	
+	
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()){

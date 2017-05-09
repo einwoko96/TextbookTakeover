@@ -37,7 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.utils.Constants;
-import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.SOAPParsing;
 import com.facebook.CallbackManager;
@@ -48,7 +47,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.app.textbooktakeover.R;
+import com.app.utils.DefensiveClass;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -80,7 +79,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
     public static ImageView logout, backBtn, userImage;
     LinearLayout changepassword, logoutLay, parentLay, callLay;
     RelativeLayout editphoto, languageLay;
-    ImageView mailverifiedIcon, mobilverifiedIcon, fbverifiedIcon;
+    ImageView mailverifiedIcon, mobilverifiedIcon, fbverifiedIcon, imagebtn, langbtn, passbtn;
     TextView title, mobilverified, mailverified, fbverified, linkfb, save, language, showphoneno, verify;
     EditText username, name, email;
     int count;
@@ -123,13 +122,16 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         fbverifiedIcon = (ImageView) findViewById(R.id.fbverifiedIcon);
         callLay = (LinearLayout) findViewById(R.id.callLay);
         callSwitch = (SwitchCompat) findViewById(R.id.callSwitch);
+        imagebtn = (ImageView) findViewById(R.id.imagebtn);
+        langbtn = (ImageView) findViewById(R.id.langbtn);
+        passbtn = (ImageView) findViewById(R.id.passbtn);
 
         backBtn.setVisibility(View.VISIBLE);
         title.setVisibility(View.VISIBLE);
 
         title.setText(getString(R.string.edit_profile));
 
-        Constants.pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+        Constants.pref = getApplicationContext().getSharedPreferences("JoysalePref",
                 MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
 
@@ -144,6 +146,24 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         save.setOnClickListener(this);
         verify.setOnClickListener(this);
         languageLay.setOnClickListener(this);
+
+        if (TextbookTakeoverApplication.isRTL(EditProfile.this)){
+            imagebtn.setRotation(180);
+            langbtn.setRotation(180);
+            passbtn.setRotation(180);
+            name.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            username.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            email.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            showphoneno.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+        } else {
+            imagebtn.setRotation(0);
+            langbtn.setRotation(0);
+            passbtn.setRotation(0);
+            name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            username.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            email.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            showphoneno.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        }
     }
 
     /** for get profile information of user **/
@@ -177,7 +197,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                         String userid = DefensiveClass.optString(result, "user_id");
                         String fullname = DefensiveClass.optString(result, "full_name");
                         String username = DefensiveClass.optString(result, "user_name");
-                        String userimage = DefensiveClass.optString(result, "user_img");
+                        String userimage =DefensiveClass.optString(result, "user_img");
                         String email = DefensiveClass.optString(result, "email");
                         String facebook_id = DefensiveClass.optString(result, "facebook_id");
                         String mobile_no = DefensiveClass.optString(result, "mobile_no");
@@ -257,7 +277,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                     mobilverified.setText(getString(R.string.verified));
                     mobilverifiedIcon.setImageResource(R.drawable.tick);
                     showphoneno.setVisibility(View.VISIBLE);
-                    showphoneno.setText(profileMap.get("mobile_no") + " has been verified");
+                    showphoneno.setText(profileMap.get("mobile_no"));
                     mobilverified.setEnabled(true);
                     mobilverifiedIcon.setImageResource(R.drawable.tick);
                     callLay.setVisibility(View.VISIBLE);
@@ -291,7 +311,6 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         } catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     /** dialog for confirm the user to signout **/
@@ -327,6 +346,9 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 Constants.editor.commit();
                 GetSet.reset();
                 FragmentMainActivity.HomeItems.clear();
+                if (FragmentMainActivity.homeAdapter != null){
+                    FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+                }
                 FragmentMainActivity.currentPage = 0;
                 MessageActivity.Messagepageitems.clear();
                 WelcomeActivity.fromSignout = true;
@@ -542,7 +564,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         @Override
         protected void onPreExecute() {
             pd = new ProgressDialog(EditProfile.this);
-            pd.setMessage("loading");
+            pd.setMessage(getString(R.string.loading));
             pd.show();
         }
 
@@ -554,10 +576,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 jsonobject = new JSONObject(Json);
                 Log.v("json", "json" + Json);
                 status = jsonobject.getString("status");
-                if (status.equals("true")) {
-                   /* JSONObject image = jsonobject.getJSONObject("Image");
-                    String msg = image.getString("Message");
-                    String uploadedimgname = image.getString("Name");*/
+                if (status.equalsIgnoreCase("true")) {
                     otp = "";
                     //otpDialog("otp");
                     LinearLayout numberLay = (LinearLayout) dialog.findViewById(R.id.numberLay);
@@ -567,7 +586,13 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
 
                 } else {
                     otp = "";
-                    Toast.makeText(EditProfile.this, DefensiveClass.optString(jsonobject, Constants.TAG_MESSAGE), Toast.LENGTH_SHORT).show();
+                    ProgressBar progress1 = (ProgressBar) dialog.findViewById(R.id.progress1);
+                    TextView cancel = (TextView) dialog.findViewById(R.id.cancel);
+
+                    progress1.setVisibility(View.GONE);
+                    cancel.setEnabled(true);
+
+                    Toast.makeText(EditProfile.this, getString(R.string.your_country_code_mobile_number_invalid), Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
@@ -621,17 +646,17 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 String status = json.getString(Constants.TAG_STATUS);
                 String message = json.getString(Constants.TAG_MESSAGE);
                 if (status.equalsIgnoreCase("true")) {
-                    TextbookTakeoverApplication.dialog(EditProfile.this, getString(R.string.success), message);
+                    TextbookTakeoverApplication.dialog(EditProfile.this, getString(R.string.success), getString(R.string.your_mobile_number_verified_successfully));
                     dialog.dismiss();
                     confirmedPhone = phonenum;
-                    mobilverified.setText("Verified");
+                    mobilverified.setText(getString(R.string.verified));
                     mobilverifiedIcon.setImageResource(R.drawable.tick);
                     showphoneno.setVisibility(View.VISIBLE);
-                    showphoneno.setText(profileMap.get("mobile_no")+" has been verified");
+                    showphoneno.setText(profileMap.get("mobile_no"));
                     profileMap.put("mobile_no", phonenum);
                 } else {
-                    TextbookTakeoverApplication.dialog(EditProfile.this, getString(R.string.alert), "Please enter correct verification code");
-                    mobilverified.setText("UnVerified");
+                    TextbookTakeoverApplication.dialog(EditProfile.this, getString(R.string.alert), getString(R.string.please_enter_correct_verification_code));
+                    mobilverified.setText(getString(R.string.unverified));
                     mobilverifiedIcon.setImageResource(R.drawable.cancel);
                     mobilverifiedIcon.setColorFilter(getResources().getColor(R.color.red));
                 }
@@ -814,7 +839,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         @Override
         protected void onPreExecute() {
             pd = new ProgressDialog(EditProfile.this);
-            pd.setMessage("Loading");
+            pd.setMessage(getString(R.string.loading));
             pd.show();
         }
 
@@ -908,7 +933,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                         cancel.setEnabled(false);
                         new GetOtp().execute();
                     }else{
-                        Toast.makeText(EditProfile.this,"Your account is already configured with this mobile number", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfile.this, getString(R.string.your_account_already_configured_with_this_mobile_number), Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(EditProfile.this,getString(R.string.enter_code),Toast.LENGTH_SHORT).show();

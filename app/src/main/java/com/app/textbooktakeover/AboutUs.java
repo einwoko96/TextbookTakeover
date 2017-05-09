@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.app.textbooktakeover.R;
-
 /**
  * Created by hitasoft on 10/6/16.
  **/

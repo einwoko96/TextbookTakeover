@@ -11,6 +11,10 @@ package com.app.textbooktakeover;
 *
 *****************/
 
+import com.app.utils.SOAPParsing;
+import com.app.utils.Constants;
+import com.app.utils.DefensiveClass;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -23,11 +27,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
-import com.app.utils.Constants;
-import com.app.utils.DefensiveClass;
-import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,7 +48,7 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_screen);
-		pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+		pref = getApplicationContext().getSharedPreferences("JoysalePref",
 				MODE_PRIVATE);
 		editor = pref.edit();
 
@@ -63,7 +62,7 @@ public class SplashActivity extends Activity {
 
 		setLocale(languageCode);
 
-		TextbookTakeoverApplication.adminPref = getApplicationContext().getSharedPreferences("TBTakeoverAdminPref",
+		TextbookTakeoverApplication.adminPref = getApplicationContext().getSharedPreferences("JoysaleAdminPref",
 				MODE_PRIVATE);
 		TextbookTakeoverApplication.adminEditor = TextbookTakeoverApplication.adminPref.edit();
 
@@ -118,12 +117,13 @@ public class SplashActivity extends Activity {
 					JSONObject result = json.optJSONObject(Constants.TAG_RESULT);
 					String buynow = DefensiveClass.optString(result, "buynow");
 					String exchange = DefensiveClass.optString(result, "exchange");
+					String promotion = DefensiveClass.optString(result, "promotion");
 					FragmentMainActivity.homeBanner = DefensiveClass.optString(result, "banner");
 
 					if (buynow.equalsIgnoreCase("enable")){
-						TextbookTakeoverApplication.adminEditor.putBoolean("buynow", false);
+						TextbookTakeoverApplication.adminEditor.putBoolean("buynow", true);
 						TextbookTakeoverApplication.adminEditor.commit();
-						Constants.BUYNOW = false;
+						Constants.BUYNOW = true;
 					} else {
 						TextbookTakeoverApplication.adminEditor.putBoolean("buynow", false);
 						TextbookTakeoverApplication.adminEditor.commit();
@@ -138,6 +138,16 @@ public class SplashActivity extends Activity {
 						TextbookTakeoverApplication.adminEditor.putBoolean("exchange", false);
 						TextbookTakeoverApplication.adminEditor.commit();
 						Constants.EXCHANGE = false;
+					}
+
+					if (promotion.equalsIgnoreCase("enable")){
+						TextbookTakeoverApplication.adminEditor.putBoolean("promotion", true);
+						TextbookTakeoverApplication.adminEditor.commit();
+						Constants.PROMOTION = true;
+					} else {
+						TextbookTakeoverApplication.adminEditor.putBoolean("promotion", false);
+						TextbookTakeoverApplication.adminEditor.commit();
+						Constants.PROMOTION = false;
 					}
 
 					JSONArray bannerAry = result.getJSONArray("bannerData");

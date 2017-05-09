@@ -44,7 +44,7 @@ public class ItemAdapter extends ArrayAdapter<String> {
 
 		RelativeLayout menuLay = (RelativeLayout) rowView.findViewById(R.id.menuLay);
 
-		/*if (JoysaleApplication.isRTL(context)){
+		/*if (TextbookTakeoverApplication.isRTL(context)){
 			menuLay.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 		} else {
 			menuLay.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);

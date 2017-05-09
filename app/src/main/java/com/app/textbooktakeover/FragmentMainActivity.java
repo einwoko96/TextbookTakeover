@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -26,6 +28,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,24 +43,26 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.external.AutoScrollViewPager;
 import com.app.external.BadgeView;
 import com.app.external.GPSTracker;
 import com.app.external.HorizontalListView;
+import com.app.external.TimeAgo;
+import com.app.utils.Constants;
+import com.app.utils.SOAPParsing;
+import com.etsy.android.grid.StaggeredGridView;
+import com.etsy.android.grid.util.GridRefreshListener;
+import com.app.buynow.MySalesnOrder;
+import com.app.external.AutoScrollViewPager;
 import com.app.helper.ItemAdapter;
 import com.app.helper.Model;
-import com.app.scanner.ScannerActivity;
-import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.ItemsParsing;
-import com.app.utils.SOAPParsing;
-import com.etsy.android.grid.StaggeredGridView;
-import com.app.textbooktakeover.R;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.LinePageIndicator;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -70,14 +75,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-public class FragmentMainActivity extends AppCompatActivity implements OnClickListener, AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
+public class FragmentMainActivity extends AppCompatActivity implements OnClickListener, AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, GridRefreshListener {
 
 	public static ListView listView;
 	ImageView titleImage, menu_btn, filter_btn, search_btn, floatingBtn, notifybtn;
@@ -90,8 +94,8 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 	DrawerLayout drawer;
 	ActionBarDrawerToggle toggle;
 	LinearLayout profheader, proflogin, nullLay;
-	RelativeLayout locationLay, headerLay;
-	TextView login, userid;
+	RelativeLayout locationLay, headerLay, reviewLay;
+	TextView login, userid, ratingCount;
 	public static TextView username, locationTxt;
 	public static ImageView userImage;
 	Toolbar toolbar;
@@ -115,6 +119,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 	public static ArrayList<HashMap<String,String>> filterAry = new ArrayList<HashMap<String,String>>();
 	public static ArrayList<HashMap<String,String>> HomeItems=new ArrayList<HashMap<String,String>>();
 	public static ArrayList<HashMap<String,String>> bannerAry = new ArrayList<HashMap<String,String>>();
+	RatingBar ratingBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -155,6 +160,10 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 		filterList = (HorizontalListView) findViewById(R.id.filterList);
 		filterView= (View) findViewById(R.id.filterView);
         notifybtn = (ImageView) findViewById(R.id.notifybtn);
+		reviewLay = (RelativeLayout) findViewById(R.id.reviewLay);
+		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+		ratingCount = (TextView) findViewById(R.id.ratingCount);
+
 
         notifyBadge = new BadgeView(FragmentMainActivity.this, notifybtn);
 
@@ -253,6 +262,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 		// Elements Listener
 		listView.setOnItemClickListener(new DrawerItemClickListener());
 		gridView.setOnItemClickListener(new ItemClickListener());
+		gridView.setOnGridRefreshListener(this);
 		login.setOnClickListener(this);
 		filter_btn.setOnClickListener(this);
 		search_btn.setOnClickListener(this);
@@ -266,7 +276,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
         notifybtn.setOnClickListener(this);
 
 		// For Set Login & Logout State
-        Constants.pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+        Constants.pref = getApplicationContext().getSharedPreferences("JoysalePref",
 				MODE_PRIVATE);
 		Constants.editor = Constants.pref.edit();
 		if (Constants.pref.getBoolean("isLogged", false)) {
@@ -277,10 +287,10 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			GetSet.setPassword(Constants.pref.getString("Password", null));
 			GetSet.setFullName(Constants.pref.getString("fullName", null));
 			GetSet.setImageUrl(Constants.pref.getString("photo", null));
+			GetSet.setRating(Constants.pref.getString("rating", "0"));
 			profheader.setVisibility(View.VISIBLE);
 			proflogin.setVisibility(View.GONE);
-		}
-		else{
+		} else{
 			profheader.setVisibility(View.GONE);
 			proflogin.setVisibility(View.VISIBLE);
 		}
@@ -291,13 +301,38 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			username.setText(GetSet.getFullName());
 			userid.setText(GetSet.getUserName());
 			if (GetSet.getImageUrl() != null && !GetSet.getImageUrl().equals("")){
-				Log.v("getImageurl", "getImageurl="+ GetSet.getImageUrl());
+				Log.v("getImageurl", "getImageurl="+GetSet.getImageUrl());
 				Picasso.with(FragmentMainActivity.this).load(GetSet.getImageUrl()).placeholder(R.drawable.appicon).error(R.drawable.appicon).into(userImage);
 			}
 		}else{
 			profheader.setVisibility(View.GONE);
 			proflogin.setVisibility(View.VISIBLE);
 		}
+
+		if (Constants.BUYNOW){
+			reviewLay.setVisibility(View.VISIBLE);
+			userid.setVisibility(View.GONE);
+			try {
+				ratingBar.setRating(Float.parseFloat(GetSet.getRating()));
+				ratingCount.setText("(" + GetSet.getRating() + ")");
+			} catch (NullPointerException e){
+				e.printStackTrace();
+			} catch (NumberFormatException e){
+				e.printStackTrace();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		} else {
+			reviewLay.setVisibility(View.GONE);
+			userid.setVisibility(View.VISIBLE);
+		}
+
+		Log.v("getRating", "getRating="+GetSet.getRating());
+
+		LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable().getCurrent();
+		stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+		stars.getDrawable(0).setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+		stars.getDrawable(1).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
 
 		swipeLayout.setColorSchemeColors(getResources().getColor(R.color.swipeColor));
 		Display display = this.getWindowManager().getDefaultDisplay();
@@ -446,7 +481,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			if (pulldown){
 				HomeItems.clear();
 			}
-			runOnUiThread(new Runnable() {
+			FragmentMainActivity.this.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					ArrayList<HashMap<String,String>> temp=new ArrayList<HashMap<String,String>>();
@@ -486,10 +521,17 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			gridView.setVisibility(View.VISIBLE);
 			swipeLayout.setRefreshing(false);
 			progress.setVisibility(View.GONE);
-			homeAdapter.notifyDataSetChanged();
+			FragmentMainActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					homeAdapter.notifyDataSetChanged();
+				}
+			});
 			if(HomeItems.size() == 0){
+				header.setVisibility(View.GONE);
 				nullLay.setVisibility(View.VISIBLE);
 			}else{
+				header.setVisibility(View.VISIBLE);
 				nullLay.setVisibility(View.INVISIBLE);
 			}
 		}
@@ -560,31 +602,45 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 
 				//	holder.singleImage.setBackgroundColor(Integer.parseInt(tempMap.get(Constants.TAG_COLOR)));
 				Picasso.with(FragmentMainActivity.this).load(tempMap.get(Constants.TAG_ITEM_URL_350)).into(holder.singleImage);
-				holder.itemName.setText(tempMap.get(Constants.TAG_TITLE));
+				holder.itemName.setText(tempMap.get(Constants.TAG_TITLE).trim());
 				holder.itemPrice.setText(tempMap.get(Constants.TAG_CURRENCY_SYM) + " "
 						+ tempMap.get(Constants.TAG_PRICE));
 				holder.location.setText(tempMap.get(Constants.TAG_LOCATION));
-				holder.postedTime.setText(tempMap.get(Constants.TAG_POSTED_TIME).toUpperCase());
 
 				if (tempMap.get(Constants.TAG_ITEM_STATUS).equalsIgnoreCase("sold")){
 					holder.productType.setVisibility(View.VISIBLE);
-					holder.productType.setText("Sold");
+					holder.productType.setText(getString(R.string.sold));
 					holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.soldbg));
 				} else {
-					if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
-						holder.productType.setVisibility(View.VISIBLE);
-						holder.productType.setText("Ad");
-						holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
-					} else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
-						holder.productType.setVisibility(View.VISIBLE);
-						holder.productType.setText("Urgent");
-						holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+					if (Constants.PROMOTION){
+						if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Ad")) {
+							holder.productType.setVisibility(View.VISIBLE);
+							holder.productType.setText(getString(R.string.ad));
+							holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.adbg));
+						} else if(tempMap.get(Constants.TAG_PROMOTION_TYPE).equalsIgnoreCase("Urgent")) {
+							holder.productType.setVisibility(View.VISIBLE);
+							holder.productType.setText(getString(R.string.urgent));
+							holder.productType.setBackgroundDrawable(getResources().getDrawable(R.drawable.urgentbg));
+						} else {
+							holder.productType.setVisibility(View.GONE);
+						}
 					} else {
 						holder.productType.setVisibility(View.GONE);
 					}
 				}
 
+				long timestamp = 0;
+				String time = tempMap.get(Constants.TAG_POSTED_TIME);
+				if(time != null){
+					timestamp = Long.parseLong(time) * 1000;
+				}
+				TimeAgo timeAgo = new TimeAgo(mContext);
+				holder.postedTime.setText(timeAgo.timeAgo(timestamp));
+				Log.v("time", "time="+timeAgo.timeAgo(timestamp));
+
 			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch(NumberFormatException e){
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -717,7 +773,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 		if (!SearchAdvance.distance.equals("0")){
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("type", "distance");
-			map.put("name", "Within "+ SearchAdvance.distance + " Miles");
+			map.put("name", "Within "+SearchAdvance.distance + " Miles");
 			filterAry.add(map);
 		}
 		if (!SearchAdvance.postedWithin.equals("")){
@@ -765,7 +821,6 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 
 	/** Adapter for showing banner image **/
 	class BannerPagerAdapter extends PagerAdapter {
-
 		Context context;
 		LayoutInflater inflater;
 		ArrayList<HashMap<String,String>> data;
@@ -796,9 +851,12 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			image.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent b = new Intent(Intent.ACTION_VIEW);
-					b.setData(Uri.parse(data.get(position).get("url")));
-					startActivity(b);
+					if (Patterns.WEB_URL.matcher(data.get(position).get("url")).matches()) {
+						Intent b = new Intent(Intent.ACTION_VIEW, Uri.parse(data.get(position).get("url")));
+						startActivity(b);
+					} else {
+						Toast.makeText(FragmentMainActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+					}
 				}
 			});
 
@@ -892,9 +950,9 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
                         notifyBadge.setBadgeMargin(7);
                         notifyBadge.setTextSize(13);
                         notifyBadge.setGravity(Gravity.CENTER);
-                        notifyBadge.show(true);
+                        notifyBadge.show();
                     } else {
-                        notifyBadge.hide(true);
+                        notifyBadge.hide();
                     }
 
                     if (!chatCount.equals("")){
@@ -934,9 +992,6 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 				Intent i = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
 				startActivity(i);
 			}
-		} else if (from.equals(getString(R.string.scan))) {
-			Intent i = new Intent(FragmentMainActivity.this, ScannerActivity.class);
-			startActivity(i);
 		} else if (from.equals(getString(R.string.categories))) {
 			Intent c = new Intent(FragmentMainActivity.this, CategoryActivity.class);
 			startActivity(c);
@@ -951,8 +1006,8 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			}
 		} else if (from.equals(getString(R.string.myorders_sales))) {
 			if (GetSet.isLogged()) {
-				/*Intent i = new Intent(FragmentMainActivity.this, MySalesnOrder.class);
-				startActivity(i);*/
+				Intent i = new Intent(FragmentMainActivity.this, MySalesnOrder.class);
+				startActivity(i);
 			} else {
 				Intent i = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
 				startActivity(i);
@@ -1002,7 +1057,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 		protected String doInBackground(String... params) {
 
 			try {
-				geocoder = new Geocoder(FragmentMainActivity.this, Locale.ENGLISH);
+				geocoder = new Geocoder(FragmentMainActivity.this, getResources().getConfiguration().locale);
 				addresses = geocoder.getFromLocation(x, y, 1);
 				str = new StringBuilder();
 				if (geocoder.isPresent() && addresses.size() > 0) {
@@ -1276,7 +1331,7 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.v("resume", "resume");
+		Log.v("resume", "resume" + HomeItems.size());
 		// For Internet checking
 		TextbookTakeoverApplication.registerReceiver(FragmentMainActivity.this);
 
@@ -1297,6 +1352,21 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 			}
 		}
 
+	}
+
+	@Override
+	public void onGridRefresh() {
+		Log.v("onGridRefresh", "onGridRefresh");
+		HomeItems.clear();
+		homeAdapter = new HomeAdapter(FragmentMainActivity.this, HomeItems);
+		gridView.setAdapter(homeAdapter);
+		swipeRefresh();
+		currentPage = 0;
+		previousTotal = 0;
+		pulldown = true;
+		if (TextbookTakeoverApplication.isNetworkAvailable(FragmentMainActivity.this)) {
+			new homeLoadItems().execute(0);
+		}
 	}
 
 	@Override
@@ -1355,8 +1425,13 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 				}
 				break;
             case R.id.notifybtn:
-                Intent o = new Intent(FragmentMainActivity.this, Notification.class);
-                startActivity(o);
+				if (GetSet.isLogged()) {
+					Intent o = new Intent(FragmentMainActivity.this, Notification.class);
+					startActivity(o);
+				} else {
+					Intent n = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
+					startActivity(n);
+				}
                 break;
 		}
 	}

@@ -16,9 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.utils.Constants;
-import com.app.utils.DefensiveClass;
 import com.app.utils.SOAPParsing;
-import com.app.textbooktakeover.R;
+import com.app.utils.DefensiveClass;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -34,7 +33,7 @@ import java.util.HashMap;
  * Created by hitasoft on 23/6/16.
  */
 
-public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
+public class CategoryActivity extends AppCompatActivity implements View.OnClickListener{
 
     ListView listView;
     ImageView backbtn;
@@ -75,15 +74,13 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * for getting admin defined categories
-     **/
+    /** for getting admin defined categories **/
     class getCategory extends AsyncTask<Integer, Void, Void> {
 
         @Override
         protected Void doInBackground(Integer... params) {
 
-            try {
+            try{
                 String SOAP_ACTION = Constants.NAMESPACE + Constants.API_CATEGORY;
 
                 SoapObject req = new SoapObject(Constants.NAMESPACE, Constants.API_CATEGORY);
@@ -93,17 +90,17 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                 SOAPParsing soap = new SOAPParsing();
                 String json = soap.getJSONFromUrl(SOAP_ACTION, req);
                 Log.v("res", "res=" + json);
-                JSONObject jobj = new JSONObject(json);
+                JSONObject jobj =new JSONObject(json);
                 String response = jobj.getString(Constants.TAG_STATUS);
 
                 if (response.equalsIgnoreCase("true")) {
 
                     JSONObject result = jobj
                             .optJSONObject(Constants.TAG_RESULT);
-                    if (!(result == null)) {
+                    if(!(result==null)){
                         JSONArray category = result.optJSONArray(Constants.TAG_CATEGORY);
-                        if (category != null) {
-                            for (int i = 0; i < category.length(); i++) {
+                        if(category != null){
+                            for(int i=0 ; i<category.length() ; i++){
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 JSONObject temp = category.getJSONObject(i);
                                 String name = DefensiveClass.optString(temp, Constants.TAG_CATEGORYNAME);
@@ -119,11 +116,11 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 }
-            } catch (JSONException e) {
+            } catch(JSONException e){
                 e.printStackTrace();
-            } catch (NullPointerException e) {
+            } catch(NullPointerException e){
                 e.printStackTrace();
-            } catch (Exception e) {
+            } catch(Exception e){
                 e.printStackTrace();
             }
             return null;
@@ -140,7 +137,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
             progress.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             categoryAdapter.notifyDataSetChanged();
-            if (categoryAry.size() == 0) {
+            if (categoryAry.size() == 0){
                 nullLay.setVisibility(View.VISIBLE);
             } else {
                 nullLay.setVisibility(View.GONE);
@@ -148,9 +145,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * adapter for list the categorys in listview
-     **/
+    /** adapter for list the categorys in listview **/
     public class CategoryAdapter extends BaseAdapter {
         ArrayList<HashMap<String, String>> Items;
         private Context mContext;
@@ -271,8 +266,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                         SearchAdvance.subcategoryId.clear();
                         SearchAdvance.postedWithin = "";
                         SearchAdvance.sortBy = "1";
-                        SearchAdvance.categoryId.add(Items.get(position + 1).get(Constants.TAG_CATEGORYID));
-                        SearchAdvance.categoryName.add(Items.get(position + 1).get(Constants.TAG_CATEGORYNAME));
+                        SearchAdvance.categoryId.add(Items.get(position+1).get(Constants.TAG_CATEGORYID));
+                        SearchAdvance.categoryName.add(Items.get(position+1).get(Constants.TAG_CATEGORYNAME));
                         Intent i = new Intent(CategoryActivity.this, FragmentMainActivity.class);
                         startActivity(i);
                     }
@@ -288,8 +283,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                         SearchAdvance.subcategoryId.clear();
                         SearchAdvance.postedWithin = "";
                         SearchAdvance.sortBy = "1";
-                        SearchAdvance.categoryId.add(Items.get(Items.size() - 1).get(Constants.TAG_CATEGORYID));
-                        SearchAdvance.categoryName.add(Items.get(Items.size() - 1).get(Constants.TAG_CATEGORYNAME));
+                        SearchAdvance.categoryId.add(Items.get(Items.size()-1).get(Constants.TAG_CATEGORYID));
+                        SearchAdvance.categoryName.add(Items.get(Items.size()-1).get(Constants.TAG_CATEGORYNAME));
                         Intent i = new Intent(CategoryActivity.this, FragmentMainActivity.class);
                         startActivity(i);
                     }
@@ -314,8 +309,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                         SearchAdvance.subcategoryId.clear();
                         SearchAdvance.postedWithin = "";
                         SearchAdvance.sortBy = "1";
-                        SearchAdvance.categoryId.add(Items.get(Items.size() - 1).get(Constants.TAG_CATEGORYID));
-                        SearchAdvance.categoryName.add(Items.get(Items.size() - 1).get(Constants.TAG_CATEGORYNAME));
+                        SearchAdvance.categoryId.add(Items.get(Items.size()-1).get(Constants.TAG_CATEGORYID));
+                        SearchAdvance.categoryName.add(Items.get(Items.size()-1).get(Constants.TAG_CATEGORYNAME));
                         Intent i = new Intent(CategoryActivity.this, FragmentMainActivity.class);
                         startActivity(i);
                     }
@@ -343,7 +338,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()){
             case R.id.backbtn:
                 finish();
                 break;

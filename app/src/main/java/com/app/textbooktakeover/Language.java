@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +18,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gcm.GCMRegistrar;
 import com.app.utils.Constants;
-import com.app.textbooktakeover.R;
 
 import java.util.Locale;
 
@@ -51,7 +53,7 @@ public class Language extends AppCompatActivity implements View.OnClickListener{
 
         title.setText(getString(R.string.language));
 
-        Constants.pref = getApplicationContext().getSharedPreferences("TBTakeoverPref",
+        Constants.pref = getApplicationContext().getSharedPreferences("JoysalePref",
                 MODE_PRIVATE);
         Constants.editor = Constants.pref.edit();
 
@@ -118,6 +120,12 @@ public class Language extends AppCompatActivity implements View.OnClickListener{
             }
             try {
 
+                if (TextbookTakeoverApplication.isRTL(mContext)){
+                    holder.name.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+                } else {
+                    holder.name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                }
+
                 holder.name.setText(lang[position]);
                 if (lang[position].equals(selectedLang)){
                     holder.tick.setVisibility(View.VISIBLE);
@@ -132,9 +140,19 @@ public class Language extends AppCompatActivity implements View.OnClickListener{
                     public void onClick(View v) {
                         selectedLang = lang[position];
                         languageAdapter.notifyDataSetChanged();
+
                         Constants.editor.putString("language", selectedLang);
                         Constants.editor.commit();
+
+                        Constants.REGISTER_ID = GCMRegistrar.getRegistrationId(getApplicationContext());
+                        Log.v("enetered push","registerid="+Constants.REGISTER_ID);
+                        Constants.editor.putString("registerId", Constants.REGISTER_ID);
+                        Constants.editor.commit();
+
                         setLocale(langCode[position]);
+
+                        TextbookTakeoverApplication aController = (TextbookTakeoverApplication) getApplicationContext();
+                        aController.register(Language.this);
                     }
                 });
 

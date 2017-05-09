@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.utils.Constants;
-import com.app.textbooktakeover.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

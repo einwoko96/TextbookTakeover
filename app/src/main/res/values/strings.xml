@@ -127,6 +127,7 @@
     <string name="link">Web</string>
     <string name="myprofile">My profile</string>
     <string name="help">Help</string>
+    <string name="log_out">Log Out</string>
     <string name="remove_location">Remove Location</string>
     <string name="set_location">Set Location</string>
     <string name="please_verify_mail">Please verify your mail id</string>
@@ -324,6 +325,8 @@
 
     <string name="Facebook">FACEBOOK</string>
     <string name="facebook">Login via Facebook</string>
+    <string name="facebook_app_id">1152682634877278</string>
+    <string name="fb_login_protocol_scheme">fb1152682634877278</string>
     <string name="twitter">Login via Twitter</string>
     <string name="googleplus">Login via Google +</string>
     <string name="justnow">just now</string>

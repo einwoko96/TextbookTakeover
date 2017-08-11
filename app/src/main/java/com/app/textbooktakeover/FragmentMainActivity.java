@@ -48,22 +48,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.buynow.MySalesnOrder;
+import com.app.external.AutoScrollViewPager;
 import com.app.external.BadgeView;
 import com.app.external.GPSTracker;
 import com.app.external.HorizontalListView;
 import com.app.external.TimeAgo;
-import com.app.scanner.ScannerActivity;
-import com.app.utils.Constants;
-import com.app.utils.SOAPParsing;
-import com.etsy.android.grid.StaggeredGridView;
-import com.etsy.android.grid.util.GridRefreshListener;
-import com.app.buynow.MySalesnOrder;
-import com.app.external.AutoScrollViewPager;
 import com.app.helper.ItemAdapter;
 import com.app.helper.Model;
+import com.app.scanner.ScannerActivity;
+import com.app.utils.Constants;
 import com.app.utils.DefensiveClass;
 import com.app.utils.GetSet;
 import com.app.utils.ItemsParsing;
+import com.app.utils.SOAPParsing;
+import com.etsy.android.grid.StaggeredGridView;
+import com.etsy.android.grid.util.GridRefreshListener;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.LinePageIndicator;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -361,7 +361,6 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 
 		gps = new GPSTracker(FragmentMainActivity.this);
 
-		setLocationTxt();
 		loadData();
 	}
 
@@ -1042,7 +1041,23 @@ public class FragmentMainActivity extends AppCompatActivity implements OnClickLi
 		} else if (from.equals(getString(R.string.help))) {
 			Intent Hl = new Intent(FragmentMainActivity.this, Help.class);
 			startActivity(Hl);
-		}
+		} else if (from.equals(getString(R.string.log_out))) {
+            TextbookTakeoverApplication aController = new TextbookTakeoverApplication();
+            aController.unregister(FragmentMainActivity.this);
+            Constants.editor.clear();
+            Constants.editor.commit();
+            GetSet.reset();
+            FragmentMainActivity.HomeItems.clear();
+            if (FragmentMainActivity.homeAdapter != null){
+                FragmentMainActivity.homeAdapter.notifyDataSetChanged();
+            }
+            FragmentMainActivity.currentPage = 0;
+            MessageActivity.Messagepageitems.clear();
+            WelcomeActivity.fromSignout = true;
+            finish();
+            Intent p = new Intent(FragmentMainActivity.this, WelcomeActivity.class);
+            startActivity(p);
+        }
 	}
 
 	/** class for get the address from lat, lon **/

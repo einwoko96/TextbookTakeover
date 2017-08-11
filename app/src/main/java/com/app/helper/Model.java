@@ -26,36 +26,44 @@ public class Model {
 			Items.add(new Item(8, R.drawable.s_promotion, ctx.getString(R.string.my_promotions)));
 			Items.add(new Item(9, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(10, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(11, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else if (Constants.BUYNOW && Constants.EXCHANGE) {
 			Items.add(new Item(6, R.drawable.s_mysale, ctx.getString(R.string.myorders_sales)));
 			Items.add(new Item(7, R.drawable.s_exchange, ctx.getString(R.string.myexchange)));
 			Items.add(new Item(8, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(9, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(10, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else if (Constants.BUYNOW && Constants.PROMOTION) {
 			Items.add(new Item(6, R.drawable.s_mysale, ctx.getString(R.string.myorders_sales)));
 			Items.add(new Item(7, R.drawable.s_promotion, ctx.getString(R.string.my_promotions)));
 			Items.add(new Item(8, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(9, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(10, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else if (Constants.EXCHANGE && Constants.PROMOTION) {
 			Items.add(new Item(6, R.drawable.s_exchange, ctx.getString(R.string.myexchange)));
 			Items.add(new Item(7, R.drawable.s_promotion, ctx.getString(R.string.my_promotions)));
 			Items.add(new Item(8, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(9, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(10, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else if (Constants.BUYNOW) {
 			Items.add(new Item(6, R.drawable.s_mysale, ctx.getString(R.string.myorders_sales)));
 			Items.add(new Item(7, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(8, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(9, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else if (Constants.EXCHANGE) {
 			Items.add(new Item(6, R.drawable.s_exchange, ctx.getString(R.string.myexchange)));
 			Items.add(new Item(7, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(8, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(9, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else if (Constants.PROMOTION) {
 			Items.add(new Item(6, R.drawable.s_promotion, ctx.getString(R.string.my_promotions)));
 			Items.add(new Item(7, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(8, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(9, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		} else {
 			Items.add(new Item(6, R.drawable.s_invite, ctx.getString(R.string.invite_friends)));
 			Items.add(new Item(7, R.drawable.s_help, ctx.getString(R.string.help)));
+			Items.add(new Item(8, R.drawable.s_logout, ctx.getString(R.string.log_out)));
 		}
 	}
 

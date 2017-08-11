@@ -70,7 +70,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     private List<Address> addresses;
     public static double lat, lon;
     AutoCompleteTextView address;
-    public static String location= "World Wide";
+    public static String location = "World Wide";
     GPSTracker gps;
     String from = "";
     InputMethodManager imm;
@@ -100,7 +100,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         screenHeight = height * 60 / 100;
         screenWidth = weight * 80 / 100;
 
-        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         Constants.filpref = getApplicationContext().getSharedPreferences("FilterPref",
                 MODE_PRIVATE);
@@ -212,7 +212,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         imm.hideSoftInputFromWindow(address.getWindowToken(), 0);
                         Double latn[] = new Double[2];
-                        if (address.getText().toString().trim().length() != 0){
+                        if (address.getText().toString().trim().length() != 0) {
                             latn = new getLocationFromString().execute(address.getText().toString().trim()).get();
                             double lat = latn[0];
                             double lon = latn[1];
@@ -253,10 +253,12 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    /** for get the lat, lon from gps **/
+    /**
+     * for get the lat, lon from gps
+     **/
     private void loadData() {
         gps = new GPSTracker(LocationActivity.this);
-        if (from.equals("home")){
+        if (from.equals("home")) {
             if (lat == 0 && lon == 0) {
                 if (gps.canGetLocation()) {
                     if (TextbookTakeoverApplication.isNetworkAvailable(LocationActivity.this)) {
@@ -265,7 +267,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                         Log.v("lati", "lat" + lat);
                         Log.v("longi", "longi" + lon);
                     } else {
-                       // TextbookTakeoverApplication.dialog(LocationActivity.this, "Error!", "Please check your connection and try again");
+                        // TextbookTakeoverApplication.dialog(LocationActivity.this, "Error!", "Please check your connection and try again");
                     }
                 } else {
                     if (!alertDialog.isShowing()) {
@@ -274,14 +276,14 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                     got = true;
                 }
             }
-        } else if (from.equals("add")){
+        } else if (from.equals("add")) {
             if (AddProductDetail.lat == 0 && AddProductDetail.lon == 0) {
                 if (gps.canGetLocation()) {
                     if (TextbookTakeoverApplication.isNetworkAvailable(LocationActivity.this)) {
                         Log.v("lati", "lat" + AddProductDetail.lat);
                         Log.v("longi", "longi" + AddProductDetail.lat);
                     } else {
-                      //  TextbookTakeoverApplication.dialog(LocationActivity.this, "Error!", "Please check your connection and try again");
+                        //  TextbookTakeoverApplication.dialog(LocationActivity.this, "Error!", "Please check your connection and try again");
                     }
                 } else {
                     if (!alertDialog.isShowing()) {
@@ -301,7 +303,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (s.length()>0){
+        if (s.length() > 0) {
             crossIcon.setVisibility(View.VISIBLE);
         } else {
             crossIcon.setVisibility(View.GONE);
@@ -313,7 +315,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    /** for get the address from lat, lon **/
+    /**
+     * for get the address from lat, lon
+     **/
     private class GetLocationAsync extends AsyncTask<String, Void, String> {
 
         // boolean duplicateResponse;
@@ -363,18 +367,18 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         protected void onPostExecute(String result) {
             try {
                 if (addresses != null && !addresses.isEmpty()) {
-                    if (from.equals("home")){
+                    if (from.equals("home")) {
                         location = addresses.get(0).getAddressLine(0) + ", "
                                 + addresses.get(0).getAddressLine(1) + ", " + addresses.get(0).getCountryName();
-                        if (FragmentMainActivity.locationTxt != null){
+                        if (FragmentMainActivity.locationTxt != null) {
                             FragmentMainActivity.locationTxt.setText(location);
                         }
                         Constants.fileditor.putString("location", location);
                         Constants.fileditor.commit();
-                    } else if (from.equals("add")){
+                    } else if (from.equals("add")) {
                         AddProductDetail.loc = addresses.get(0).getAddressLine(0) + ", "
                                 + addresses.get(0).getAddressLine(1) + ", " + addresses.get(0).getCountryName();
-                        if (AddProductDetail.location != null){
+                        if (AddProductDetail.location != null) {
                             AddProductDetail.location.setText(AddProductDetail.loc);
                             AddProductDetail.location.setTextColor(getResources().getColor(R.color.primaryText));
                             AddProductDetail.locArrow.setColorFilter(getResources().getColor(R.color.primaryText));
@@ -393,7 +397,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /** for get the lat, lon from address **/
+    /**
+     * for get the lat, lon from address
+     **/
     class getLocationFromString extends AsyncTask<String, Void, Double[]> {
 
         @Override
@@ -405,7 +411,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 StringBuilder sb = new StringBuilder("http://maps.google.com/maps/api/geocode/json");
                 sb.append("?address=" + URLEncoder.encode(params[0], "utf8"));
                 sb.append("&ka&sensor=false");
-                sb.append("&language="+ getResources().getConfiguration().locale.getLanguage());
+                sb.append("&language=" + getResources().getConfiguration().locale.getLanguage());
                 URL url = new URL(sb.toString());
 
                 Log.v("MAP URL", "" + url);
@@ -443,9 +449,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 Log.v("lat & lon", " lat = " + latn[0] + " &lon = " + latn[1]);
             } catch (JSONException e) {
                 e.printStackTrace();
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return latn;
@@ -506,7 +512,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
                     FragmentMainActivity.currentPage = 0;
                     FragmentMainActivity.HomeItems.clear();
-                    if (FragmentMainActivity.homeAdapter != null){
+                    if (FragmentMainActivity.homeAdapter != null) {
                         FragmentMainActivity.homeAdapter.notifyDataSetChanged();
                     }
                     finish();
@@ -516,7 +522,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                     AddProductDetail.lat = 0;
                     AddProductDetail.lon = 0;
                     AddProductDetail.loc = "";
-                    if (AddProductDetail.location != null){
+                    if (AddProductDetail.location != null) {
                         AddProductDetail.location.setText(getString(R.string.world_wide));
                         AddProductDetail.location.setTextColor(getResources().getColor(R.color.secondaryText));
                         AddProductDetail.locArrow.setColorFilter(getResources().getColor(R.color.secondaryText));
@@ -556,7 +562,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
                     FragmentMainActivity.currentPage = 0;
                     FragmentMainActivity.HomeItems.clear();
-                    if (FragmentMainActivity.homeAdapter != null){
+                    if (FragmentMainActivity.homeAdapter != null) {
                         FragmentMainActivity.homeAdapter.notifyDataSetChanged();
                     }
                     finish();
@@ -574,7 +580,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                             AddProductDetail.lat = latn[0];
                             AddProductDetail.lon = latn[1];
                             AddProductDetail.loc = address.getText().toString().trim();
-                            if (AddProductDetail.location != null){
+                            if (AddProductDetail.location != null) {
                                 AddProductDetail.location.setText(AddProductDetail.loc);
                                 AddProductDetail.location.setTextColor(getResources().getColor(R.color.primaryText));
                                 AddProductDetail.locArrow.setColorFilter(getResources().getColor(R.color.primaryText));

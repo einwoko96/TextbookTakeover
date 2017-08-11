@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,7 +26,8 @@
             android:padding="10dp"
             android:src="@drawable/back"
             android:tint="@color/primaryText"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_alignParentLeft="true" />
         <com.app.external.CustomTextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
@@ -37,7 +39,9 @@
             android:text="12 h"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/primaryText"
-            app:font="font_regular.ttf" />
+            app:font="font_regular.ttf"
+            android:layout_toRightOf="@+id/backbtn"
+            android:layout_toLeftOf="@+id/optionsLay" />
 
         <LinearLayout
             android:id="@+id/optionsLay"
@@ -45,53 +49,48 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            >
+            android:layout_alignParentRight="true">
             <ImageView
                 android:id="@+id/likereditBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/shareBtn"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="10dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/unlike_icon"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:layout_marginRight="10dp" />
 
             <ImageView
                 android:id="@+id/edit"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/shareBtn"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="10dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/edit"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:layout_marginRight="10dp" />
 
             <ImageView
                 android:id="@+id/shareBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/settingBtn"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:paddingBottom="10dp"
                 android:paddingEnd="10dp"
                 android:paddingTop="10dp"
                 android:src="@drawable/share_icon"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:paddingRight="10dp" />
 
             <ImageView
                 android:id="@+id/settingBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:paddingBottom="10dp"
@@ -146,7 +145,9 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/detailLay"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp">
 
                 <com.app.external.CustomTextView
                     android:id="@+id/postedTime"
@@ -159,7 +160,8 @@
                     android:text="12 hours ago"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/white"
-                    app:font="font_regular.ttf" />
+                    app:font="font_regular.ttf"
+                    android:layout_marginLeft="5dp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -186,7 +188,9 @@
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/primaryText"
                         android:visibility="visible"
-                        app:font="font_bold.ttf" />
+                        app:font="font_bold.ttf"
+                        android:layout_toLeftOf="@+id/statusLay"
+                        android:layout_marginLeft="10dp" />
 
                     <com.app.external.CustomTextView
                         android:id="@+id/itemPrice"
@@ -199,7 +203,8 @@
                         android:text="$ 0"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/colorPrimary"
-                        app:font="font_bold.ttf" />
+                        app:font="font_bold.ttf"
+                        android:layout_marginLeft="10dp" />
 
                     <LinearLayout
                         android:id="@+id/statusLay"
@@ -207,7 +212,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
 
                         <com.app.external.CustomTextView
                             android:id="@+id/itemStatus"
@@ -226,7 +232,8 @@
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:visibility="visible"
-                            app:font="font_regular.ttf" />
+                            app:font="font_regular.ttf"
+                            android:layout_marginLeft="10dp" />
 
                         <View
                             android:layout_width="10dp"
@@ -253,7 +260,8 @@
                         android:textSize="11sp"
                         android:visibility="visible"
                         android:textColor="@color/white"
-                        app:font="font_regular.ttf" />
+                        app:font="font_regular.ttf"
+                        android:layout_marginLeft="10dp" />
 
                     <com.app.external.CustomTextView
                         android:id="@+id/description"
@@ -294,10 +302,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_centerVertical="true"
                         android:gravity="center"
                         android:paddingStart="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        tools:ignore="RtlSymmetry">
 
                         <ImageView
                             android:id="@+id/viewImg"
@@ -329,7 +338,8 @@
                         android:layout_weight="1"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="5dp">
 
                         <ImageView
                             android:id="@+id/likesImg"
@@ -353,7 +363,8 @@
                         android:layout_width="0.5dp"
                         android:layout_height="match_parent"
                         android:background="@color/divider"
-                        android:layout_marginEnd="5dp"/>
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp" />
 
                     <LinearLayout
                         android:id="@+id/commentLay"
@@ -409,7 +420,9 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="8dp"
-                            android:src="@drawable/location_icon" />
+                            android:src="@drawable/location_icon"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="8dp" />
 
                         <com.app.external.CustomTextView
                             android:id="@+id/location"
@@ -424,7 +437,10 @@
                             android:textAppearance="@android:style/TextAppearance.Small"
                             android:textColor="@color/primaryText"
                             android:visibility="visible"
-                            app:font="font_regular.ttf" />
+                            app:font="font_regular.ttf"
+                            android:layout_toRightOf="@+id/locationImg"
+                            android:layout_marginRight="10dp"
+                            android:paddingLeft="5dp" />
                     </RelativeLayout>
 
                     <ImageView
@@ -455,13 +471,15 @@
                         android:scaleType="centerCrop"
                         app:corner_radius="100dip"
                         app:round_background="true"
-                        android:layout_alignBottom="@+id/view"/>
+                        android:layout_alignBottom="@+id/view"
+                        android:layout_marginLeft="16dp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/banner"
-                        android:layout_toEndOf="@+id/userImage">
+                        android:layout_toEndOf="@+id/userImage"
+                        android:layout_toRightOf="@+id/userImage">
 
                         <com.app.external.CustomTextView
                             android:id="@+id/userName"
@@ -486,7 +504,9 @@
                             android:layout_marginBottom="35dp"
                             android:layout_below="@+id/userName"
                             android:orientation="horizontal"
-                            android:visibility="visible">
+                            android:visibility="visible"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="-115dp">
 
                             <RatingBar
                                 android:id="@+id/ratingBar"
@@ -512,7 +532,8 @@
                                 android:text="(4.0)"
                                 android:textAppearance="@android:style/TextAppearance.Small"
                                 android:textColor="@color/primaryText"
-                                app:font="font_regular.ttf" />
+                                app:font="font_regular.ttf"
+                                android:layout_marginLeft="95dp" />
                         </RelativeLayout>
 
                         <LinearLayout
@@ -523,7 +544,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="40dp"
                             android:paddingBottom="15dp"
-                            android:weightSum="3">
+                            android:weightSum="3"
+                            android:layout_marginLeft="10dp">
 
                             <ImageView
                                 android:id="@+id/mblverify"
@@ -569,7 +591,9 @@
                             android:textAppearance="@android:style/TextAppearance.Small"
                             android:textColor="@color/white"
                             android:visibility="visible"
-                            app:font="font_regular.ttf" />
+                            app:font="font_regular.ttf"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp" />
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -645,12 +669,23 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:gravity="center"
-            android:singleLine="true"
             android:padding="15dp"
-            android:text="Make an offer"
+            android:text="@string/make_an_offer"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"
             app:font="font_bold.ttf" />
     </LinearLayout>
+
+    <com.app.external.CustomTextView
+        android:id="@+id/alwaysOffer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="@string/make_an_offer"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textColor="@color/white"
+        app:font="font_bold.ttf" />
 
 </RelativeLayout>
